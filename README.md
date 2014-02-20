@@ -1,4 +1,4 @@
-jpservant
+JPServant
 =========
 
 Java-Persistent Simple Servant
