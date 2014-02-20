@@ -4,7 +4,7 @@
         <javadoc access="public"
         	encoding="UTF-8"
         	author="true"
-        	destdir="site"
+        	destdir="../jpservant-gh-pages/jpservant-core/site"
         	doctitle="JPServant クラスライブラリリ ファレンス"
         	nodeprecated="false"
         	nodeprecatedlist="false"
