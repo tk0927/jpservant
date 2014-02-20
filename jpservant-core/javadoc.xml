@@ -2,6 +2,7 @@
 <project default="javadoc">
     <target name="javadoc">
         <javadoc access="public"
+        	encoding="UTF-8"
         	author="true"
         	destdir="site"
         	doctitle="JPServant クラスライブラリリ ファレンス"
