@@ -1,0 +1,8 @@
+com.jpservant.core.common
+com.jpservant.core.common.sql
+com.jpservant.core.kernel
+com.jpservant.core.module.complex
+com.jpservant.core.module.dao
+com.jpservant.core.module.filesystem
+com.jpservant.core.module.spi
+com.jpservant.core.module.sql
