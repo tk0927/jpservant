@@ -86,7 +86,7 @@ public abstract class SQLExecutor<T>{
 
 	/**
 	 *
-	 * {@line ResulSet}の読み取り処理を実装する位置。
+	 * {@line ResultSet}の読み取り処理を実装する位置。
 	 *
 	 * @param rs JDBC ResultSet
 	 * @return 読み取り結果を格納するオブジェクト
