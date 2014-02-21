@@ -1,5 +1,14 @@
 package com.jpservant.core.common;
 
-public class DataCollection {
+import java.util.ArrayList;
+
+/**
+*
+* REST APIリクエストに含まれるJSON オブジェクトリストを格納するクラス。
+*
+* @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+*
+*/
+public class DataCollection extends ArrayList<DataObject>{
 
 }

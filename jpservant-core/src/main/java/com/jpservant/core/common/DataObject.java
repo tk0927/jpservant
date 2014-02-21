@@ -1,5 +1,14 @@
 package com.jpservant.core.common;
 
-public class DataObject {
+import java.util.LinkedHashMap;
+
+/**
+ *
+ * REST APIリクエストに含まれるJSON オブジェクト要素を格納するクラス。
+ *
+ * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+ *
+ */
+public class DataObject extends LinkedHashMap<String,Object>{
 
 }
