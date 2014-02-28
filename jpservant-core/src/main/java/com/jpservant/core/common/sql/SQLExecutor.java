@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.jpservant.core.common.sql.impl.BindParameterParsedSQL;
+
 /**
  *
  * Query文 ({@link java.sql.PreparedStatement#executeQuery()}で実行可能なSQL）の実行
@@ -42,7 +44,7 @@ public abstract class SQLExecutor<T>{
 	 *
 	 * SQL Query文を実行する。
 	 *
-	 * @return 実行結果　{@link #readResultSet(ResultSet)}の戻り値
+	 * @return SQL Query文実行結果（{@link #readResultSet(ResultSet)}の戻り値）
 	 * @throws SQLException 何らかのSQL例外が発生
 	 */
 	public T execute() throws SQLException{
@@ -50,7 +52,7 @@ public abstract class SQLExecutor<T>{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try{
-			ps = conn.prepareStatement(sql.getParsedSQL());
+			ps = this.conn.prepareStatement(this.sql.getParsedSQL());
 
 			bindParameters(ps);
 
@@ -74,6 +76,16 @@ public abstract class SQLExecutor<T>{
 		}
 
 	};
+
+	/**
+	 *
+	 * SQL解析処理オブジェクトを取得する。
+	 *
+	 * @return SQL解析処理オブジェクト
+	 */
+	protected BindParameterParsedSQL getBindParameterParsedSQL(){
+		return sql;
+	}
 
 	/**
 	 *

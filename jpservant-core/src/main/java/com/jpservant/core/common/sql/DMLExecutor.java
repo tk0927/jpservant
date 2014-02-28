@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.jpservant.core.common.sql.impl.BindParameterParsedSQL;
+
 /**
  *
  * SQL DML文 ({@link java.sql.PreparedStatement#executeUpdate()}で実行可能なSQL）の実行
@@ -72,6 +74,15 @@ public abstract class DMLExecutor {
 		}
 
 	};
+	/**
+	 *
+	 * SQL解析処理オブジェクトを取得する。
+	 *
+	 * @return SQL解析処理オブジェクト
+	 */
+	protected BindParameterParsedSQL getBindParameterParsedSQL(){
+		return dml;
+	}
 
 	/**
 	 *
