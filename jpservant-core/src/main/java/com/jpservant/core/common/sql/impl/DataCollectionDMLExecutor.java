@@ -1,4 +1,4 @@
-package com.jpservant.core.common.sql;
+package com.jpservant.core.common.sql.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
-import com.jpservant.core.common.sql.impl.BindParameterParsedSQL;
 
 /**
 *
@@ -29,6 +28,17 @@ public class DataCollectionDMLExecutor extends DMLExecutor {
 	 *
 	 * @param sql SQL文
 	 * @param conn データベースコネクション
+	 */
+	public DataCollectionDMLExecutor(String sql,Connection conn){
+		this(sql, conn, null);
+	}
+
+	/**
+	 *
+	 * コンストラクタ。
+	 *
+	 * @param sql SQL文
+	 * @param conn データベースコネクション
 	 * @param parameterrows バインドパラメータ
 	 */
 	public DataCollectionDMLExecutor(String sql,Connection conn,DataCollection parameterrows){
@@ -42,11 +52,16 @@ public class DataCollectionDMLExecutor extends DMLExecutor {
 	@Override
 	public void bindParameters(PreparedStatement ps) throws SQLException {
 
-		for(DataObject row : this.parameterrows){
-			for(Map.Entry<String, Object> entry : row.entrySet()){
-				getBindParameterParsedSQL().bind(
-						ps,entry.getKey(),entry.getValue());
+		if(this.parameterrows != null){
+
+			for(DataObject row : this.parameterrows){
+				for(Map.Entry<String, Object> entry : row.entrySet()){
+					getBindParameterParsedSQL().bind(
+							ps,entry.getKey(),entry.getValue());
+				}
+				ps.addBatch();
 			}
+		}else{
 			ps.addBatch();
 		}
 	}

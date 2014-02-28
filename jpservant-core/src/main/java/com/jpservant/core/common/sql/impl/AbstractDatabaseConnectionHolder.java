@@ -3,6 +3,8 @@ package com.jpservant.core.common.sql.impl;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import com.jpservant.core.common.sql.DatabaseConnectionHolder;
+
 /**
  *
  * データベース接続保管クラスの共通インプリメンテーション。
@@ -31,6 +33,7 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 		try{
 
 			this.connection = connectImpl();
+			this.connection.setAutoCommit(false);
 			this.isconnected = true;
 
 		}catch(Exception e){

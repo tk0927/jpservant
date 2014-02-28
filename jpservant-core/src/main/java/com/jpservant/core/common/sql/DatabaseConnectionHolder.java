@@ -1,4 +1,4 @@
-package com.jpservant.core.common.sql.impl;
+package com.jpservant.core.common.sql;
 
 import java.sql.Connection;
 import java.sql.SQLException;

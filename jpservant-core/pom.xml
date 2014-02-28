@@ -5,4 +5,11 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>jpservant-core</name>
   <description>jpservant-core</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>mysql</groupId>
+  		<artifactId>mysql-connector-java</artifactId>
+  		<version>5.1.26</version>
+  	</dependency>
+  </dependencies>
 </project>

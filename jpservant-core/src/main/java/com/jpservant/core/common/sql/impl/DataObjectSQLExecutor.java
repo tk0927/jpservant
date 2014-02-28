@@ -1,4 +1,4 @@
-package com.jpservant.core.common.sql;
+package com.jpservant.core.common.sql.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
-import com.jpservant.core.common.sql.impl.BindParameterParsedSQL;
 
 /**
  *
@@ -24,6 +23,17 @@ public class DataObjectSQLExecutor extends SQLExecutor<DataCollection> {
 
 	/** バインドパラメータ */
 	private DataObject parameters;
+
+	/**
+	 *
+	 * コンストラクタ。
+	 *
+	 * @param sql SQL文
+	 * @param conn データベースコネクション
+	 */
+	public DataObjectSQLExecutor(String sql,Connection conn){
+		this(sql,conn,null);
+	}
 
 	/**
 	 *
@@ -46,9 +56,11 @@ public class DataObjectSQLExecutor extends SQLExecutor<DataCollection> {
 	@Override
 	public void bindParameters(PreparedStatement ps) throws SQLException {
 
-		for(Map.Entry<String, Object> entry : this.parameters.entrySet()){
-			getBindParameterParsedSQL().bind(
-					ps,entry.getKey(),entry.getValue());
+		if(this.parameters != null){
+			for(Map.Entry<String, Object> entry : this.parameters.entrySet()){
+				getBindParameterParsedSQL().bind(
+						ps,entry.getKey(),entry.getValue());
+			}
 		}
 
 	}
