@@ -31,7 +31,7 @@ public abstract class DMLExecutor {
 	 *
 	 * コンストラクタ。
 	 *
-	 * @param sql SQL DML文
+	 * @param dml SQL DML文
 	 * @param conn JDBCコネクション
 	 */
 	public DMLExecutor(BindParameterParsedSQL dml,Connection conn){
