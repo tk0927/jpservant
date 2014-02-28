@@ -40,9 +40,11 @@ public class SQLProcessorTest {
 		row2.put("StringCol", "BBB");
 		rows.add(row2);
 
-		processor.executeUpdate("INSERT INTO T_SAMPLE_TEST_TABLE(STRING_COL) VALUES(:StringCol)",rows);
+		processor.executeUpdate(
+				"INSERT INTO T_SAMPLE_TEST_TABLE(STRING_COL) VALUES(:StringCol)",rows);
 
-		DataCollection result = processor.executeQuery("SELECT * FROM T_SAMPLE_TEST_TABLE");
+		DataCollection result = processor.executeQuery(
+				"SELECT * FROM T_SAMPLE_TEST_TABLE WHERE STRING_COL = :StringCol", row1);
 		System.out.println(result);
 
 		processor.commit();
