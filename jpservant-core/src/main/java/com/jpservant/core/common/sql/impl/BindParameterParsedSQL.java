@@ -1,5 +1,6 @@
 package com.jpservant.core.common.sql.impl;
 
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -15,6 +16,11 @@ import java.util.regex.Pattern;
  *
  */
 public class BindParameterParsedSQL {
+
+	/**
+	 * 該当のパラメータなし
+	 */
+	public static final int NOT_FOUND = -1;
 
 	/** パラメータ文字列検出用の正規表現 */
 	private static final String PARAMETER_REGEXP = ":([A-Za-z0-9_]+)";
@@ -76,12 +82,12 @@ public class BindParameterParsedSQL {
 	 * 特定バインドパラメータ名の、SQL文上での位置情報を得る。
 	 *
 	 * @param name バインドパラメータ名
-	 * @return パラメータの位置(パラメータ名が無ければ-1)
+	 * @return パラメータの位置(パラメータ名が無ければ NOT_FOUND)
 	 */
 	public int getParameterPosition(String name){
 
 		Integer position = this.positionmap.get(name);
-		return ( position == null ? -1 : position);
+		return ( position == null ? NOT_FOUND : position);
 
 	}
 
@@ -111,17 +117,28 @@ public class BindParameterParsedSQL {
 	 * パラメータをSQL内部の適正位置にバインドする。
 	 *
 	 * <pre>
-	 * 型の取り扱いが面倒なので、すべてString型でバインドする。
+	 * 型の取り扱いが面倒なので、Nullで無い場合はすべてString型でバインドする。
 	 * </pre>
 	 * @param ps ステートメント
+	 * @param pmd パラメータメタデータ
 	 * @param name パラメータ名
 	 * @param value パラメータ値
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	public void bind(PreparedStatement ps,String name,Object value)
+	public void bind(PreparedStatement ps,ParameterMetaData pmd,String name,Object value)
 		throws SQLException{
 
-		ps.setString(this.getParameterPosition(name),value.toString());
+		int position = this.getParameterPosition(name);
+		if(position == NOT_FOUND){
+			return;
+		}
+		if(value == null){
 
+			int type = pmd.getParameterType(position);
+			ps.setNull(position, type);
+
+		}else{
+			ps.setString(position ,value.toString());
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.jpservant.core.common.sql.impl;
 
 import java.sql.Connection;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -57,9 +58,12 @@ public class DataObjectSQLExecutor extends SQLExecutor<DataCollection> {
 	public void bindParameters(PreparedStatement ps) throws SQLException {
 
 		if(this.parameters != null){
+
+			ParameterMetaData pmd = ps.getParameterMetaData();
+
 			for(Map.Entry<String, Object> entry : this.parameters.entrySet()){
 				getBindParameterParsedSQL().bind(
-						ps,entry.getKey(),entry.getValue());
+						ps, pmd, entry.getKey(), entry.getValue());
 			}
 		}
 

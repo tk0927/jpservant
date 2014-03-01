@@ -1,6 +1,7 @@
 package com.jpservant.core.common.sql.impl;
 
 import java.sql.Connection;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
@@ -54,10 +55,12 @@ public class DataCollectionDMLExecutor extends DMLExecutor {
 
 		if(this.parameterrows != null){
 
+			ParameterMetaData pmd = ps.getParameterMetaData();
+
 			for(DataObject row : this.parameterrows){
 				for(Map.Entry<String, Object> entry : row.entrySet()){
 					getBindParameterParsedSQL().bind(
-							ps,entry.getKey(),entry.getValue());
+							ps, pmd, entry.getKey(), entry.getValue());
 				}
 				ps.addBatch();
 			}
