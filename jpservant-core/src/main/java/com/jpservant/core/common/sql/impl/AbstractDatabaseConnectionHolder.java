@@ -45,7 +45,7 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 
 	/**
 	 *
-	 * 正味の接続処理を実装する位置
+	 * 派生クラスが正味のデータベース接続処理を実装する位置。
 	 *
 	 * @return データベース接続
 	 * @throws Exception 何らかの例外発生
