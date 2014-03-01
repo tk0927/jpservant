@@ -36,8 +36,8 @@ public class SQLProcessorTest {
 		DataObject row1 = new DataObject();
 		row1.put("STRING_COL", "AAA");
 		row1.put("TIMESTAMP_COL", "2014-01-01 00:00:01.0");
-		row1.put("NUMBER_COL", 1);
-		row1.put("BOOL_COL", 0);
+		row1.put("NUMBER_COL", "1024");
+		row1.put("BOOL_COL", "0");
 		rows.add(row1);
 
 		DataObject row2 = new DataObject();
@@ -57,7 +57,7 @@ public class SQLProcessorTest {
 		DataObject resultrow1 = result1.get(0);
 		assertEquals(resultrow1.get("STRING_COL"),"AAA");
 		assertEquals(resultrow1.get("TIMESTAMP_COL"),"2014-01-01 00:00:01.0");
-		assertEquals(resultrow1.get("NUMBER_COL"),"1");
+		assertEquals(resultrow1.get("NUMBER_COL"),"1024");
 		assertEquals(resultrow1.get("BOOL_COL"),"0");
 
 
