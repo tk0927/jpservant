@@ -27,7 +27,7 @@ public class SQLProcessorTest {
 	@Test
 	public void testExecution() throws Exception{
 
-		SQLProcessor processor = new SQLProcessor(CONNECTION_HOLDER );
+		SQLProcessor processor = new SQLProcessor( CONNECTION_HOLDER );
 
 		processor.executeUpdate("DELETE FROM T_SAMPLE_TEST_TABLE");
 
@@ -47,7 +47,7 @@ public class SQLProcessorTest {
 				"SELECT * FROM T_SAMPLE_TEST_TABLE WHERE STRING_COL = :StringCol", row1);
 		System.out.println(result);
 
-		processor.commit();
+		CONNECTION_HOLDER.commit();
 	}
 
 }

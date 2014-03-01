@@ -2,6 +2,7 @@ package com.jpservant.core.common.sql.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
 
@@ -59,8 +60,8 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 	@Override
 	public synchronized void close() throws SQLException {
 
-		if(!this.isconnected){
-			throw new SQLException("Already closed.");
+		if(!this.isConnected()){
+			throw new SQLException("Not connected.");
 		}
 		try{
 			this.connection.close();
@@ -72,6 +73,57 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 	@Override
 	public boolean isConnected() {
 		return this.isconnected;
+	}
+
+	@Override
+	public void commit()throws SQLException{
+
+		if(!this.isConnected()){
+			throw new SQLException("Not connected.");
+		}
+		this.connection.commit();
+
+	}
+
+	@Override
+	public void rollback()throws SQLException{
+
+		if(!this.isConnected()){
+			throw new SQLException("Not connected.");
+		}
+		this.connection.rollback();
+
+	}
+
+	@Override
+	public Savepoint getSavepoint() throws SQLException{
+
+		if(!this.isConnected()){
+			throw new SQLException("Not connected.");
+		}
+		return this.connection.setSavepoint();
+
+	}
+
+
+	@Override
+	public void rollbackSavepoint(Savepoint s)throws SQLException{
+
+		if(!this.isConnected()){
+			throw new SQLException("Not connected.");
+		}
+		this.connection.rollback(s);
+
+	}
+
+	@Override
+	public void releaseSavepoint(Savepoint s)throws SQLException{
+
+		if(!this.isConnected()){
+			throw new SQLException("Not connected.");
+		}
+		this.connection.releaseSavepoint(s);
+
 	}
 
 }

@@ -2,6 +2,7 @@ package com.jpservant.core.common.sql;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 
 /**
  *
@@ -20,7 +21,7 @@ public interface DatabaseConnectionHolder {
 	 *
 	 * @throws SQLException 何らかの例外発生
 	 */
-	public void connect() throws SQLException;
+	void connect() throws SQLException;
 
 	/**
 	 *
@@ -28,7 +29,7 @@ public interface DatabaseConnectionHolder {
 	 *
 	 * @return JDBC データベースコネクション
 	 */
-	public Connection getConnection();
+	Connection getConnection();
 
 	/**
 	 *
@@ -36,7 +37,7 @@ public interface DatabaseConnectionHolder {
 	 *
 	 * @throws SQLException 何らかの例外発生
 	 */
-	public void close() throws SQLException;
+	void close() throws SQLException;
 
 
 	/**
@@ -45,5 +46,49 @@ public interface DatabaseConnectionHolder {
 	 *
 	 * @return 接続中ならtrue
 	 */
-	public boolean isConnected();
+	boolean isConnected();
+
+	/**
+	 *
+	 * トランザクションをコミットし、新たにトランザクションを開始します。
+	 *
+	 * @throws SQLException 何らかのSQL例外発生
+	 */
+	void commit()throws SQLException;
+
+	/**
+	 *
+	 * トランザクションをロールバックし、新たにトランザクションを開始します。
+	 *
+	 * @throws SQLException 何らかのSQL例外発生
+	 */
+	void rollback()throws SQLException;
+
+	/**
+	 *
+	 * セーブポイントを生成します。
+	 *
+	 * @return セーブポイント
+	 * @throws SQLException
+	 */
+	Savepoint getSavepoint() throws SQLException;
+
+
+	/**
+	 *
+	 * セーブポイントへのロールバックを行います。
+	 *
+	 * @param s セーブポイント
+	 * @throws SQLException 何らかのSQL例外発生
+	 */
+	void rollbackSavepoint(Savepoint s)throws SQLException;
+
+	/**
+	 *
+	 * セーブポイントを無効化します。
+	 *
+	 * @param s セーブポイント
+	 * @throws SQLException 何らかのSQL例外発生
+	 */
+	void releaseSavepoint(Savepoint s)throws SQLException;
 }

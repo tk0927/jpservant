@@ -1,7 +1,6 @@
 package com.jpservant.core.common.sql;
 
 import java.sql.SQLException;
-import java.sql.Savepoint;
 
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
@@ -48,7 +47,8 @@ public class SQLProcessor {
 	 */
 	public DataCollection executeQuery(String sql)throws SQLException{
 
-		return new DataObjectSQLExecutor(sql, holder.getConnection()).execute();
+		return new DataObjectSQLExecutor(
+				sql, this.holder.getConnection()).execute();
 
 	}
 
@@ -63,7 +63,8 @@ public class SQLProcessor {
 	 */
 	public DataCollection executeQuery(String sql,DataObject parameters)throws SQLException{
 
-		return new DataObjectSQLExecutor(sql, holder.getConnection(),parameters).execute();
+		return new DataObjectSQLExecutor(
+				sql, this.holder.getConnection(),parameters).execute();
 
 	}
 
@@ -77,7 +78,8 @@ public class SQLProcessor {
 	 */
 	public int executeUpdate(String dml)throws SQLException{
 
-		return new DataCollectionDMLExecutor(dml, holder.getConnection()).execute()[0];
+		return new DataCollectionDMLExecutor(
+				dml, this.holder.getConnection()).execute()[0];
 
 	}
 
@@ -109,71 +111,9 @@ public class SQLProcessor {
 	 */
 	public int[] executeUpdate(String dml,DataCollection rows)throws SQLException{
 
-		return new DataCollectionDMLExecutor(dml, holder.getConnection(),rows).execute();
+		return new DataCollectionDMLExecutor(
+				dml, this.holder.getConnection(),rows).execute();
 
 	}
 
-	/**
-	 *
-	 * トランザクションをコミットし、新たにトランザクションを開始します。
-	 *
-	 * @throws SQLException 何らかのSQL例外発生
-	 */
-	public void commit()throws SQLException{
-
-		holder.getConnection().commit();
-
-	}
-
-	/**
-	 *
-	 * トランザクションをロールバックし、新たにトランザクションを開始します。
-	 *
-	 * @throws SQLException 何らかのSQL例外発生
-	 */
-	public void rollback()throws SQLException{
-
-		holder.getConnection().rollback();
-
-	}
-
-	/**
-	 *
-	 * セーブポイントを生成します。
-	 *
-	 * @return セーブポイント
-	 * @throws SQLException
-	 */
-	public Savepoint getSavepoint() throws SQLException{
-
-		return holder.getConnection().setSavepoint();
-
-	}
-
-
-	/**
-	 *
-	 * セーブポイントへのロールバックを行います。
-	 *
-	 * @param s セーブポイント
-	 * @throws SQLException 何らかのSQL例外発生
-	 */
-	public void rollbackSavepoint(Savepoint s)throws SQLException{
-
-		holder.getConnection().rollback(s);
-
-	}
-
-	/**
-	 *
-	 * セーブポイントを無効化します。
-	 *
-	 * @param s セーブポイント
-	 * @throws SQLException 何らかのSQL例外発生
-	 */
-	public void releaseSavepoint(Savepoint s)throws SQLException{
-
-		holder.getConnection().releaseSavepoint(s);
-
-	}
 }
