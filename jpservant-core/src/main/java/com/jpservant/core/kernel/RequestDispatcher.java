@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.Constant.ResourceType;
 import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.Utilities;
 import com.jpservant.core.kernel.impl.ConfigurationManagerImpl;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
@@ -53,16 +54,11 @@ public class RequestDispatcher extends HttpServlet {
 
 		try{
 
-			String uri = request.getRequestURI();
-			uri = uri.replaceAll(request.getContextPath(),"");
+			String uri = request.getRequestURI().replaceAll(request.getContextPath(),"");
 			String method = request.getMethod();
 			String content = Utilities.loadStream(request.getInputStream());
-			DataCollection parameter = null;
 
-			if(content != null && content.length() > 0){
-				ObjectMapper mapper = new ObjectMapper();
-				parameter = mapper.readValue(content, DataCollection.class);
-			}
+			DataCollection parameter = parseRequestBody(content);
 
 			String[] token = Utilities.devideURI(uri);
 			ModulePlatform platform = this.manager.getModulePlatform(token[0]);
@@ -73,6 +69,7 @@ public class RequestDispatcher extends HttpServlet {
 			ResourceResolver resolver = type.getInstance();
 			resolver.setReference(request.getServletContext());
 
+			response.setHeader("Content-Type", "application/json;charset=UTF-8");
 			KernelContextImpl context =
 					new KernelContextImpl(token[1], method, parameter, resolver,response.getWriter());
 
@@ -85,6 +82,29 @@ public class RequestDispatcher extends HttpServlet {
 		}catch(Exception e){
 			throw new ServletException(e);
 		}
+	}
+
+	private static DataCollection parseRequestBody(String content) throws Exception {
+
+		if(content != null && content.length() > 0){
+
+			ObjectMapper mapper = new ObjectMapper();
+
+			try{
+
+				return mapper.readValue(content, DataCollection.class);
+
+			}catch(Exception e){
+
+				DataObject obj = mapper.readValue(content, DataObject.class);
+				DataCollection parameter = new DataCollection();
+				parameter.add(obj);
+				return parameter;
+
+			}
+		}
+
+		return null;
 	}
 
 }
