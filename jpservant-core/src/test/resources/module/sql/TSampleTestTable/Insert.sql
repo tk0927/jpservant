@@ -4,8 +4,8 @@ INSERT INTO T_SAMPLE_TEST_TABLE(
 	NUMBER_COL,
 	BOOL_COL
 )VALUES(
-	:STRING_COL,
-	:TIMESTAMP_COL,
-	:NUMBER_COL,
-	:BOOL_COL
+	:StringCol,
+	:TimestampCol,
+	:NumberCol,
+	:BoolCol
 )
