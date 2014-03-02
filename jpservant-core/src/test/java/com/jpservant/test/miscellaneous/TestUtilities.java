@@ -10,7 +10,8 @@ import com.jpservant.core.common.sql.impl.DriverManagerConnectionHolder;
  *
  * テスト用のユーティリティ。
  *
- * @author tkamoshida
+ * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+ * @version 0.1
  *
  */
 public class TestUtilities {
