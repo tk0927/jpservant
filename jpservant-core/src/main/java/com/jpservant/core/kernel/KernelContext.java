@@ -3,7 +3,6 @@ package com.jpservant.core.kernel;
 import java.io.IOException;
 
 import com.jpservant.core.common.DataCollection;
-import com.jpservant.core.common.DataObject;
 
 /**
  *
@@ -38,7 +37,7 @@ public interface KernelContext {
 	 *
 	 * @return リクエスト
 	 */
-	public DataObject getParameters();
+	public DataCollection getParameters();
 
 	/**
 	 *

@@ -11,6 +11,11 @@ package com.jpservant.core.common;
 public interface Constant {
 
 	/**
+	 * エンコード名。常時UTF-8。
+	 */
+	String ENCODE_NAME ="UTF-8";
+
+	/**
 	 *
 	 * 設定情報名。
 	 *

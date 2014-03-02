@@ -6,7 +6,6 @@ import java.io.Writer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataCollection;
-import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.KernelContext;
 
 /**
@@ -22,7 +21,7 @@ public class KernelContextImpl implements KernelContext {
 
 	private String path;
 	private String method;
-	private DataObject request;
+	private DataCollection request;
 	private Writer writer;
 
 	/**
@@ -34,7 +33,7 @@ public class KernelContextImpl implements KernelContext {
 	 * @param request Httpリクエストボディ(JSONのパース結果)
 	 * @param writer Httpレスポンス出力用Writer
 	 */
-	public KernelContextImpl(String path,String method,DataObject request,Writer writer){
+	public KernelContextImpl(String path,String method,DataCollection request,Writer writer){
 
 		this.path = path;
 		this.method = method;
@@ -54,7 +53,7 @@ public class KernelContextImpl implements KernelContext {
 	}
 
 	@Override
-	public DataObject getParameters() {
+	public DataCollection getParameters() {
 		return this.request;
 	}
 

@@ -25,7 +25,8 @@ public interface ModulePlatform {
 	 * リクエストの処理を行う位置。
 	 *
 	 * @param context コンテキスト情報
+	 * @throws Exception 何らかの例外発生
 	 */
-	void execute(KernelContext context);
+	void execute(KernelContext context)throws Exception;
 
 }
