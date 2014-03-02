@@ -1,6 +1,6 @@
 package com.jpservant.core.module.sql;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import java.io.StringWriter;
 

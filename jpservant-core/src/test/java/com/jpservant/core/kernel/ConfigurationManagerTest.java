@@ -1,7 +1,7 @@
 package com.jpservant.core.kernel;
 
 import static com.jpservant.core.common.Constant.ConfigurationName.*;
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 

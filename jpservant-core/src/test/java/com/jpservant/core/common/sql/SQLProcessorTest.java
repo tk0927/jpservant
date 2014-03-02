@@ -1,7 +1,7 @@
 package com.jpservant.core.common.sql;
 
 import static com.jpservant.test.miscellaneous.TestUtilities.*;
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 
