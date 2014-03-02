@@ -2,11 +2,15 @@ package com.jpservant.core.kernel.impl;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URL;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.kernel.KernelContext;
+import com.jpservant.core.kernel.PostProcessor;
+import com.jpservant.core.kernel.ResourceResolver;
 
 /**
  *
@@ -22,7 +26,9 @@ public class KernelContextImpl implements KernelContext {
 	private String path;
 	private String method;
 	private DataCollection request;
+	private ResourceResolver resolver;
 	private Writer writer;
+	private ArrayList<PostProcessor> processlist = new ArrayList<PostProcessor>();
 
 	/**
 	 *
@@ -33,11 +39,12 @@ public class KernelContextImpl implements KernelContext {
 	 * @param request Httpリクエストボディ(JSONのパース結果)
 	 * @param writer Httpレスポンス出力用Writer
 	 */
-	public KernelContextImpl(String path,String method,DataCollection request,Writer writer){
+	public KernelContextImpl(String path,String method,DataCollection request,ResourceResolver resolver,Writer writer){
 
 		this.path = path;
 		this.method = method;
 		this.request = request;
+		this.resolver = resolver;
 		this.writer = writer;
 
 	}
@@ -58,6 +65,11 @@ public class KernelContextImpl implements KernelContext {
 	}
 
 	@Override
+	public URL getResource(String path) throws Exception{
+		return this.resolver.resolve(path);
+	}
+
+	@Override
 	public void writeResponse(DataCollection response) throws IOException {
 
 		try{
@@ -71,4 +83,22 @@ public class KernelContextImpl implements KernelContext {
 		}
 	}
 
+	@Override
+	public void addPostProcessor(PostProcessor processor) {
+		this.processlist.add(processor);
+	}
+
+	/**
+	 *
+	 * 登録された後処理を実施する。
+	 *
+	 * @throws Exception
+	 */
+	public void doPostProcess()throws Exception{
+
+		for(PostProcessor process: this.processlist){
+			process.execute();
+		}
+
+	}
 }

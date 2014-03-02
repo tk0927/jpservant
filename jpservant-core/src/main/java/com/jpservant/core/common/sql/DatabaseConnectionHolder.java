@@ -91,4 +91,13 @@ public interface DatabaseConnectionHolder {
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
 	void releaseSavepoint(Savepoint s)throws SQLException;
+
+	/**
+	 *
+	 * 常駐プロセスにおけるセッション終了を行います。
+	 *
+	 *
+	 * @throws Exception 何らかの例外発生
+	 */
+	void releaseSession()throws Exception;
 }

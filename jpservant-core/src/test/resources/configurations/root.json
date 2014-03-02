@@ -4,7 +4,7 @@
 		"RootPath"         : "/sql" ,
 		"PlatformClass"    : "com.jpservant.core.module.sql.QueryModulePlatform" ,
 		"JDBCResourcePath" : "/JDBCResource1",
-		"ResourceType"     : "ClassPathResource" ,
+		"ResourceType"     : "ClassPath" ,
 		"ResourceRoot"     : "/module/sql"
 	},
 	{

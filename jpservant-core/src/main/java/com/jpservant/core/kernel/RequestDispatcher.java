@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.Constant;
+import com.jpservant.core.common.Constant.ResourceType;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.Utilities;
 import com.jpservant.core.kernel.impl.ConfigurationManagerImpl;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
+import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
 
 /**
@@ -64,9 +66,19 @@ public class RequestDispatcher extends HttpServlet {
 
 			String[] token = Utilities.devideURI(uri);
 			ModulePlatform platform = this.manager.getModulePlatform(token[0]);
+			ModuleConfiguration config = this.manager.getModuleConfiguration(token[0]);
+
+			ResourceType type = ResourceType.valueOf((String)
+					config.get(Constant.ConfigurationName.ResourceType.name()));
+			ResourceResolver resolver = type.getInstance();
+			resolver.setReference(request.getServletContext());
+
 			KernelContextImpl context =
-					new KernelContextImpl(token[1], method, parameter, response.getWriter());
+					new KernelContextImpl(token[1], method, parameter, resolver,response.getWriter());
+
 			platform.execute(context);
+
+			context.doPostProcess();
 
 		}catch(IOException e){
 			throw e;

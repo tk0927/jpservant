@@ -1,5 +1,9 @@
 package com.jpservant.core.common;
 
+import com.jpservant.core.kernel.ResourceResolver;
+import com.jpservant.core.kernel.impl.ClassPathResolver;
+import com.jpservant.core.kernel.impl.ServletContextResolver;
+
 /**
  *
  * 共通定数定義。
@@ -31,7 +35,7 @@ public interface Constant {
 	public static enum ConfigurationName{
 		RootPath(true),
 		PlatformClass(true),
-
+		ResourceType(true),
 		;
 
 		private boolean required;
@@ -55,8 +59,26 @@ public interface Constant {
 	 *
 	 */
 	public static enum ResourceType{
-		/** クラスパス内から解決する */
-		ClassPathResource,
+		/** クラスパスから解決する */
+		ClassPath (ClassPathResolver.class),
+		/** サーブレットコンテクストから解決する */
+		ServletContext (ServletContextResolver.class),
+
+		;
+
+		Class<? extends ResourceResolver> clazz;
+
+		private ResourceType(Class<? extends ResourceResolver> clazz){
+			this.clazz = clazz;
+		}
+
+		public ResourceResolver getInstance(){
+			try{
+				return clazz.newInstance();
+			}catch(Exception e){
+				throw new RuntimeException();
+			}
+		}
 	}
 
 }

@@ -7,6 +7,8 @@ import java.io.StringWriter;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jpservant.core.common.Constant;
+import com.jpservant.core.common.Constant.ResourceType;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
@@ -35,9 +37,13 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		ObjectMapper mapper = new ObjectMapper();
 
 		ModulePlatform module = MANAGER.getModulePlatform("/sql");
+		String strtype = (String)MANAGER.getModuleConfiguration("/sql").get(
+				Constant.ConfigurationName.ResourceType.name());
+		ResourceType type = ResourceType.valueOf(strtype);
 
 		StringWriter sw = new StringWriter();
-		module.execute(new KernelContextImpl("/TSampleTestTable/DeleteAll","POST", null ,sw));
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/DeleteAll","POST", null ,type.getInstance(),sw));
 
 		//テスト用データの挿入
 		DataCollection rows = new DataCollection();
@@ -55,7 +61,8 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		row2.put("BoolCol", null);
 		rows.add(row2);
 		sw = new StringWriter();
-		module.execute(new KernelContextImpl("/TSampleTestTable/Insert","POST", rows ,sw));
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/Insert","POST", rows ,type.getInstance(),sw));
 
 		//テスト用データの検索結果確認
 		DataCollection criteriarows1 = new DataCollection();
@@ -63,7 +70,8 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		criteria1.put("StringCol", "AAA");
 		criteriarows1.add(criteria1);
 		sw = new StringWriter();
-		module.execute(new KernelContextImpl("/TSampleTestTable/SelectByStringCol","POST", criteriarows1 ,sw));
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/SelectByStringCol","POST", criteriarows1 ,type.getInstance(),sw));
 
 		DataCollection result1 = mapper.readValue(sw.toString(), DataCollection.class);
 		assertEquals(result1.size(),1);
@@ -79,7 +87,8 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		criteria2.put("StringCol", "BBB");
 		criteriarows2.add(criteria2);
 		sw = new StringWriter();
-		module.execute(new KernelContextImpl("/TSampleTestTable/SelectByStringCol","POST", criteriarows2 ,sw));
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/SelectByStringCol","POST", criteriarows2 ,type.getInstance(),sw));
 
 		DataCollection result2 = mapper.readValue(sw.toString(), DataCollection.class);
 		assertEquals(result2.size(),1);

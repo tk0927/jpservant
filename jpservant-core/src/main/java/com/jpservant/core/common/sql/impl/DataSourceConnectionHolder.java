@@ -42,4 +42,9 @@ public class DataSourceConnectionHolder extends AbstractDatabaseConnectionHolder
 		}
 		return this.datasource.getConnection();
 	}
+
+	@Override
+	public void releaseSession() throws Exception {
+		super.commit();
+	}
 }

@@ -45,4 +45,11 @@ public class DriverManagerConnectionHolder extends AbstractDatabaseConnectionHol
 		return DriverManager.getConnection(this.url, this.username, this.password);
 	}
 
+	@Override
+	public void releaseSession() throws Exception {
+		super.commit();
+		super.close();
+	}
+
+
 }

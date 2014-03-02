@@ -1,14 +1,12 @@
 package com.jpservant.core.module.sql;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.Utilities;
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
+import com.jpservant.core.kernel.PostProcessor;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
 import com.jpservant.core.resource.ResourcePlatform;
@@ -42,19 +40,19 @@ public class QueryModulePlatform implements ModulePlatform {
 	}
 
 	@Override
-	public void execute(KernelContext context) throws IOException,SQLException{
+	public void execute(KernelContext context) throws Exception{
 
 		ResourcePlatform resource = config.getConfigurationManager().getResourcePlatform(
 				(String) config.get(ConfigurationName.JDBCResourcePath.name()));
 
-		DatabaseConnectionHolder holder = (DatabaseConnectionHolder)resource.getResource();
+		final DatabaseConnectionHolder holder = (DatabaseConnectionHolder)resource.getResource();
 
 		String path = String.format("%s%s%s",
 				config.get(ConfigurationName.ResourceRoot.name()),
 				context.getRequestPath(),
 				SQL_FILE_EXT);
 
-		String content = Utilities.loadResource(getClass().getResource(path)).trim();
+		String content = Utilities.loadResource(context.getResource(path)).trim();
 
 		SQLProcessor processor = new SQLProcessor(holder);
 
@@ -76,6 +74,13 @@ public class QueryModulePlatform implements ModulePlatform {
 
 			context.writeResponse(response);
 		}
+
+		context.addPostProcessor(new PostProcessor() {
+			@Override
+			public void execute() throws Exception {
+				holder.releaseSession();
+			}
+		});
 	}
 
 }

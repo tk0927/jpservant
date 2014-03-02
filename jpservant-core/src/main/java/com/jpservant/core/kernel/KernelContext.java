@@ -1,6 +1,7 @@
 package com.jpservant.core.kernel;
 
 import java.io.IOException;
+import java.net.URL;
 
 import com.jpservant.core.common.DataCollection;
 
@@ -39,6 +40,18 @@ public interface KernelContext {
 	 */
 	public DataCollection getParameters();
 
+
+	/**
+	 *
+	 * 指定されたリソースのURLを得る。
+	 *
+	 * @param リソースパス
+	 * @return URL
+	 * @thrwos Exception 何らかの例外発生
+	 */
+	public URL getResource(String path)throws Exception;
+
+
 	/**
 	 *
 	 * レスポンス(JSONオブジェクトの要素)を出力する。
@@ -48,5 +61,13 @@ public interface KernelContext {
 	 * @throws  IOException 出力失敗
 	 */
 	public void writeResponse(DataCollection response)throws IOException;
+
+	/**
+	 *
+	 * モジュール側で後処理を登録する。
+	 *
+	 * @param processor 後処理ロジック
+	 */
+	public void addPostProcessor(PostProcessor processor);
 
 }

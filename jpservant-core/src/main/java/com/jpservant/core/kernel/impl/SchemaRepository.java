@@ -1,4 +1,4 @@
-package com.jpservant.core.kernel;
+package com.jpservant.core.kernel.impl;
 
 /**
  *
