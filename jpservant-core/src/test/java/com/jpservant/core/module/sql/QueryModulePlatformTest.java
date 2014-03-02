@@ -15,17 +15,17 @@ import com.jpservant.test.miscellaneous.JDBCResource1TestCaseBase;
 
 /**
 *
-* {@link SQLModulePlatformTest}のテストクラス。
+* {@link QueryModulePlatformTest}のテストクラス。
 *
 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
 * @version 0.1
 *
 */
-public class SQLModulePlatformTest extends JDBCResource1TestCaseBase {
+public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 
 	/**
 	 *
-	 * src/test/resources/configurations/root.jsonの設定値に基づく{@link SQLModulePlatform}の初期化/稼働テスト
+	 * src/test/resources/configurations/root.jsonの設定値に基づく{@link QueryModulePlatform}の初期化/稼働テスト
 	 *
 	 * @throws Exception 何らかの例外発生
 	 */

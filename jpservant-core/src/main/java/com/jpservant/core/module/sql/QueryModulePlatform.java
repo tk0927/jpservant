@@ -21,7 +21,7 @@ import com.jpservant.core.resource.ResourcePlatform;
  * @version 0.1
  *
  */
-public class SQLModulePlatform implements ModulePlatform {
+public class QueryModulePlatform implements ModulePlatform {
 
 	public static enum ConfigurationName{
 		JDBCResourcePath,
