@@ -1,57 +1,54 @@
 package com.jpservant.core.kernel;
 
-import static com.jpservant.core.common.Constant.ConfigurationName.*;
+import java.util.ArrayList;
 
-import java.net.URL;
-import java.util.HashMap;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jpservant.core.common.DataCollection;
-import com.jpservant.core.common.DataObject;
 import com.jpservant.core.module.spi.ModuleConfiguration;
+import com.jpservant.core.module.spi.ModulePlatform;
+import com.jpservant.core.resource.ResourcePlatform;
 
 /**
  *
- * システムの設定情報を格納し、各機能に提供するクラス。
+ * システムの設定情報を格納し、各機能に提供するクラスのインターフェイス定義。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
  *
  */
-public class ConfigurationManager {
+public interface ConfigurationManager {
 
+	/**
+	 *
+	 * 設定ファイル内の"RootPath"設定リストを得る。
+	 *
+	 * @return "RootPath"設定リスト
+	 */
+	public abstract ArrayList<String> getRootPathList();
 
-	private HashMap<String,ModuleConfiguration> impl = new  HashMap<String,ModuleConfiguration>();
+	/**
+	 *
+	 * RootPath値に紐づくモジュール向け設定情報を得る。
+	 *
+	 * @param path RootPath値
+	 * @return モジュール向け設定情報
+	 */
+	public abstract ModuleConfiguration getModuleConfiguration(String path);
 
+	/**
+	 *
+	 * RootPath値に紐づく{@link ModulePlatform}インスタンスを得る。
+	 *
+	 * @param path RootPath値
+	 * @return インスタンス
+	 */
+	public abstract ModulePlatform getModulePlatform(String path);
 
-	public ConfigurationManager(URL url)throws ConfigurationException{
-
-		try{
-
-			ObjectMapper mapper = new ObjectMapper();
-			DataCollection parsed = mapper.readValue(url.openStream(), DataCollection.class);
-			parseConfiguration(parsed);
-
-		}catch(Exception e){
-			throw new ConfigurationException(e);
-		}
-	}
-
-
-	private void parseConfiguration(DataCollection parsed){
-
-		for(DataObject element: parsed){
-
-			ModuleConfiguration config = new ModuleConfiguration();
-			config.putAll(element);
-
-			impl.put(element.get(ModuleRootPath.name()).toString(),config);
-		}
-
-	}
-
-	public ModuleConfiguration getModuleConfiguration(String path){
-		return impl.get(path);
-	}
+	/**
+	 *
+	 * RootPath値に紐づく{@link ResourcePlatform}インスタンスを得る。
+	 *
+	 * @param path RootPath値
+	 * @return インスタンス
+	 */
+	public abstract ResourcePlatform getResourcePlatform(String path);
 
 }

@@ -3,6 +3,8 @@ package com.jpservant.core.common.sql;
 import static com.jpservant.test.miscellaneous.TestUtilities.*;
 import static junit.framework.Assert.*;
 
+import java.sql.SQLException;
+
 import org.junit.Test;
 
 import com.jpservant.core.common.DataCollection;
@@ -29,6 +31,22 @@ public class SQLProcessorTest {
 	public void testExecution() throws Exception{
 
 		SQLProcessor processor = new SQLProcessor( CONNECTION_HOLDER );
+
+		executeTestSQL(processor);
+
+		//トランザクションロールバック(DB状態復元)
+		CONNECTION_HOLDER.rollback();
+
+	}
+
+	/**
+	 *
+	 * SQL実行の本体。外部からの呼び出しに備えSTATICメソッド化。
+	 *
+	 * @param processor SQLProcessor
+	 * @throws SQLException 何らかのSQL例外発生
+	 */
+	public static void executeTestSQL(SQLProcessor processor) throws SQLException {
 
 		//テーブルクリア
 		processor.executeUpdate("DELETE FROM T_SAMPLE_TEST_TABLE");
@@ -75,9 +93,6 @@ public class SQLProcessorTest {
 		assertNull(resultrow2.get("TIMESTAMP_COL"));
 		assertNull(resultrow2.get("NUMBER_COL"));
 		assertNull(resultrow2.get("BOOL_COL"));
-
-		//トランザクションロールバック(DB状態復元)
-		CONNECTION_HOLDER.rollback();
 
 	}
 

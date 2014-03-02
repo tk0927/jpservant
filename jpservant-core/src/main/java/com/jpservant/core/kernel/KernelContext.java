@@ -1,12 +1,13 @@
 package com.jpservant.core.kernel;
 
-import java.net.URI;
+import java.io.IOException;
 
+import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 
 /**
  *
- * リクエストのコンテキスト情報を格納するクラス。
+ * リクエストのコンテキスト情報を格納するクラスのインターフェイス定義。
  *
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
@@ -15,14 +16,38 @@ import com.jpservant.core.common.DataObject;
  */
 public interface KernelContext {
 
+	/**
+	 *
+	 * ユーザーのHttpリクエストパスURIを取得する。
+	 *
+	 * @return リクエストパスURI
+	 */
 	public String getRequestPath();
 
+	/**
+	 *
+	 * HttpリクエストMethod名を得る。
+	 *
+	 * @return Method名
+	 */
 	public String getMethod();
 
-	public URI getResource(String name);
-
+	/**
+	 *
+	 * リクエスト(JSONオブジェクトのパース結果)を得る。
+	 *
+	 * @return リクエスト
+	 */
 	public DataObject getParameters();
 
-	public void writeResponse(DataObject response);
+	/**
+	 *
+	 * レスポンス(JSONオブジェクトの要素)を出力する。
+	 *
+	 *
+	 * @param response レスポンス
+	 * @throws  IOException 出力失敗
+	 */
+	public void writeResponse(DataCollection response)throws IOException;
 
 }

@@ -19,7 +19,7 @@ public interface Constant {
 	 *
 	 */
 	public static enum ConfigurationName{
-		ModuleRootPath(true),
+		RootPath(true),
 		PlatformClass(true),
 
 		;
@@ -45,6 +45,7 @@ public interface Constant {
 	 *
 	 */
 	public static enum ResourceType{
+		/** クラスパス内から解決する */
 		ClassPathResource,
 	}
 

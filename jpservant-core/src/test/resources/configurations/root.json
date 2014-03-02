@@ -1,20 +1,20 @@
 [
 
 	{
-		"ModuleRootPath"   : "/sql" ,
+		"RootPath"         : "/sql" ,
 		"PlatformClass"    : "com.jpservant.core.module.sql.SQLModulePlatform" ,
 		"JDBCResourcePath" : "/JDBCResource1",
 		"ResourceType"     : "ClassPathResource" ,
 		"ResourceRoot"     : "/module/sql"
 	},
 	{
-		"ModuleRootPath"   : "/dao" ,
+		"RootPath"         : "/dao" ,
 		"PlatformClass"    : "com.jpservant.core.module.dao.DAOModulePlatform" ,
 		"JDBCResourcePath" : "/JDBCResource1"
 	},
 	{
-		"ModuleRootPath"   : "/JDBCResource1",
-		"PlatformClass"    : "com.jpservant.resource.JDBCDriverManagerResource" ,
+		"RootPath"         : "/JDBCResource1",
+		"PlatformClass"    : "com.jpservant.core.resource.JDBCDriverManagerResource" ,
 		"JDBCDriver"       : "com.mysql.jdbc.Driver" ,
 		"JDBCURL"          : "jdbc:mysql://localhost:3306/test?generateSimpleParameterMetadata=true",
 		"JDBCUser"         : "test",
