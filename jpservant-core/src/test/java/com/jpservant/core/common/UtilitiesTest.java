@@ -20,9 +20,9 @@ public class UtilitiesTest {
 
 		String[] result = Utilities.devideURI("/sql/foo/bar/baz_foo%20%bar.ext");
 
-		assertEquals(result.length,2);
-		assertEquals(result[0], "/sql");
-		assertEquals(result[1], "/foo/bar/baz_foo%20%bar.ext");
+		assertEquals(2, result.length);
+		assertEquals("/sql", result[0]);
+		assertEquals("/foo/bar/baz_foo%20%bar.ext", result[1]);
 	}
 
 }

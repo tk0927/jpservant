@@ -78,10 +78,10 @@ public class SQLProcessorTest {
 				"SELECT * FROM T_SAMPLE_TEST_TABLE WHERE STRING_COL = :STRING_COL", criteria1);
 		assertEquals(result1.size(),1);
 		DataObject resultrow1 = result1.get(0);
-		assertEquals(resultrow1.get("STRING_COL"),"AAA");
-		assertEquals(resultrow1.get("TIMESTAMP_COL"),"2014-01-01 00:00:01.0");
-		assertEquals(resultrow1.get("NUMBER_COL"),"1024");
-		assertEquals(resultrow1.get("BOOL_COL"),"0");
+		assertEquals("AAA",						resultrow1.get("STRING_COL"));
+		assertEquals("2014-01-01 00:00:01.0",	resultrow1.get("TIMESTAMP_COL"));
+		assertEquals("1024",					resultrow1.get("NUMBER_COL"));
+		assertEquals("0",						resultrow1.get("BOOL_COL"));
 
 		DataObject criteria2 = new DataObject();
 		criteria2.put("STRING_COL", "BBB");
@@ -89,7 +89,7 @@ public class SQLProcessorTest {
 				"SELECT * FROM T_SAMPLE_TEST_TABLE WHERE STRING_COL = :STRING_COL", criteria2);
 		assertEquals(result2.size(),1);
 		DataObject resultrow2 = result2.get(0);
-		assertEquals(resultrow2.get("STRING_COL"),"BBB");
+		assertEquals("BBB",						resultrow2.get("STRING_COL"));
 		assertNull(resultrow2.get("TIMESTAMP_COL"));
 		assertNull(resultrow2.get("NUMBER_COL"));
 		assertNull(resultrow2.get("BOOL_COL"));

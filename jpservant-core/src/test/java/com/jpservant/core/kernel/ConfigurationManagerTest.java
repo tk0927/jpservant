@@ -35,15 +35,15 @@ public class ConfigurationManagerTest  extends JDBCResource1TestCaseBase {
 
 		ModuleConfiguration sqlconfig = MANAGER.getModuleConfiguration("/sql");
 
-		assertEquals(sqlconfig.get(RootPath.name()),"/sql");
-		assertEquals(sqlconfig.get(PlatformClass.name()),"com.jpservant.core.module.sql.QueryModulePlatform");
-		assertEquals(sqlconfig.get("ResourceType"),"ClassPathResource");
-		assertEquals(sqlconfig.get("ResourceRoot"),"/module/sql");
+		assertEquals("/sql", sqlconfig.get(RootPath.name()));
+		assertEquals("com.jpservant.core.module.sql.QueryModulePlatform", sqlconfig.get(PlatformClass.name()));
+		assertEquals("ClassPathResource", sqlconfig.get("ResourceType"));
+		assertEquals("/module/sql", sqlconfig.get("ResourceRoot"));
 
 		ModuleConfiguration daoconfig = MANAGER.getModuleConfiguration("/dao");
 
-		assertEquals(daoconfig.get(RootPath.name()),"/dao");
-		assertEquals(daoconfig.get(PlatformClass.name()),"com.jpservant.core.module.dao.DAOModulePlatform");
+		assertEquals("/dao", daoconfig.get(RootPath.name()));
+		assertEquals("com.jpservant.core.module.dao.DAOModulePlatform", daoconfig.get(PlatformClass.name()));
 
 	}
 
