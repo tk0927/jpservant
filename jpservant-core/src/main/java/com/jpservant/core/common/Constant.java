@@ -16,6 +16,11 @@ public interface Constant {
 	String ENCODE_NAME ="UTF-8";
 
 	/**
+	 * Servletの初期化パラメータ名
+	 */
+	String SERVLET_INIT_CONFIG_NAME ="config";
+
+	/**
 	 *
 	 * 設定情報名。
 	 *
