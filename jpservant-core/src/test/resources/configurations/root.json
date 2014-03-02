@@ -14,7 +14,7 @@
 	},
 	{
 		"RootPath"         : "/JDBCResource1",
-		"PlatformClass"    : "com.jpservant.core.resource.JDBCDriverManagerResource" ,
+		"PlatformClass"    : "com.jpservant.test.miscellaneous.TestJDBCDriverManagerResource" ,
 		"JDBCDriver"       : "com.mysql.jdbc.Driver" ,
 		"JDBCURL"          : "jdbc:mysql://localhost:3306/test?generateSimpleParameterMetadata=true",
 		"JDBCUser"         : "test",
