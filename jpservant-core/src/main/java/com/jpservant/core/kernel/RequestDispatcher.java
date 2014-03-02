@@ -37,10 +37,10 @@ public class RequestDispatcher extends HttpServlet {
 		try{
 
 			this.manager = new ConfigurationManagerImpl();
-			this.manager.initialize(getClass().getResource(
+			this.manager.initialize(config.getServletContext().getResource(
 					config.getInitParameter(Constant.SERVLET_INIT_CONFIG_NAME)));
 
-		}catch(ConfigurationException e){
+		}catch(Exception e){
 			throw new ServletException(e);
 		}
 
@@ -52,6 +52,7 @@ public class RequestDispatcher extends HttpServlet {
 		try{
 
 			String uri = request.getRequestURI();
+			uri = uri.replaceAll(request.getContextPath(),"");
 			String method = request.getMethod();
 			String content = Utilities.loadStream(request.getInputStream());
 			DataCollection parameter = null;
