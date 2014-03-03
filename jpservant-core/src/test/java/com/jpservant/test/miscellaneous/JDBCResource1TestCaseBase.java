@@ -47,7 +47,9 @@ public class JDBCResource1TestCaseBase {
 
 		ResourcePlatform resource = MANAGER.getResourcePlatform("/JDBCResource1");
 		DatabaseConnectionHolder holder = (DatabaseConnectionHolder)resource.getResource();
-		holder.close();
+		if(holder.isConnected()){
+			holder.close();
+		}
 
 	}
 
@@ -63,7 +65,9 @@ public class JDBCResource1TestCaseBase {
 
 		ResourcePlatform resource = MANAGER.getResourcePlatform("/JDBCResource1");
 		DatabaseConnectionHolder holder = (DatabaseConnectionHolder)resource.getResource();
-		holder.rollback();
+		if(holder.isConnected()){
+			holder.rollback();
+		}
 
 	}
 

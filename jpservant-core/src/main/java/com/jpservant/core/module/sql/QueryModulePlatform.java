@@ -23,8 +23,6 @@ public class QueryModulePlatform implements ModulePlatform {
 
 	public static enum ConfigurationName{
 		JDBCResourcePath,
-		ResourceType,
-		JDBCUser,
 		ResourceRoot,
 	}
 

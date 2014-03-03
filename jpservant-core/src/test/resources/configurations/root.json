@@ -15,6 +15,18 @@
 		"ResourceRoot"     : "./src/test/resources/module/sql"
 	},
 	{
+		"RootPath"         : "/mock" ,
+		"PlatformClass"    : "com.jpservant.core.module.mock.MockModulePlatform" ,
+		"ResourceType"     : "ClassPath" ,
+		"ResourceRoot"     : "/module/mock"
+	},
+	{
+		"RootPath"         : "/mock2" ,
+		"PlatformClass"    : "com.jpservant.core.module.mock.MockModulePlatform" ,
+		"ResourceType"     : "FileSystem" ,
+		"ResourceRoot"     : "./src/test/resources/module/mock"
+	},
+	{
 		"RootPath"         : "/dao" ,
 		"PlatformClass"    : "com.jpservant.core.module.dao.DAOModulePlatform" ,
 		"JDBCResourcePath" : "/JDBCResource1"
