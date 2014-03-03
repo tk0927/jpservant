@@ -123,7 +123,7 @@ public class RequestDispatcher extends HttpServlet {
 		ResourceType type = ResourceType.valueOf((String)
 				config.get(Constant.ConfigurationName.ResourceType.name()));
 		ResourceResolver resolver = type.getInstance();
-		resolver.setReference(request.getServletContext());
+		resolver.setReference(request.getSession().getServletContext());
 
 		return new KernelContextImpl(uritoken[2], method, parameter, resolver,response.getWriter());
 
