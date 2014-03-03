@@ -1,0 +1,23 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>JPServant Web Application Template</display-name>
+
+	<servlet>
+		<servlet-name>RequestDispatcher</servlet-name>
+		<servlet-class>com.jpservant.core.kernel.RequestDispatcher</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/root.json</param-value>
+			<description>Path to JPServant configuration file.</description>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>RequestDispatcher</servlet-name>
+		<url-pattern>/jpservant/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

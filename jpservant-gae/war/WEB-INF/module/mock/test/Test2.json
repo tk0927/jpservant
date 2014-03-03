@@ -1,0 +1,4 @@
+{
+	"GET"     : {"Foo":"Foo5","Bar":"Bar5"},
+	"DEFAULT" : {"Foo":"Foo6","Bar":"Bar6"}
+}
