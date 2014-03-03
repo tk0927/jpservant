@@ -47,8 +47,7 @@ public class DriverManagerConnectionHolder extends AbstractDatabaseConnectionHol
 
 	@Override
 	public void releaseSession() throws Exception {
-		super.commit();
-		super.close();
+		close();
 	}
 
 

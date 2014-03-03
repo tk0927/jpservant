@@ -18,6 +18,7 @@ import com.jpservant.core.kernel.impl.ConfigurationManagerImpl;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
+import com.jpservant.core.resolver.ResourceResolver;
 
 /**
  *
@@ -50,32 +51,32 @@ public class RequestDispatcher extends HttpServlet {
 	}
 
 	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 
 		try{
 
-			String uri = request.getRequestURI().replaceAll(request.getContextPath(),"");
-			String method = request.getMethod();
-			String content = Utilities.loadStream(request.getInputStream());
-
-			DataCollection parameter = parseRequestBody(content);
-
-			String[] token = Utilities.devideURI(uri);
-			ModulePlatform platform = this.manager.getModulePlatform(token[0]);
-			ModuleConfiguration config = this.manager.getModuleConfiguration(token[0]);
-
-			ResourceType type = ResourceType.valueOf((String)
-					config.get(Constant.ConfigurationName.ResourceType.name()));
-			ResourceResolver resolver = type.getInstance();
-			resolver.setReference(request.getServletContext());
-
+			String[] uritoken = Utilities.splitURI(request.getRequestURI());
+			ModulePlatform platform = this.manager.getModulePlatform(uritoken[1]);
+			if(platform == null){
+				throw new IOException(String.format("Token[%s] mapped module not found.",uritoken[1]));
+			}
 			response.setHeader("Content-Type", "application/json;charset=UTF-8");
-			KernelContextImpl context =
-					new KernelContextImpl(token[1], method, parameter, resolver,response.getWriter());
 
-			platform.execute(context);
+			KernelContextImpl context = createKernelContext(request, response, uritoken);
 
-			context.doPostProcess();
+			try{
+
+				platform.execute(context);
+				context.doPostProcess();
+
+			}catch(Exception e){
+
+				context.doErrorProcess();
+				throw e;
+
+			}
 
 		}catch(IOException e){
 			throw e;
@@ -84,6 +85,43 @@ public class RequestDispatcher extends HttpServlet {
 		}
 	}
 
+	/**
+	 *
+	 * KernelContextを生成する。
+	 *
+	 * @param request HttpServletリクエスト
+	 * @param response HttpServletレスポンス
+	 * @param uritoken 分割したURI
+	 * @return KernelContextのインスタンス
+	 * @throws Exception 何らかの例外発生
+	 */
+	private KernelContextImpl createKernelContext(HttpServletRequest request, HttpServletResponse response,
+			String[] uritoken) throws  Exception {
+
+		String method = request.getMethod();
+		String content = Utilities.loadStream(request.getInputStream());
+
+		DataCollection parameter = parseRequestBody(content);
+
+		ModuleConfiguration config = this.manager.getModuleConfiguration(uritoken[1]);
+
+		ResourceType type = ResourceType.valueOf((String)
+				config.get(Constant.ConfigurationName.ResourceType.name()));
+		ResourceResolver resolver = type.getInstance();
+		resolver.setReference(request.getServletContext());
+
+		return new KernelContextImpl(uritoken[2], method, parameter, resolver,response.getWriter());
+
+	}
+
+	/**
+	 *
+	 * HttpリクエストボディのJSON文字列を解析する。
+	 *
+	 * @param content Httpリクエストボディ
+	 * @return 解析結果
+	 * @throws Exception 何らかの例外発生
+	 */
 	private static DataCollection parseRequestBody(String content) throws Exception {
 
 		if(content != null && content.length() > 0){

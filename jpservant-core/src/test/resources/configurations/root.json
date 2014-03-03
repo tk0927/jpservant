@@ -8,6 +8,13 @@
 		"ResourceRoot"     : "/module/sql"
 	},
 	{
+		"RootPath"         : "/sql2" ,
+		"PlatformClass"    : "com.jpservant.core.module.sql.QueryModulePlatform" ,
+		"JDBCResourcePath" : "/JDBCResource1",
+		"ResourceType"     : "FileSystem" ,
+		"ResourceRoot"     : "./src/test/resources/module/sql"
+	},
+	{
 		"RootPath"         : "/dao" ,
 		"PlatformClass"    : "com.jpservant.core.module.dao.DAOModulePlatform" ,
 		"JDBCResourcePath" : "/JDBCResource1"

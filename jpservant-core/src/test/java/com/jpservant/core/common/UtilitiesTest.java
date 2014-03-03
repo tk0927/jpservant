@@ -16,13 +16,14 @@ import org.junit.Test;
 public class UtilitiesTest {
 
 	@Test
-	public void testDevideURI() {
+	public void testSplitURI() {
 
-		String[] result = Utilities.devideURI("/sql/foo/bar/baz_foo%20%bar.ext");
+		String[] result = Utilities.splitURI("/context/sql/foo/bar/baz_foo%20%bar.ext");
 
-		assertEquals(2, result.length);
-		assertEquals("/sql", result[0]);
-		assertEquals("/foo/bar/baz_foo%20%bar.ext", result[1]);
+		assertEquals(3, result.length);
+		assertEquals("/context", result[0]);
+		assertEquals("/sql", result[1]);
+		assertEquals("/foo/bar/baz_foo%20%bar.ext", result[2]);
 	}
 
 }

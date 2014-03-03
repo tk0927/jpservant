@@ -45,6 +45,6 @@ public class DataSourceConnectionHolder extends AbstractDatabaseConnectionHolder
 
 	@Override
 	public void releaseSession() throws Exception {
-		super.commit();
+		rollback();
 	}
 }

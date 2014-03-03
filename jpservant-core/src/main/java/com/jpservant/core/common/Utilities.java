@@ -71,16 +71,17 @@ public class Utilities {
 	 * URIを先頭要素とそれ以外の2つの文字列に分割する。
 	 *
 	 * @param uri URI
-	 * @return 2要素の文字列配列
+	 * @return 3要素の文字列配列(コンテキストパス、設定分割用パス、資源指定用パス)
 	 */
-	public static String[] devideURI(String uri){
+	public static String[] splitURI(String uri){
 
-		Pattern p = Pattern.compile("(/[a-zA-Z0-9%_]+)(/[a-zA-Z0-9%_/\\.]+)");
+		Pattern p = Pattern.compile("(/[a-zA-Z0-9%_]+)(/[a-zA-Z0-9%_]+)(/[a-zA-Z0-9%_/\\.]+)");
 		Matcher m = p.matcher(uri);
 		m.matches();
-		String[] retvalue = new String[2];
+		String[] retvalue = new String[3];
 		retvalue[0] = m.group(1);
 		retvalue[1] = m.group(2);
+		retvalue[2] = m.group(3);
 
 		return retvalue;
 	}

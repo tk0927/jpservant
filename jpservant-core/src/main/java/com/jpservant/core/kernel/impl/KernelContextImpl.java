@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.kernel.PostProcessor;
-import com.jpservant.core.kernel.ResourceResolver;
+import com.jpservant.core.resolver.ResourceResolver;
 
 /**
  *
@@ -29,6 +29,7 @@ public class KernelContextImpl implements KernelContext {
 	private ResourceResolver resolver;
 	private Writer writer;
 	private ArrayList<PostProcessor> processlist = new ArrayList<PostProcessor>();
+	private ArrayList<PostProcessor> errorlist = new ArrayList<PostProcessor>();
 
 	/**
 	 *
@@ -88,6 +89,11 @@ public class KernelContextImpl implements KernelContext {
 		this.processlist.add(processor);
 	}
 
+	@Override
+	public void addErrorProcessor(PostProcessor processor) {
+		this.errorlist.add(processor);
+	}
+
 	/**
 	 *
 	 * 登録された後処理を実施する。
@@ -97,6 +103,19 @@ public class KernelContextImpl implements KernelContext {
 	public void doPostProcess()throws Exception{
 
 		for(PostProcessor process: this.processlist){
+			process.execute();
+		}
+
+	}
+	/**
+	 *
+	 * 登録されたエラー時後処理を実施する。
+	 *
+	 * @throws Exception
+	 */
+	public void doErrorProcess()throws Exception{
+
+		for(PostProcessor process: this.errorlist){
 			process.execute();
 		}
 

@@ -29,15 +29,48 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 	 *
 	 * src/test/resources/configurations/root.jsonの設定値に基づく{@link QueryModulePlatform}の初期化/稼働テスト
 	 *
+	 * <pre>
+	 * クラスパス上の資源読み取り設定。
+	 * </pre>
+	 *
 	 * @throws Exception 何らかの例外発生
 	 */
 	@Test
 	public void testQueryModulePlatformExecution() throws Exception{
 
+		execute("/sql");
+
+	}
+
+	/**
+	 *
+	 * src/test/resources/configurations/root.jsonの設定値に基づく{@link QueryModulePlatform}の初期化/稼働テスト
+	 *
+	 * <pre>
+	 * ファイルシステム上の資源読み取り設定。
+	 * </pre>
+	 *
+	 * @throws Exception 何らかの例外発生
+	 */
+	@Test
+	public void testQueryModulePlatformExecution2() throws Exception{
+
+		execute("/sql2");
+	}
+
+	/**
+	 *
+	 * SQL実行テストの一シナリオ。
+	 *
+	 * @param rootpath 設定名
+	 * @throws Exception 何らかの例外発生
+	 */
+	private void execute(String rootpath) throws Exception {
+
 		ObjectMapper mapper = new ObjectMapper();
 
-		ModulePlatform module = MANAGER.getModulePlatform("/sql");
-		String strtype = (String)MANAGER.getModuleConfiguration("/sql").get(
+		ModulePlatform module = MANAGER.getModulePlatform(rootpath);
+		String strtype = (String)MANAGER.getModuleConfiguration(rootpath).get(
 				Constant.ConfigurationName.ResourceType.name());
 		ResourceType type = ResourceType.valueOf(strtype);
 
@@ -98,6 +131,5 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		assertNull(resultrow2.get("NUMBER_COL"));
 		assertNull(resultrow2.get("BOOL_COL"));
 	}
-
 
 }

@@ -28,8 +28,14 @@ public class QueryModulePlatform implements ModulePlatform {
 		ResourceRoot,
 	}
 
-	private static final String SQL_QUERY_KEY = "SELECT";
-	private static final String SQL_FILE_EXT = ".sql";
+	/**
+	 * SQL文がQueryであるかを判定するキー文字列
+	 */
+	public static final String SQL_QUERY_KEY = "SELECT";
+	/**
+	 * SQL文定義ファイルの拡張子
+	 */
+	public static final String SQL_FILE_EXT = ".sql";
 
 	private ModuleConfiguration config;
 
@@ -78,6 +84,15 @@ public class QueryModulePlatform implements ModulePlatform {
 		context.addPostProcessor(new PostProcessor() {
 			@Override
 			public void execute() throws Exception {
+				holder.commit();
+				holder.releaseSession();
+			}
+		});
+
+		context.addErrorProcessor(new PostProcessor() {
+			@Override
+			public void execute() throws Exception {
+				holder.rollback();
 				holder.releaseSession();
 			}
 		});

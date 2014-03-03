@@ -70,4 +70,12 @@ public interface KernelContext {
 	 */
 	public void addPostProcessor(PostProcessor processor);
 
+	/**
+	 *
+	 * モジュール側でエラー時後処理を登録する。
+	 *
+	 * @param processor 後処理ロジック
+	 */
+	public void addErrorProcessor(PostProcessor processor);
+
 }

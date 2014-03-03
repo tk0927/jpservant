@@ -1,8 +1,7 @@
-package com.jpservant.core.kernel.impl;
+package com.jpservant.core.resolver;
 
 import java.net.URL;
 
-import com.jpservant.core.kernel.ResourceResolver;
 
 /**
  *

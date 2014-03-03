@@ -1,8 +1,9 @@
 package com.jpservant.core.common;
 
-import com.jpservant.core.kernel.ResourceResolver;
-import com.jpservant.core.kernel.impl.ClassPathResolver;
-import com.jpservant.core.kernel.impl.ServletContextResolver;
+import com.jpservant.core.resolver.ClassPathResolver;
+import com.jpservant.core.resolver.FileSystemResolver;
+import com.jpservant.core.resolver.ResourceResolver;
+import com.jpservant.core.resolver.ServletContextResolver;
 
 /**
  *
@@ -59,10 +60,13 @@ public interface Constant {
 	 *
 	 */
 	public static enum ResourceType{
+
 		/** クラスパスから解決する */
 		ClassPath (ClassPathResolver.class),
 		/** サーブレットコンテクストから解決する */
 		ServletContext (ServletContextResolver.class),
+		/** ファイルシステムから解決する */
+		FileSystem (FileSystemResolver.class),
 
 		;
 
