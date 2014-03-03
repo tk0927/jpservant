@@ -1,8 +1,0 @@
-[
-	{
-		"RootPath"         : "/mock" ,
-		"PlatformClass"    : "com.jpservant.core.module.mock.MockModulePlatform" ,
-		"ResourceType"     : "ServletContext" ,
-		"ResourceRoot"     : "/WEB-INF/module/mock"
-	}
-]
