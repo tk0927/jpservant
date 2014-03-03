@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.kernel.PostProcessor;
 import com.jpservant.core.resolver.ResourceResolver;
@@ -76,13 +77,38 @@ public class KernelContextImpl implements KernelContext {
 		try{
 
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.writeValue(this.writer, response);
+			if(response == null || response.size() == 0){
+				mapper.writeValue(this.writer, new DataObject());
+			}else if(response.size() == 1){
+				mapper.writeValue(this.writer,response.get(0));
+			}else{
+				mapper.writeValue(this.writer, response);
+			}
 			this.writer.flush();
 
 		}catch(JsonMappingException e){
 			throw new IOException(e);
 		}
 	}
+
+	@Override
+	public void writeResponse(DataObject response) throws IOException {
+
+		try{
+
+			ObjectMapper mapper = new ObjectMapper();
+			if(response == null){
+				mapper.writeValue(this.writer, new DataObject());
+			}else{
+				mapper.writeValue(this.writer, response);
+			}
+			this.writer.flush();
+
+		}catch(JsonMappingException e){
+			throw new IOException(e);
+		}
+	}
+
 
 	@Override
 	public void addPostProcessor(PostProcessor processor) {

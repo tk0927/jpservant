@@ -72,9 +72,8 @@ public class QueryModulePlatform implements ModulePlatform {
 		}else{
 
 			int[] result = processor.executeUpdate(content, collection);
-			DataCollection response = new DataCollection();
-			DataObject count = new DataObject();
-			count.put("count", result);
+			DataObject response = new DataObject();
+			response.put("count", result);
 
 			context.writeResponse(response);
 		}

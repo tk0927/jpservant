@@ -3,7 +3,6 @@ package com.jpservant.core.module.mock;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.Utilities;
 import com.jpservant.core.kernel.KernelContext;
@@ -62,16 +61,7 @@ public class MockModulePlatform implements ModulePlatform {
 			object = mock;
 		}
 
-		DataCollection collection = new DataCollection();
-		if(object instanceof Map<?, ?>){
-
-			DataObject data = new DataObject();
-			data.putAll((Map<String,Object>)object);
-			collection.add(data);
-
-		}
-
-		context.writeResponse(collection);
+		context.writeResponse(new DataObject((Map<String,Object>)object));
 	}
 
 

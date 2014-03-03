@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.common.DataObject;
 
 /**
  *
@@ -61,6 +62,17 @@ public interface KernelContext {
 	 * @throws  IOException 出力失敗
 	 */
 	public void writeResponse(DataCollection response)throws IOException;
+
+	/**
+	 *
+	 * レスポンス(JSONオブジェクトの要素)を出力する。
+	 *
+	 *
+	 * @param response レスポンス
+	 * @throws  IOException 出力失敗
+	 */
+	public void writeResponse(DataObject response)throws IOException;
+
 
 	/**
 	 *

@@ -106,13 +106,11 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/SelectByStringCol","POST", criteriarows1 ,type.getInstance(),sw));
 
-		DataCollection result1 = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result1.size(),1);
-		DataObject resultrow1 = result1.get(0);
-		assertEquals("AAA",						resultrow1.get("STRING_COL"));
-		assertEquals("2014-01-01 00:00:01.0",	resultrow1.get("TIMESTAMP_COL"));
-		assertEquals("1024",					resultrow1.get("NUMBER_COL"));
-		assertEquals("0",						resultrow1.get("BOOL_COL"));
+		DataObject result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("AAA",						result.get("STRING_COL"));
+		assertEquals("2014-01-01 00:00:01.0",	result.get("TIMESTAMP_COL"));
+		assertEquals("1024",					result.get("NUMBER_COL"));
+		assertEquals("0",						result.get("BOOL_COL"));
 
 		//テスト用データの検索結果確認
 		DataCollection criteriarows2 = new DataCollection();
@@ -123,13 +121,11 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/SelectByStringCol","POST", criteriarows2 ,type.getInstance(),sw));
 
-		DataCollection result2 = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result2.size(),1);
-		DataObject resultrow2 = result2.get(0);
-		assertEquals("BBB",						resultrow2.get("STRING_COL"));
-		assertNull(resultrow2.get("TIMESTAMP_COL"));
-		assertNull(resultrow2.get("NUMBER_COL"));
-		assertNull(resultrow2.get("BOOL_COL"));
+		DataObject result2 = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("BBB",						result2.get("STRING_COL"));
+		assertNull(result2.get("TIMESTAMP_COL"));
+		assertNull(result2.get("NUMBER_COL"));
+		assertNull(result2.get("BOOL_COL"));
 	}
 
 }

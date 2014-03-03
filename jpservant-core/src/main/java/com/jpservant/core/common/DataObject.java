@@ -1,6 +1,7 @@
 package com.jpservant.core.common;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
@@ -12,4 +13,19 @@ import java.util.LinkedHashMap;
  */
 public class DataObject extends LinkedHashMap<String,Object>{
 
+	/**
+	 * デフォルトコンストラクタ。
+	 *
+	 */
+	public DataObject(){}
+
+	/**
+	 *
+	 * コピーコンストラクタ。
+	 *
+	 * @param impl コピー元
+	 */
+	public DataObject(Map<String,Object> impl){
+		putAll(impl);
+	}
 }

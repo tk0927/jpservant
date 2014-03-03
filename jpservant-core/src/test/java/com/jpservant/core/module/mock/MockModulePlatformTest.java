@@ -9,7 +9,6 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.Constant.ResourceType;
-import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
 import com.jpservant.core.module.spi.ModulePlatform;
@@ -80,123 +79,99 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test","GET", null ,type.getInstance(),sw));
 
-		DataCollection result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		DataObject resultrow = result.get(0);
-		assertEquals("Foo1",	resultrow.get("Foo"));
-		assertEquals("Bar1",	resultrow.get("Bar"));
+		DataObject result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo1",	result.get("Foo"));
+		assertEquals("Bar1",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test","PUT", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo2",	resultrow.get("Foo"));
-		assertEquals("Bar2",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo2",	result.get("Foo"));
+		assertEquals("Bar2",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test","POST", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo3",	resultrow.get("Foo"));
-		assertEquals("Bar3",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo3",	result.get("Foo"));
+		assertEquals("Bar3",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test","DELETE", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo4",	resultrow.get("Foo"));
-		assertEquals("Bar4",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo4",	result.get("Foo"));
+		assertEquals("Bar4",	result.get("Bar"));
 
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test2","GET", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo5",	resultrow.get("Foo"));
-		assertEquals("Bar5",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo5",	result.get("Foo"));
+		assertEquals("Bar5",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test2","PUT", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo6",	resultrow.get("Foo"));
-		assertEquals("Bar6",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo6",	result.get("Foo"));
+		assertEquals("Bar6",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test2","POST", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo6",	resultrow.get("Foo"));
-		assertEquals("Bar6",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo6",	result.get("Foo"));
+		assertEquals("Bar6",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test2","DELETE", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo6",	resultrow.get("Foo"));
-		assertEquals("Bar6",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo6",	result.get("Foo"));
+		assertEquals("Bar6",	result.get("Bar"));
 
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test3","GET", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo7",	resultrow.get("Foo"));
-		assertEquals("Bar7",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo7",	result.get("Foo"));
+		assertEquals("Bar7",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test3","PUT", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo7",	resultrow.get("Foo"));
-		assertEquals("Bar7",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo7",	result.get("Foo"));
+		assertEquals("Bar7",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test3","POST", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo7",	resultrow.get("Foo"));
-		assertEquals("Bar7",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo7",	result.get("Foo"));
+		assertEquals("Bar7",	result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/test/Test3","DELETE", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataCollection.class);
-		assertEquals(result.size(),1);
-		resultrow = result.get(0);
-		assertEquals("Foo7",	resultrow.get("Foo"));
-		assertEquals("Bar7",	resultrow.get("Bar"));
+		result = mapper.readValue(sw.toString(), DataObject.class);
+		assertEquals("Foo7",	result.get("Foo"));
+		assertEquals("Bar7",	result.get("Bar"));
 	}
 
 }
