@@ -1,0 +1,6 @@
+{
+	"GET"    : {"Foo":"Foo1","Bar":"Bar1"},
+	"PUT"    : {"Foo":"Foo2","Bar":"Bar2"},
+	"POST"   : {"Foo":"Foo3","Bar":"Bar3"},
+	"DELETE" : {"Foo":"Foo4","Bar":"Bar4"}
+}

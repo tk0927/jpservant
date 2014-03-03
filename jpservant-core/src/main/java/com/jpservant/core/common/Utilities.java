@@ -75,7 +75,7 @@ public class Utilities {
 	 */
 	public static String[] splitURI(String uri){
 
-		Pattern p = Pattern.compile("(/[a-zA-Z0-9%_]+)(/[a-zA-Z0-9%_]+)(/[a-zA-Z0-9%_/\\.]+)");
+		Pattern p = Pattern.compile("(/[^/]+)(/[^/]+)(/[\\S]+)");
 		Matcher m = p.matcher(uri);
 		m.matches();
 		String[] retvalue = new String[3];

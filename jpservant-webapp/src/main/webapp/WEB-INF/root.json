@@ -8,6 +8,25 @@
 		"ResourceRoot"     : "/WEB-INF/module/sql"
 	},
 	{
+		"RootPath"         : "/sql2" ,
+		"PlatformClass"    : "com.jpservant.core.module.sql.QueryModulePlatform" ,
+		"JDBCResourcePath" : "/JDBCResource1",
+		"ResourceType"     : "FileSystem" ,
+		"ResourceRoot"     : "C:/temp/module/sql"
+	},
+	{
+		"RootPath"         : "/mock" ,
+		"PlatformClass"    : "com.jpservant.core.module.mock.MockModulePlatform" ,
+		"ResourceType"     : "ServletContext" ,
+		"ResourceRoot"     : "/WEB-INF/module/mock"
+	},
+	{
+		"RootPath"         : "/mock2" ,
+		"PlatformClass"    : "com.jpservant.core.module.mock.MockModulePlatform" ,
+		"ResourceType"     : "FileSystem" ,
+		"ResourceRoot"     : "C:/temp/module/mock"
+	},
+	{
 		"RootPath"         : "/JDBCResource1",
 		"PlatformClass"    : "com.jpservant.core.resource.JDBCDriverManagerResource" ,
 		"JDBCDriver"       : "com.mysql.jdbc.Driver" ,
