@@ -1,8 +1,22 @@
 [
 	{
+		"RootPath"         : "/sql" ,
+		"PlatformClass"    : "com.jpservant.core.module.sql.QueryModulePlatform" ,
+		"JDBCResourcePath" : "/JDBCResource1",
+		"ResourceType"     : "ServletContext" ,
+		"ResourceRoot"     : "/WEB-INF/module/sql"
+	},
+	{
 		"RootPath"         : "/mock" ,
 		"PlatformClass"    : "com.jpservant.core.module.mock.MockModulePlatform" ,
 		"ResourceType"     : "ServletContext" ,
 		"ResourceRoot"     : "/WEB-INF/module/mock"
+	},
+	{
+		"RootPath"         : "/JDBCResource1",
+		"PlatformClass"    : "com.jpservant.core.resource.JDBCDriverManagerResource" ,
+		"JDBCURL"          : "jdbc:google:rdbms://jpservant-webapp:jpservant/test",
+		"JDBCUser"         : "jpservant",
+		"JDBCPassword"     : "jpservant"
 	}
 ]

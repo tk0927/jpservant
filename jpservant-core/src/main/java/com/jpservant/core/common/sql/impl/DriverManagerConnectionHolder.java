@@ -56,7 +56,9 @@ public class DriverManagerConnectionHolder extends AbstractDatabaseConnectionHol
 	@Override
 	public synchronized Connection connectImpl() throws Exception {
 
-		Class.forName(this.drivername);
+		if(this.drivername != null && this.drivername.length() > 0){
+			Class.forName(this.drivername);
+		}
 		return DriverManager.getConnection(this.url, this.username, this.password);
 	}
 
