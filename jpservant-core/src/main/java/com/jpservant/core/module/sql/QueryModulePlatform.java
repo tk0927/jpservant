@@ -15,10 +15,13 @@
  */
 package com.jpservant.core.module.sql;
 
+import static com.jpservant.core.common.Constant.RequestMethod.*;
 import static com.jpservant.core.common.Utilities.*;
 
 import java.sql.SQLException;
 
+import com.jpservant.core.common.AccessController;
+import com.jpservant.core.common.Constant.ConfigurationName;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
@@ -39,11 +42,6 @@ import com.jpservant.core.module.spi.ModulePlatform;
  *
  */
 public class QueryModulePlatform implements ModulePlatform {
-
-	public static enum ConfigurationName {
-		JDBCResourcePath,
-		ResourceRoot,
-	}
 
 	/**
 	 * SQL文がQueryであるかを判定するキー文字列
@@ -66,6 +64,10 @@ public class QueryModulePlatform implements ModulePlatform {
 	public void execute(KernelContext context) throws Exception {
 
 		try{
+
+			if(!AccessController.checkAccessMethod(context, POST)){
+				throw new ApplicationException(ErrorType.BadRequest);
+			}
 
 			DatabaseConnectionHolder holder = config.findJDBCConnection(
 					ConfigurationName.JDBCResourcePath.name());

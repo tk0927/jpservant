@@ -42,6 +42,21 @@ public interface Constant {
 
 	/**
 	 *
+	 * Httpリクエストメソッド名。
+	 *
+	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+	 * @version 0.1
+	 *
+	 */
+	public static enum RequestMethod{
+		GET,
+		POST,
+		PUT,
+		DELETE,
+	}
+
+	/**
+	 *
 	 * 設定情報名。
 	 *
 	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
@@ -51,7 +66,9 @@ public interface Constant {
 	public static enum ConfigurationName{
 		RootPath(true),
 		PlatformClass(true),
-		ResourceType(true),
+		ResourceType(false),
+		ResourceRoot(false),
+		JDBCResourcePath(false),
 		;
 
 		private boolean required;

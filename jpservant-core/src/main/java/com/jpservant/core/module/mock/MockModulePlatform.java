@@ -35,10 +35,6 @@ import com.jpservant.core.module.spi.ModulePlatform;
  */
 public class MockModulePlatform implements ModulePlatform {
 
-	public static enum ConfigurationName{
-		ResourceRoot,
-	}
-
 	/**
 	 * SQL文定義ファイルの拡張子
 	 */

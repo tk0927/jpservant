@@ -22,10 +22,10 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.jpservant.core.common.Constant.ConfigurationName;
 import com.jpservant.core.exception.ApplicationException;
 import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.KernelContext;
-import com.jpservant.core.module.mock.MockModulePlatform.ConfigurationName;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
