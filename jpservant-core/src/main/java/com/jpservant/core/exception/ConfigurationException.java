@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jpservant.core.kernel;
+package com.jpservant.core.exception;
 /**
  *
  * 設定誤り例外。

@@ -29,6 +29,8 @@ import com.jpservant.core.common.Constant.ResourceType;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.Utilities;
+import com.jpservant.core.exception.ApplicationException;
+import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.impl.ConfigurationManagerImpl;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
 import com.jpservant.core.module.spi.ModuleConfiguration;
@@ -53,13 +55,13 @@ public class RequestDispatcher extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 
-		try{
+		try {
 
 			this.manager = new ConfigurationManagerImpl();
 			this.manager.initialize(config.getServletContext().getResource(
 					config.getInitParameter(Constant.SERVLET_INIT_CONFIG_NAME)));
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 
@@ -69,35 +71,59 @@ public class RequestDispatcher extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-
-		try{
+		try {
 
 			String[] uritoken = Utilities.splitURI(request.getRequestURI());
 			ModulePlatform platform = this.manager.getModulePlatform(uritoken[1]);
-			if(platform == null){
-				throw new IOException(String.format("Token[%s] mapped module not found.",uritoken[1]));
+			if (platform == null) {
+				throw new IOException(String.format("Token[%s] mapped module not found.", uritoken[1]));
 			}
 			response.setHeader("Content-Type", "application/json;charset=UTF-8");
 
 			KernelContextImpl context = createKernelContext(request, response, uritoken);
 
-			try{
+			try {
 
 				platform.execute(context);
 				context.doPostProcess();
 
-			}catch(Exception e){
-
+			} catch (Exception e) {
 				context.doErrorProcess();
 				throw e;
-
 			}
 
-		}catch(IOException e){
-			throw e;
-		}catch(Exception e){
-			throw new ServletException(e);
+		} catch (ApplicationException e) {
+			handleApplicationException(request, response, e);
+		} catch (Exception e) {
+			handleApplicationException(request, response,
+					new ApplicationException(ErrorType.InternalError, e));
 		}
+	}
+
+	/**
+	 *
+	 * 例外ハンドリング
+	 *
+	 * @param request Httpリクエスト
+	 * @param response Httpレスポンス
+	 * @param e 発生した例外
+	 */
+	private void handleApplicationException(
+			HttpServletRequest request, HttpServletResponse response,ApplicationException e){
+
+		int code = 0;
+
+		if(e.getErrorType() == ErrorType.InternalError){
+			code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+		}else if(e.getErrorType() == ErrorType.BadRequest){
+			code = HttpServletResponse.SC_BAD_REQUEST;
+		}else if(e.getErrorType() == ErrorType.NotFound){
+			code = HttpServletResponse.SC_NOT_FOUND;
+		}
+
+		response.reset();
+		response.setStatus(code);
+
 	}
 
 	/**
@@ -111,7 +137,7 @@ public class RequestDispatcher extends HttpServlet {
 	 * @throws Exception 何らかの例外発生
 	 */
 	private KernelContextImpl createKernelContext(HttpServletRequest request, HttpServletResponse response,
-			String[] uritoken) throws  Exception {
+			String[] uritoken) throws Exception {
 
 		String method = request.getMethod();
 		String content = Utilities.loadStream(request.getInputStream());
@@ -125,7 +151,7 @@ public class RequestDispatcher extends HttpServlet {
 		ResourceResolver resolver = type.getInstance();
 		resolver.setReference(request.getSession().getServletContext());
 
-		return new KernelContextImpl(uritoken[2], method, parameter, resolver,response.getWriter());
+		return new KernelContextImpl(uritoken[2], method, parameter, resolver, response.getWriter());
 
 	}
 
@@ -139,15 +165,15 @@ public class RequestDispatcher extends HttpServlet {
 	 */
 	private static DataCollection parseRequestBody(String content) throws Exception {
 
-		if(content != null && content.length() > 0){
+		if (content != null && content.length() > 0) {
 
 			ObjectMapper mapper = new ObjectMapper();
 
-			try{
+			try {
 
 				return mapper.readValue(content, DataCollection.class);
 
-			}catch(Exception e){
+			} catch (Exception e) {
 
 				DataObject obj = mapper.readValue(content, DataObject.class);
 				DataCollection parameter = new DataCollection();

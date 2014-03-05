@@ -4,7 +4,7 @@
   <groupId>jpservant</groupId>
   <artifactId>jpservant-webapp</artifactId>
   <packaging>war</packaging>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <name>jpservant-webapp Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <build>
@@ -14,7 +14,7 @@
   	<dependency>
   		<groupId>jpservant</groupId>
   		<artifactId>jpservant-core</artifactId>
-  		<version>0.0.2</version>
+  		<version>0.0.3</version>
   	</dependency>
   </dependencies>
 </project>

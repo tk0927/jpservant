@@ -22,6 +22,12 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.jpservant.core.exception.ApplicationException;
+import com.jpservant.core.exception.ApplicationException.ErrorType;
+import com.jpservant.core.kernel.KernelContext;
+import com.jpservant.core.module.mock.MockModulePlatform.ConfigurationName;
+import com.jpservant.core.module.spi.ModuleConfiguration;
+
 /**
  *
  * ユーティリティメソッドクラス。
@@ -31,6 +37,43 @@ import java.util.regex.Pattern;
  *
  */
 public class Utilities {
+
+	/**
+	 *
+	 * リソースの検索パス文字列を生成します。
+	 *
+	 * @param config モジュール設定
+	 * @param context コンテキスト情報
+	 * @param ext 拡張子
+	 * @return パス文字列
+	 */
+	public static String createResourcePath(
+			ModuleConfiguration config,KernelContext context,String ext) {
+
+		return String.format("%s%s%s",
+				config.get(ConfigurationName.ResourceRoot.name()),
+				context.getRequestPath(),ext);
+
+	}
+
+	/**
+	 *
+	 * URLに紐づくリソースをUTF-8エンコードで読み取る。
+	 *
+	 * @param url URL
+	 * @return 読み取り結果
+	 * @throws IOException IO例外発生
+	 */
+	public static String findResource(URL url)throws ApplicationException {
+
+		try{
+
+			return loadResource(url);
+
+		}catch(IOException e){
+			throw new ApplicationException(ErrorType.NotFound, e);
+		}
+	}
 
 	/**
 	 *
@@ -56,7 +99,6 @@ public class Utilities {
 				}catch(Exception e){}
 			}
 		}
-
 	}
 
 	/**

@@ -15,16 +15,20 @@
  */
 package com.jpservant.core.module.sql;
 
+import static com.jpservant.core.common.Utilities.*;
+
+import java.sql.SQLException;
+
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
-import com.jpservant.core.common.Utilities;
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
 import com.jpservant.core.common.sql.SQLProcessor;
+import com.jpservant.core.exception.ApplicationException;
+import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.kernel.PostProcessor;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
-import com.jpservant.core.resource.ResourcePlatform;
 
 /**
  *
@@ -36,7 +40,7 @@ import com.jpservant.core.resource.ResourcePlatform;
  */
 public class QueryModulePlatform implements ModulePlatform {
 
-	public static enum ConfigurationName{
+	public static enum ConfigurationName {
 		JDBCResourcePath,
 		ResourceRoot,
 	}
@@ -59,39 +63,51 @@ public class QueryModulePlatform implements ModulePlatform {
 	}
 
 	@Override
-	public void execute(KernelContext context) throws Exception{
+	public void execute(KernelContext context) throws Exception {
 
-		ResourcePlatform resource = config.getConfigurationManager().getResourcePlatform(
-				(String) config.get(ConfigurationName.JDBCResourcePath.name()));
+		try{
 
-		final DatabaseConnectionHolder holder = (DatabaseConnectionHolder)resource.getResource();
+			DatabaseConnectionHolder holder = config.findJDBCConnection(
+					ConfigurationName.JDBCResourcePath.name());
+			String path = createResourcePath(config, context, SQL_FILE_EXT);
+			String content = findResource(context.getResource(path)).trim();
+			DataCollection collection = context.getParameters();
 
-		String path = String.format("%s%s%s",
-				config.get(ConfigurationName.ResourceRoot.name()),
-				context.getRequestPath(),
-				SQL_FILE_EXT);
+			SQLProcessor processor = new SQLProcessor(holder);
+			if (content.toUpperCase().startsWith(SQL_QUERY_KEY)) {
 
-		String content = Utilities.loadResource(context.getResource(path)).trim();
+				DataCollection result = processor.executeQuery(content,
+						(collection == null || collection.isEmpty()) ? null : collection.get(0));
 
-		SQLProcessor processor = new SQLProcessor(holder);
+				context.writeResponse(result);
 
-		DataCollection collection = context.getParameters();
+			} else {
 
-		if(content.toUpperCase().startsWith(SQL_QUERY_KEY)){
+				int[] result = processor.executeUpdate(content, collection);
+				DataObject response = new DataObject();
+				response.put("count", result);
 
-			DataCollection result = processor.executeQuery(content,
-					collection == null || collection.isEmpty() ? null :collection.get(0));
+				context.writeResponse(response);
+			}
 
-			context.writeResponse(result);
+			registerPostProcess(context, holder);
 
-		}else{
+		}catch(SQLException e){
 
-			int[] result = processor.executeUpdate(content, collection);
-			DataObject response = new DataObject();
-			response.put("count", result);
+			throw new ApplicationException(ErrorType.BadRequest,e);
 
-			context.writeResponse(response);
 		}
+
+	}
+
+	/**
+	 *
+	 * 後処理を登録します。
+	 *
+	 * @param context コンテキスト
+	 * @param holder データベース接続
+	 */
+	public void registerPostProcess(KernelContext context, final DatabaseConnectionHolder holder) {
 
 		context.addPostProcessor(new PostProcessor() {
 			@Override

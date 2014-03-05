@@ -17,7 +17,9 @@ package com.jpservant.core.module.spi;
 
 import java.util.HashMap;
 
+import com.jpservant.core.common.sql.DatabaseConnectionHolder;
 import com.jpservant.core.kernel.ConfigurationManager;
+import com.jpservant.core.resource.ResourcePlatform;
 
 /**
  *
@@ -50,6 +52,20 @@ public class ModuleConfiguration extends HashMap<String,Object>{
 	 */
 	public ConfigurationManager getConfigurationManager(){
 		return this.manager;
+	}
+
+	/**
+	 *
+	 * 管理するデータベース接続を取得します。
+	 *
+	 * @param name パラメータ名
+	 * @return データベース接続
+	 */
+	public DatabaseConnectionHolder findJDBCConnection(String name) {
+
+		ResourcePlatform resource = getConfigurationManager().getResourcePlatform((String)get(name));
+		return resource == null ? null : (DatabaseConnectionHolder) resource.getResource();
+
 	}
 
 }

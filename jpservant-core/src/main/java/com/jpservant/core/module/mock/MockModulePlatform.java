@@ -15,11 +15,12 @@
  */
 package com.jpservant.core.module.mock;
 
+import static com.jpservant.core.common.Utilities.*;
+
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataObject;
-import com.jpservant.core.common.Utilities;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
@@ -55,20 +56,16 @@ public class MockModulePlatform implements ModulePlatform {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void execute(KernelContext context) throws Exception{
+	public void execute(KernelContext context) throws Exception {
 
-		String path = String.format("%s%s%s",
-				config.get(ConfigurationName.ResourceRoot.name()),
-				context.getRequestPath(),
-				JSON_FILE_EXT);
-
+		String path = createResourcePath(this.config,context,JSON_FILE_EXT);
 		String method = context.getMethod();
+		String content = findResource(context.getResource(path)).trim();
 
 		ObjectMapper mapper = new ObjectMapper();
-		String content = Utilities.loadResource(context.getResource(path)).trim();
-
 		DataObject mock = mapper.readValue(content, DataObject.class);
 		Object object = mock.get(method);
+
 		if(object == null){
 			object = mock.get(METHOD_NAME_DEFAULT);
 		}

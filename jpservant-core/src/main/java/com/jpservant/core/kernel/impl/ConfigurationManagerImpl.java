@@ -25,7 +25,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
-import com.jpservant.core.kernel.ConfigurationException;
+import com.jpservant.core.exception.ConfigurationException;
 import com.jpservant.core.kernel.ConfigurationManager;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
