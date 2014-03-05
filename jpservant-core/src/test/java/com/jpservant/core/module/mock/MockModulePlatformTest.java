@@ -15,13 +15,13 @@
  */
 package com.jpservant.core.module.mock;
 
+import static com.jpservant.core.common.JacksonUtils.*;
 import static org.junit.Assert.*;
 
 import java.io.StringWriter;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.Constant.ResourceType;
 import com.jpservant.core.common.DataObject;
@@ -82,7 +82,6 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 	 */
 	private void execute(String rootpath) throws Exception {
 
-		ObjectMapper mapper = new ObjectMapper();
 
 		ModulePlatform module = MANAGER.getModulePlatform(rootpath);
 		String strtype = (String)MANAGER.getModuleConfiguration(rootpath).get(
@@ -94,7 +93,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test","GET", null ,type.getInstance(),sw));
 
-		DataObject result = mapper.readValue(sw.toString(), DataObject.class);
+		DataObject result = toDataObject(sw.toString());
 		assertEquals("Foo1",	result.get("Foo"));
 		assertEquals("Bar1",	result.get("Bar"));
 
@@ -102,7 +101,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test","PUT", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo2",	result.get("Foo"));
 		assertEquals("Bar2",	result.get("Bar"));
 
@@ -110,7 +109,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test","POST", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo3",	result.get("Foo"));
 		assertEquals("Bar3",	result.get("Bar"));
 
@@ -118,7 +117,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test","DELETE", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo4",	result.get("Foo"));
 		assertEquals("Bar4",	result.get("Bar"));
 
@@ -127,7 +126,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test2","GET", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo5",	result.get("Foo"));
 		assertEquals("Bar5",	result.get("Bar"));
 
@@ -135,7 +134,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test2","PUT", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo6",	result.get("Foo"));
 		assertEquals("Bar6",	result.get("Bar"));
 
@@ -143,7 +142,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test2","POST", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result =toDataObject(sw.toString());
 		assertEquals("Foo6",	result.get("Foo"));
 		assertEquals("Bar6",	result.get("Bar"));
 
@@ -151,7 +150,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test2","DELETE", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo6",	result.get("Foo"));
 		assertEquals("Bar6",	result.get("Bar"));
 
@@ -160,7 +159,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test3","GET", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo7",	result.get("Foo"));
 		assertEquals("Bar7",	result.get("Bar"));
 
@@ -168,7 +167,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test3","PUT", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo7",	result.get("Foo"));
 		assertEquals("Bar7",	result.get("Bar"));
 
@@ -176,7 +175,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test3","POST", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo7",	result.get("Foo"));
 		assertEquals("Bar7",	result.get("Bar"));
 
@@ -184,7 +183,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/test/Test3","DELETE", null ,type.getInstance(),sw));
 
-		result = mapper.readValue(sw.toString(), DataObject.class);
+		result = toDataObject(sw.toString());
 		assertEquals("Foo7",	result.get("Foo"));
 		assertEquals("Bar7",	result.get("Bar"));
 	}

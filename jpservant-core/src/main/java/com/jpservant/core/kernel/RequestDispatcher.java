@@ -15,6 +15,8 @@
  */
 package com.jpservant.core.kernel;
 
+import static com.jpservant.core.common.JacksonUtils.*;
+
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -23,11 +25,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.Constant.ResourceType;
 import com.jpservant.core.common.DataCollection;
-import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.Utilities;
 import com.jpservant.core.exception.ApplicationException;
 import com.jpservant.core.exception.ApplicationException.ErrorType;
@@ -167,19 +167,10 @@ public class RequestDispatcher extends HttpServlet {
 
 		if (content != null && content.length() > 0) {
 
-			ObjectMapper mapper = new ObjectMapper();
-
 			try {
-
-				return mapper.readValue(content, DataCollection.class);
-
+				return toDataCollection(content);
 			} catch (Exception e) {
-
-				DataObject obj = mapper.readValue(content, DataObject.class);
-				DataCollection parameter = new DataCollection();
-				parameter.add(obj);
-				return parameter;
-
+				return toOneDataObjectContainedCollection(content);
 			}
 		}
 

@@ -16,13 +16,14 @@
 package com.jpservant.core.kernel.impl;
 
 import static com.jpservant.core.common.Constant.ConfigurationName.*;
+import static com.jpservant.core.common.JacksonUtils.*;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.exception.ConfigurationException;
@@ -56,14 +57,21 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 	 */
 	public void initialize(URL url)throws ConfigurationException{
 
+		InputStream in = null;
 		try{
 
-			ObjectMapper mapper = new ObjectMapper();
-			DataCollection parsed = mapper.readValue(url.openStream(), DataCollection.class);
+			in = url.openStream();
+			DataCollection parsed = readDataCollection(in);
 			parseConfiguration(parsed);
 
 		}catch(Exception e){
 			throw new ConfigurationException(e);
+		}finally{
+			if(in != null){
+				try{
+					in.close();
+				}catch(Exception e){}
+			}
 		}
 	}
 

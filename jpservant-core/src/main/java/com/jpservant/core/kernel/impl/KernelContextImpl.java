@@ -15,13 +15,14 @@
  */
 package com.jpservant.core.kernel.impl;
 
+import static com.jpservant.core.common.JacksonUtils.*;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.KernelContext;
@@ -91,13 +92,12 @@ public class KernelContextImpl implements KernelContext {
 
 		try{
 
-			ObjectMapper mapper = new ObjectMapper();
 			if(response == null || response.size() == 0){
-				mapper.writeValue(this.writer, new DataObject());
+				writeJSONString(this.writer, new DataObject());
 			}else if(response.size() == 1){
-				mapper.writeValue(this.writer,response.get(0));
+				writeJSONString(this.writer,response.get(0));
 			}else{
-				mapper.writeValue(this.writer, response);
+				writeJSONString(this.writer, response);
 			}
 			this.writer.flush();
 
@@ -111,11 +111,10 @@ public class KernelContextImpl implements KernelContext {
 
 		try{
 
-			ObjectMapper mapper = new ObjectMapper();
 			if(response == null){
-				mapper.writeValue(this.writer, new DataObject());
+				writeJSONString(this.writer, new DataObject());
 			}else{
-				mapper.writeValue(this.writer, response);
+				writeJSONString(this.writer, response);
 			}
 			this.writer.flush();
 

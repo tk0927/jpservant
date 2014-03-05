@@ -15,11 +15,11 @@
  */
 package com.jpservant.core.module.mock;
 
+import static com.jpservant.core.common.JacksonUtils.*;
 import static com.jpservant.core.common.Utilities.*;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.spi.ModuleConfiguration;
@@ -62,8 +62,7 @@ public class MockModulePlatform implements ModulePlatform {
 		String method = context.getMethod();
 		String content = findResource(context.getResource(path)).trim();
 
-		ObjectMapper mapper = new ObjectMapper();
-		DataObject mock = mapper.readValue(content, DataObject.class);
+		DataObject mock = toDataObject(content);
 		Object object = mock.get(method);
 
 		if(object == null){

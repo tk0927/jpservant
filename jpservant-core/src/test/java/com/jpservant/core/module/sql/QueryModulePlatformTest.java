@@ -15,13 +15,13 @@
  */
 package com.jpservant.core.module.sql;
 
+import static com.jpservant.core.common.JacksonUtils.*;
 import static org.junit.Assert.*;
 
 import java.io.StringWriter;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.Constant.ResourceType;
 import com.jpservant.core.common.DataCollection;
@@ -82,8 +82,6 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 	 */
 	private void execute(String rootpath) throws Exception {
 
-		ObjectMapper mapper = new ObjectMapper();
-
 		ModulePlatform module = MANAGER.getModulePlatform(rootpath);
 		String strtype = (String)MANAGER.getModuleConfiguration(rootpath).get(
 				Constant.ConfigurationName.ResourceType.name());
@@ -121,7 +119,7 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/SelectByStringCol","POST", criteriarows1 ,type.getInstance(),sw));
 
-		DataObject result = mapper.readValue(sw.toString(), DataObject.class);
+		DataObject result = toDataObject(sw.toString());
 		assertEquals("AAA",						result.get("STRING_COL"));
 		assertEquals("2014-01-01 00:00:01.0",	result.get("TIMESTAMP_COL"));
 		assertEquals("1024",					result.get("NUMBER_COL"));
@@ -136,7 +134,7 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/SelectByStringCol","POST", criteriarows2 ,type.getInstance(),sw));
 
-		DataObject result2 = mapper.readValue(sw.toString(), DataObject.class);
+		DataObject result2 = toDataObject(sw.toString());
 		assertEquals("BBB",						result2.get("STRING_COL"));
 		assertNull(result2.get("TIMESTAMP_COL"));
 		assertNull(result2.get("NUMBER_COL"));
