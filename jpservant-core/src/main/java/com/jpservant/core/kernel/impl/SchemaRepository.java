@@ -15,13 +15,16 @@
  */
 package com.jpservant.core.kernel.impl;
 
+import static com.jpservant.core.common.sql.impl.DatabaseMetadataUtils.*;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
 import com.jpservant.core.common.Constant.ConfigurationName;
+import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
@@ -86,18 +89,25 @@ public class SchemaRepository {
 
 		//TODO: Implementation
 
-		DatabaseConnectionHolder holder = configuration.findJDBCConnection((String)
-				configuration.get(ConfigurationName.JDBCResourcePath.name()));
+		DatabaseConnectionHolder holder =
+				configuration.findJDBCConnection(ConfigurationName.JDBCResourcePath.name());
 
 		holder.connect();
 		Connection conn = holder.getConnection();
 		DatabaseMetaData dmd = conn.getMetaData();
+		String schemaname = (String)configuration.get(ConfigurationName.SchemaName.name());
 
-		ResultSet rs = dmd.getTables(null, (String)configuration.get(ConfigurationName.SchemaName), "%", new String[]{"TABLE","VIEW"});
-		while(rs.next()){
-			System.out.println(rs.getString("TABLE_NAME"));
+		DataCollection tables = getSelectableTableNames(dmd, schemaname);
+		DataCollection columns = getColumnNames(dmd, schemaname);
+
+		System.out.println(tables);
+		System.out.println(columns);
+
+		for(DataObject table : tables){
+			String tablename = (String)table.get("TABLE_NAME");
+			DataCollection pklist = getPrimaryKeys(dmd, schemaname, tablename);
+			System.out.println(tablename +"="+ pklist);
 		}
-		rs.close();
 
 		return null;
 	}
