@@ -40,6 +40,22 @@ public interface Constant {
 	 */
 	String SERVLET_INIT_CONFIG_NAME ="config";
 
+	public static enum FileExtern{
+		JSON(".json"),
+		SQL(".sql"),
+		;
+
+		private String ext;
+
+		private FileExtern(String ext){
+			this.ext = ext;
+		}
+
+		public String toString(){
+			return this.ext;
+		}
+	}
+
 	/**
 	 *
 	 * Httpリクエストメソッド名。
@@ -49,10 +65,17 @@ public interface Constant {
 	 *
 	 */
 	public static enum RequestMethod{
+		/** GET */
 		GET,
+		/** POST */
 		POST,
+		/** PUT */
 		PUT,
+		/** DELETE */
 		DELETE,
+
+		/** 内部用ダミーMethod名 */
+		DEFAULT,
 	}
 
 	/**
@@ -64,10 +87,15 @@ public interface Constant {
 	 *
 	 */
 	public static enum ConfigurationName{
+		/** モジュールインスタンスの識別名 兼 モジュールへのディスパッチ対象REST URLパストークン */
 		RootPath(true),
+		/** モジュールのプラットフォームクラス名 */
 		PlatformClass(true),
+		/** モジュールがリソースを検索する方法の指定 */
 		ResourceType(false),
+		/** モジュールがリソースを検索する位置指定 */
 		ResourceRoot(false),
+		/** モジュールが利用するJDBCリソースの識別名 */
 		JDBCResourcePath(false),
 		;
 

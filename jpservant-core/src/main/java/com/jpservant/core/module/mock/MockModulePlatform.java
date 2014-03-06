@@ -20,6 +20,8 @@ import static com.jpservant.core.common.Utilities.*;
 
 import java.util.Map;
 
+import com.jpservant.core.common.Constant.FileExtern;
+import com.jpservant.core.common.Constant.RequestMethod;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.spi.ModuleConfiguration;
@@ -35,13 +37,6 @@ import com.jpservant.core.module.spi.ModulePlatform;
  */
 public class MockModulePlatform implements ModulePlatform {
 
-	/**
-	 * SQL文定義ファイルの拡張子
-	 */
-	public static final String JSON_FILE_EXT = ".json";
-
-	private static final String METHOD_NAME_DEFAULT = "DEFAULT";
-
 	private ModuleConfiguration config;
 
 	@Override
@@ -54,7 +49,7 @@ public class MockModulePlatform implements ModulePlatform {
 	@Override
 	public void execute(KernelContext context) throws Exception {
 
-		String path = createResourcePath(this.config,context,JSON_FILE_EXT);
+		String path = createResourcePath(this.config,context,FileExtern.JSON);
 		String method = context.getMethod();
 		String content = findResource(context.getResource(path)).trim();
 
@@ -62,7 +57,7 @@ public class MockModulePlatform implements ModulePlatform {
 		Object object = mock.get(method);
 
 		if(object == null){
-			object = mock.get(METHOD_NAME_DEFAULT);
+			object = mock.get(RequestMethod.DEFAULT.name());
 		}
 		if(object == null){
 			object = mock;

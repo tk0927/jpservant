@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import com.jpservant.core.common.AccessController;
 import com.jpservant.core.common.Constant.ConfigurationName;
+import com.jpservant.core.common.Constant.FileExtern;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
@@ -48,10 +49,6 @@ public class QueryModulePlatform implements ModulePlatform {
 	 * SQL文がQueryであるかを判定するキー文字列
 	 */
 	public static final String SQL_QUERY_KEY = "SELECT";
-	/**
-	 * SQL文定義ファイルの拡張子
-	 */
-	public static final String SQL_FILE_EXT = ".sql";
 
 	private ModuleConfiguration config;
 
@@ -74,7 +71,7 @@ public class QueryModulePlatform implements ModulePlatform {
 
 			holder = config.findJDBCConnection(
 					ConfigurationName.JDBCResourcePath.name());
-			String path = createResourcePath(config, context, SQL_FILE_EXT);
+			String path = createResourcePath(config, context, FileExtern.SQL);
 			String content = findResource(context.getResource(path)).trim();
 
 			SQLProcessor processor = new SQLProcessor(holder);

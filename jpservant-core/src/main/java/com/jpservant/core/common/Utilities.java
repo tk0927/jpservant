@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.jpservant.core.common.Constant.ConfigurationName;
+import com.jpservant.core.common.Constant.FileExtern;
 import com.jpservant.core.exception.ApplicationException;
 import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.KernelContext;
@@ -49,11 +50,11 @@ public class Utilities {
 	 * @return パス文字列
 	 */
 	public static String createResourcePath(
-			ModuleConfiguration config,KernelContext context,String ext) {
+			ModuleConfiguration config,KernelContext context,FileExtern ext) {
 
 		return String.format("%s%s%s",
 				config.get(ConfigurationName.ResourceRoot.name()),
-				context.getRequestPath(),ext);
+				context.getRequestPath(),ext.toString());
 
 	}
 
