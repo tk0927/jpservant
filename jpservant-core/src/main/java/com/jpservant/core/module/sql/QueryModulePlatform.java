@@ -78,7 +78,8 @@ public class QueryModulePlatform implements ModulePlatform {
 			String content = findResource(context.getResource(path)).trim();
 
 			SQLProcessor processor = new SQLProcessor(holder);
-			if (content.toUpperCase().startsWith(SQL_QUERY_KEY)) {
+
+			if (isQuerySQL(content)) {
 				executeQuery(context, content, processor);
 			} else {
 				executeUpdate(context, content, processor);
@@ -89,14 +90,27 @@ public class QueryModulePlatform implements ModulePlatform {
 			throw new ApplicationException(ErrorType.BadRequest,e);
 
 		}finally{
+
 			registerPostProcess(context, holder);
+
 		}
 
 	}
 
 	/**
 	 *
-	 * SQLを実行します。
+	 * SQLがQuery文であるかを判定します。
+	 *
+	 * @param content
+	 * @return
+	 */
+	private static boolean isQuerySQL(String content) {
+		return content.toUpperCase().startsWith(SQL_QUERY_KEY);
+	}
+
+	/**
+	 *
+	 * SQL Query文を実行します。
 	 *
 	 * @param context コンテキスト
 	 * @param content 定義済みSQL文
@@ -116,7 +130,7 @@ public class QueryModulePlatform implements ModulePlatform {
 
 	/**
 	 *
-	 * DMLを実行します。
+	 * DML文を実行します。
 	 *
 	 * @param context コンテキスト
 	 * @param content 定義済みSQL文
