@@ -99,38 +99,7 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 		try{
 
 			for(DataObject element: parsed){
-
-				ModuleConfiguration config = new ModuleConfiguration(this);
-				config.putAll(element);
-
-				String path = (String) element.get(RootPath.name());
-
-				if(configmap.containsKey(path)){
-					throw new ConfigurationException(String.format("Duplicated RootPath[%s]",path));
-				}
-				configmap.put(path,config);
-
-				String classname = (String)element.get(PlatformClass.name());
-
-				Class<?> clazz = Class.forName(classname);
-
-				Object platform = clazz.newInstance();
-
-				if(platform instanceof ModulePlatform){
-
-					ModulePlatform module = (ModulePlatform)platform;
-					modulemap.put(path, module);
-
-				}else if(platform instanceof ResourcePlatform){
-
-					ResourcePlatform module = (ResourcePlatform)platform;
-					resourcemap.put(path, module);
-
-				}else{
-					throw new ConfigurationException(String.format("[%s] is not Platform-Class",classname));
-				}
-
-
+				generatePlatform(element);
 			}
 
 			for(Map.Entry<String, ResourcePlatform> entry: resourcemap.entrySet()){
@@ -147,6 +116,52 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 			throw new ConfigurationException(e);
 		}
 
+	}
+
+
+	/**
+	 *
+	 * 設定ファイル情報の1ノードに対応するPlatformオブジェクトを生成し、レジストする。
+	 *
+	 * @param element 設定情報ノード
+	 * @throws ConfigurationException
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	private void generatePlatform(DataObject element)
+			throws ConfigurationException, ClassNotFoundException,
+			InstantiationException, IllegalAccessException {
+
+		ModuleConfiguration config = new ModuleConfiguration(this);
+		config.putAll(element);
+
+		String path = (String) element.get(RootPath.name());
+
+		if(configmap.containsKey(path)){
+			throw new ConfigurationException(String.format("Duplicated RootPath[%s]",path));
+		}
+		configmap.put(path,config);
+
+		String classname = (String)element.get(PlatformClass.name());
+
+		Class<?> clazz = Class.forName(classname);
+
+		Object platform = clazz.newInstance();
+
+		if(platform instanceof ModulePlatform){
+
+			ModulePlatform module = (ModulePlatform)platform;
+			modulemap.put(path, module);
+
+		}else if(platform instanceof ResourcePlatform){
+
+			ResourcePlatform module = (ResourcePlatform)platform;
+			resourcemap.put(path, module);
+
+		}else{
+			throw new ConfigurationException(String.format("[%s] is not Platform-Class",classname));
+		}
 	}
 
 

@@ -15,22 +15,44 @@
  */
 package com.jpservant.core.module.dao;
 
+import java.sql.SQLException;
+
+import com.jpservant.core.exception.ConfigurationException;
 import com.jpservant.core.kernel.KernelContext;
+import com.jpservant.core.kernel.impl.SchemaRepository;
+import com.jpservant.core.kernel.impl.SchemaRepository.SchemaEntry;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
 
+/**
+ *
+ * DAOモジュールのエントリポイント。
+ *
+ * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+ * @version 0.1
+ *
+ */
 public class DAOModulePlatform implements ModulePlatform {
 
-	@Override
-	public void initialize(ModuleConfiguration config) {
-		// TODO 自動生成されたメソッド・スタブ
+	private ModuleConfiguration config;
 
+	@Override
+	public void initialize(ModuleConfiguration config) throws ConfigurationException{
+
+		this.config = config;
+		try{
+			SchemaRepository.addEntry(this, config);
+		}catch(SQLException e){
+			throw new ConfigurationException(e);
+		}
 	}
 
 	@Override
 	public void execute(KernelContext context) {
-		// TODO 自動生成されたメソッド・スタブ
 
+		SchemaEntry entry = SchemaRepository.getEntry(this);
+
+		//TODO: Implementation
 	}
 
 }

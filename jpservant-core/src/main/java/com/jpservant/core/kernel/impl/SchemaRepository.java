@@ -15,6 +15,17 @@
  */
 package com.jpservant.core.kernel.impl;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+
+import com.jpservant.core.common.Constant.ConfigurationName;
+import com.jpservant.core.common.sql.DatabaseConnectionHolder;
+import com.jpservant.core.module.spi.ModuleConfiguration;
+import com.jpservant.core.module.spi.ModulePlatform;
+
 /**
  *
  * 各モジュールが利用するスキーマ情報のオンメモリディクショナリ。
@@ -25,4 +36,69 @@ package com.jpservant.core.kernel.impl;
  */
 public class SchemaRepository {
 
+	/**
+	 *
+	 * モジュール単位の、紐づくデータベーススキーマの解析結果を格納するクラス。
+	 *
+	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+	 * @version 0.1
+	 */
+	public static class SchemaEntry{
+
+	}
+
+	/**
+	 * ディクショナリの実体。
+	 * モジュールインスタンス毎にエントリを持つ。
+	 */
+	private static HashMap<ModulePlatform,SchemaEntry> POOL = new HashMap<ModulePlatform,SchemaEntry>();
+
+	/**
+	 *
+	 * モジュールに対応するエントリーを得る。
+	 *
+	 * @param module モジュールインスタンス参照
+	 * @return ディクショナリエントリー
+	 */
+	public static SchemaEntry getEntry(ModulePlatform module){
+		return POOL.get(module);
+	}
+
+	/**
+	 *
+	 * モジュールに紐づくデータベースの解析を行い、得られたエントリーをディクショナリへ登録する。
+	 *
+	 * @param module モジュールインスタンス参照
+	 * @param configuration モジュール設定情報
+	 */
+	public static void addEntry(ModulePlatform module,ModuleConfiguration configuration)throws SQLException{
+		POOL.put(module,analyze(configuration));
+	}
+
+	/**
+	 *
+	 * データベーススキーマの解析処理を行い、ディクショナリエントリーを生成する。
+	 *
+	 * @param configuration モジュール設定情報
+	 * @return ディクショナリエントリー
+	 */
+	private static SchemaEntry analyze(ModuleConfiguration configuration)throws SQLException{
+
+		//TODO: Implementation
+
+		DatabaseConnectionHolder holder = configuration.findJDBCConnection((String)
+				configuration.get(ConfigurationName.JDBCResourcePath.name()));
+
+		holder.connect();
+		Connection conn = holder.getConnection();
+		DatabaseMetaData dmd = conn.getMetaData();
+
+		ResultSet rs = dmd.getTables(null, (String)configuration.get(ConfigurationName.SchemaName), "%", new String[]{"TABLE","VIEW"});
+		while(rs.next()){
+			System.out.println(rs.getString("TABLE_NAME"));
+		}
+		rs.close();
+
+		return null;
+	}
 }

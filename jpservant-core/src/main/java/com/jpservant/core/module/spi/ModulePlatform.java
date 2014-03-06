@@ -15,6 +15,7 @@
  */
 package com.jpservant.core.module.spi;
 
+import com.jpservant.core.exception.ConfigurationException;
 import com.jpservant.core.kernel.KernelContext;
 
 /**
@@ -32,8 +33,9 @@ public interface ModulePlatform {
 	 * 初期化処理を実装する位置。
 	 *
 	 * @param config 設定情報
+	 * @throws ConfigurationException 設定誤り
 	 */
-	void initialize(ModuleConfiguration config);
+	void initialize(ModuleConfiguration config)throws ConfigurationException;
 
 	/**
 	 *

@@ -40,8 +40,19 @@ public interface Constant {
 	 */
 	String SERVLET_INIT_CONFIG_NAME ="config";
 
+	/**
+	 *
+	 * ファイル拡張子。
+	 *
+	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+	 * @version 0.1
+	 *
+	 */
 	public static enum FileExtern{
+
+		/** JSONファイル */
 		JSON(".json"),
+		/** SQLファイル */
 		SQL(".sql"),
 		;
 
@@ -65,6 +76,7 @@ public interface Constant {
 	 *
 	 */
 	public static enum RequestMethod{
+
 		/** GET */
 		GET,
 		/** POST */
@@ -87,6 +99,7 @@ public interface Constant {
 	 *
 	 */
 	public static enum ConfigurationName{
+
 		/** モジュールインスタンスの識別名 兼 モジュールへのディスパッチ対象REST URLパストークン */
 		RootPath(true),
 		/** モジュールのプラットフォームクラス名 */
@@ -97,6 +110,8 @@ public interface Constant {
 		ResourceRoot(false),
 		/** モジュールが利用するJDBCリソースの識別名 */
 		JDBCResourcePath(false),
+		/** （DAOモジュール用）スキーマ名 */
+		SchemaName(false),
 		;
 
 		private boolean required;
