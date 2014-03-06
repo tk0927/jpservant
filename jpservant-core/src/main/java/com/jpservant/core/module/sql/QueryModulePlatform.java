@@ -160,8 +160,16 @@ public class QueryModulePlatform implements ModulePlatform {
 		context.addErrorProcessor(new PostProcessor() {
 			@Override
 			public void execute() throws Exception {
-				holder.rollback();
-				holder.releaseSession();
+				try{
+					holder.rollback();
+				}catch(SQLException e){
+					//no operation
+				}
+				try{
+					holder.releaseSession();
+				}catch(SQLException e){
+					//no operation
+				}
 			}
 		});
 	}
