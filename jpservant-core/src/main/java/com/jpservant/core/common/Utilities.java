@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,7 +63,7 @@ public class Utilities {
 	 *
 	 * @param url URL
 	 * @return 読み取り結果
-	 * @throws IOException IO例外発生
+	 * @throws ApplicationException リソースが見つからない場合、NotFound例外を創出
 	 */
 	public static String findResource(URL url)throws ApplicationException {
 
@@ -141,5 +142,18 @@ public class Utilities {
 		retvalue[2] = m.group(3);
 
 		return retvalue;
+	}
+
+	/**
+	 *
+	 * 引数Listから先頭要素を得ます。
+	 * 存在しなければnullを返します。
+	 *
+	 * @param list List
+	 * @return 先頭要素
+	 */
+	public static <T> T findFirstObjectOrNull(List<T> list){
+
+		return (list == null || list.isEmpty()) ? null : list.get(0);
 	}
 }
