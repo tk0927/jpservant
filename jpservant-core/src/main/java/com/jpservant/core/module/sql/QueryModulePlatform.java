@@ -104,7 +104,7 @@ public class QueryModulePlatform implements ModulePlatform {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	private void executeQuery(KernelContext context, String content,SQLProcessor processor)
+	private static void executeQuery(KernelContext context, String content,SQLProcessor processor)
 			throws SQLException, IOException {
 
 		DataCollection collection = context.getParameters();
@@ -124,7 +124,7 @@ public class QueryModulePlatform implements ModulePlatform {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	private void executeUpdate(KernelContext context, String content, SQLProcessor processor)
+	private static void executeUpdate(KernelContext context, String content, SQLProcessor processor)
 			throws SQLException, IOException {
 
 		DataCollection collection = context.getParameters();
@@ -143,7 +143,7 @@ public class QueryModulePlatform implements ModulePlatform {
 	 * @param context コンテキスト
 	 * @param holder データベース接続
 	 */
-	public void registerPostProcess(KernelContext context, final DatabaseConnectionHolder holder) {
+	public static void registerPostProcess(KernelContext context, final DatabaseConnectionHolder holder) {
 
 		if(holder == null){
 			return;

@@ -102,32 +102,6 @@ public class RequestDispatcher extends HttpServlet {
 
 	/**
 	 *
-	 * 例外ハンドリング
-	 *
-	 * @param request Httpリクエスト
-	 * @param response Httpレスポンス
-	 * @param e 発生した例外
-	 */
-	private void handleApplicationException(
-			HttpServletRequest request, HttpServletResponse response,ApplicationException e){
-
-		int code = 0;
-
-		if(e.getErrorType() == ErrorType.InternalError){
-			code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-		}else if(e.getErrorType() == ErrorType.BadRequest){
-			code = HttpServletResponse.SC_BAD_REQUEST;
-		}else if(e.getErrorType() == ErrorType.NotFound){
-			code = HttpServletResponse.SC_NOT_FOUND;
-		}
-
-		response.reset();
-		response.setStatus(code);
-
-	}
-
-	/**
-	 *
 	 * KernelContextを生成する。
 	 *
 	 * @param request HttpServletリクエスト
@@ -152,6 +126,32 @@ public class RequestDispatcher extends HttpServlet {
 		resolver.setReference(request.getSession().getServletContext());
 
 		return new KernelContextImpl(uritoken[2], method, parameter, resolver, response.getWriter());
+
+	}
+
+	/**
+	 *
+	 * 例外ハンドリング
+	 *
+	 * @param request Httpリクエスト
+	 * @param response Httpレスポンス
+	 * @param e 発生した例外
+	 */
+	private static void handleApplicationException(
+			HttpServletRequest request, HttpServletResponse response,ApplicationException e){
+
+		int code = 0;
+
+		if(e.getErrorType() == ErrorType.InternalError){
+			code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+		}else if(e.getErrorType() == ErrorType.BadRequest){
+			code = HttpServletResponse.SC_BAD_REQUEST;
+		}else if(e.getErrorType() == ErrorType.NotFound){
+			code = HttpServletResponse.SC_NOT_FOUND;
+		}
+
+		response.reset();
+		response.setStatus(code);
 
 	}
 

@@ -43,8 +43,19 @@ import com.jpservant.core.resource.ResourcePlatform;
 public class ConfigurationManagerImpl implements ConfigurationManager {
 
 
+	/**
+	 * 設定情報のオンメモリストア
+	 */
 	private HashMap<String,ModuleConfiguration> configmap = new  HashMap<String,ModuleConfiguration>();
+
+	/**
+	 * モジュールオブジェクトのオンメモリストア
+	 */
 	private HashMap<String,ModulePlatform> modulemap = new  HashMap<String,ModulePlatform>();
+
+	/**
+	 * リソースオブジェクトのオンメモリストア
+	 */
 	private HashMap<String,ResourcePlatform> resourcemap = new  HashMap<String,ResourcePlatform>();
 
 

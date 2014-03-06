@@ -40,12 +40,25 @@ import com.jpservant.core.resolver.ResourceResolver;
  */
 public class KernelContextImpl implements KernelContext {
 
+	/** HttpリクエストURIパス */
 	private String path;
+
+	/** Httpリクエストメソッド */
 	private String method;
+
+	/** Httpリクエストボディ(JSONのパース結果) */
 	private DataCollection request;
+
+	/** リソース位置の解決処理オブジェクト */
 	private ResourceResolver resolver;
+
+	/** Httpレスポンス出力用Writer */
 	private Writer writer;
+
+	/** 正常時後処理リスト */
 	private ArrayList<PostProcessor> processlist = new ArrayList<PostProcessor>();
+
+	/** エラー時後処理リスト */
 	private ArrayList<PostProcessor> errorlist = new ArrayList<PostProcessor>();
 
 	/**
@@ -55,6 +68,7 @@ public class KernelContextImpl implements KernelContext {
 	 * @param path HttpリクエストURIパス
 	 * @param method Httpリクエストメソッド
 	 * @param request Httpリクエストボディ(JSONのパース結果)
+	 * @param resolver リソース位置の解決処理オブジェクト
 	 * @param writer Httpレスポンス出力用Writer
 	 */
 	public KernelContextImpl(String path,String method,DataCollection request,ResourceResolver resolver,Writer writer){

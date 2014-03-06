@@ -15,8 +15,24 @@
  */
 package com.jpservant.core.kernel;
 
+/**
+ *
+ * モジュール側から登録可能な{@link RequestDispatcher}における後処理
+ *
+ *
+ * @author tkamoshida
+ * @see KernelContext#addErrorProcessor(PostProcessor)
+ * @see KernelContext#addPostProcessor(PostProcessor)
+ *
+ */
 public interface PostProcessor {
 
+	/**
+	 *
+	 * 後処理のタイミングで実行されるロジックを記述する位置。
+	 *
+	 * @throws Exception
+	 */
 	void execute()throws Exception;
 
 }
