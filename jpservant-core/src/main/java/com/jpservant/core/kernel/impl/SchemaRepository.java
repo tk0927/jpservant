@@ -15,7 +15,7 @@
  */
 package com.jpservant.core.kernel.impl;
 
-import static com.jpservant.core.common.sql.impl.DatabaseMetadataUtils.*;
+import static com.jpservant.core.common.sql.impl.DatabaseMetaDataUtils.*;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

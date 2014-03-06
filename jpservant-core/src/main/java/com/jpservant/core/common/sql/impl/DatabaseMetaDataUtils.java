@@ -33,7 +33,7 @@ import com.jpservant.core.common.DataObject;
  * @version 0.1
  *
  */
-public class DatabaseMetadataUtils {
+public class DatabaseMetaDataUtils {
 
 	/**
 	 *
