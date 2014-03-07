@@ -31,15 +31,19 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  * @version 0.1
  *
  */
-public abstract class DataAccessAction {
+public interface DataAccessAction {
 
-	private String tablename;
-
-	protected DataAccessAction(String tablename) {
-		this.tablename = tablename;
-	}
-
-	public abstract DataCollection execute(
+	/**
+	 *
+	 * 処理を実行します。
+	 *
+	 * @param processor SQL実行機
+	 * @param config 設定情報
+	 * @param context コンテキスト
+	 * @return 検索・更新実行結果
+	 * @throws SQLException 何らかのSQL例外発生
+	 */
+	DataCollection execute(
 			SQLProcessor processor, ModuleConfiguration config, KernelContext context)
 			throws SQLException;
 
@@ -51,17 +55,19 @@ public abstract class DataAccessAction {
 	 * @version 0.1
 	 *
 	 */
-	public static class SelectAllAction extends DataAccessAction {
+	public static class SelectAllAction implements DataAccessAction {
+
+		private String tablename;
 
 		public SelectAllAction(String tablename) {
-			super(tablename);
+			this.tablename = tablename;
 		}
 
 		@Override
 		public DataCollection execute(
 				SQLProcessor processor, ModuleConfiguration config, KernelContext context)
 				throws SQLException {
-			return processor.executeQuery(String.format("SELECT * FROM %s", super.tablename));
+			return processor.executeQuery(String.format("SELECT * FROM %s", this.tablename));
 		}
 	}
 
@@ -73,10 +79,12 @@ public abstract class DataAccessAction {
 	 * @version 0.1
 	 *
 	 */
-	public static class DeleteAllAction extends DataAccessAction {
+	public static class DeleteAllAction implements DataAccessAction {
+
+		private String tablename;
 
 		public DeleteAllAction(String tablename) {
-			super(tablename);
+			this.tablename = tablename;
 		}
 
 		@Override
@@ -84,7 +92,7 @@ public abstract class DataAccessAction {
 				SQLProcessor processor, ModuleConfiguration config, KernelContext context)
 				throws SQLException {
 
-			int result = processor.executeUpdate(String.format("DELETE * FROM %s", super.tablename));
+			int result = processor.executeUpdate(String.format("DELETE * FROM %s", this.tablename));
 			return new DataCollection(new DataObject("count", result));
 
 		}
