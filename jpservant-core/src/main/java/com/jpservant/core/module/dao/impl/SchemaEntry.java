@@ -15,6 +15,20 @@
  */
 package com.jpservant.core.module.dao.impl;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.jpservant.core.common.Constant.ConfigurationName;
+import com.jpservant.core.common.Constant.RequestMethod;
+import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.common.sql.DatabaseConnectionHolder;
+import com.jpservant.core.common.sql.SQLProcessor;
+import com.jpservant.core.exception.ApplicationException;
+import com.jpservant.core.exception.ApplicationException.ErrorType;
+import com.jpservant.core.kernel.KernelContext;
+import com.jpservant.core.module.spi.ModuleConfiguration;
+
 /**
  *
  * モジュール単位の、紐づくデータベーススキーマの解析結果を格納するクラス。
@@ -24,4 +38,72 @@ package com.jpservant.core.module.dao.impl;
  */
 public class SchemaEntry {
 
+	public static class SchemaEntryKey {
+
+		private String path;
+		private RequestMethod method;
+		int hashcode;
+
+		public SchemaEntryKey(String path, RequestMethod method) {
+			this.path = path;
+			this.method = method;
+			this.hashcode = (path + method).hashCode();
+		}
+
+		public int hashCode() {
+			return this.hashcode;
+		}
+
+		public boolean equals(Object dst) {
+			if (dst == null || !(dst instanceof SchemaEntryKey)) {
+				return false;
+			}
+			SchemaEntryKey dstobj = (SchemaEntryKey) dst;
+			return (this.path.equals(dstobj.path) && this.method.equals(dstobj.method));
+		}
+	}
+
+	/** 格納位置の実体 */
+	private Map<SchemaEntryKey, DataAccessAction> impl = new HashMap<SchemaEntryKey, DataAccessAction>();
+
+	/**
+	 *
+	 * エントリー追加
+	 *
+	 * @param path URIパス
+	 * @param method Resuestメソッド
+	 * @param action 対応するアクション
+	 */
+	public void addEntry(String path, RequestMethod method, DataAccessAction action) {
+		impl.put(new SchemaEntryKey(path, method), action);
+	}
+
+	/**
+	 *
+	 * REST API処理を実行する。
+	 *
+	 * @param config 設定情報
+	 * @param context コンテキスト情報
+	 * @return 実行結果
+	 * @throws SQLException 何らかのSQL例外発生
+	 * @throws ApplicationException URIに対応するアクションが存在しない
+	 */
+	public DataCollection execute(ModuleConfiguration config, KernelContext context)
+			throws SQLException, ApplicationException {
+
+		String path = context.getRequestPath();
+		String method = context.getMethod();
+		DataAccessAction action = impl.get(
+				new SchemaEntryKey(path, RequestMethod.valueOf(method)));
+		if (action == null) {
+			throw new ApplicationException(ErrorType.NotFound);
+		}
+
+		DatabaseConnectionHolder holder = config.findJDBCConnection(
+				ConfigurationName.JDBCResourcePath.name());
+		SQLProcessor processor = new SQLProcessor(holder);
+
+		return action.execute(processor, config, context);
+
+	}
 }

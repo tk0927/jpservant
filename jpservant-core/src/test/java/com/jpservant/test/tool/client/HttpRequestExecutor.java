@@ -45,13 +45,13 @@ public class HttpRequestExecutor {
 	 * @param args 引数
 	 * @throws Exception 何らかの例外発生
 	 */
-	public static void main(String[] args)throws Exception{
+	public static void main(String[] args) throws Exception {
 
 		System.out.println(
 				execute(
-					args[0],
-					args.length > 1 ? args[1] : "GET",
-					args.length > 2 ? args[2] : ""));
+						args[0],
+						args.length > 1 ? args[1] : "GET",
+						args.length > 2 ? args[2] : ""));
 	}
 
 	/**
@@ -64,58 +64,60 @@ public class HttpRequestExecutor {
 	 * @return Httpレスポンスボディ
 	 * @throws Exception 何らかの例外発生
 	 */
-	public static String execute(String urlstring,String method,String content)throws Exception{
-
+	public static String execute(String urlstring, String method, String content) throws Exception {
 
 		HttpURLConnection conn = null;
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		boolean isGet = method.equals("GET");
 
-		try{
+		try {
 			URL url = new URL(urlstring);
 
-			conn = (HttpURLConnection)url.openConnection();
+			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod(method);
 			conn.setDoInput(true);
 			conn.setDoOutput(!isGet);
-			if(!isGet){
+			if (!isGet) {
 				conn.setRequestProperty("Content-Type", "application/json");
 			}
 
 			conn.connect();
 
-			if(!isGet){
-				writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(),"UTF-8"));
+			if (!isGet) {
+				writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(), "UTF-8"));
 				writer.write(content);
 				writer.close();
 			}
 
-			reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+			reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 			StringBuilder sb = new StringBuilder();
 			String line = null;
-			while((line = reader.readLine()) != null){
+			while ((line = reader.readLine()) != null) {
 				sb.append(line);
 				sb.append("\r\n");
 			}
 			return sb.toString();
 
-		}finally{
+		} finally {
 
-			if(writer != null){
-				try{
+			if (writer != null) {
+				try {
 					writer.close();
-				}catch(Exception e){}
+				} catch (Exception e) {
+				}
 			}
-			if(reader != null){
-				try{
+			if (reader != null) {
+				try {
 					reader.close();
-				}catch(Exception e){}
+				} catch (Exception e) {
+				}
 			}
-			if(conn != null){
-				try{
+			if (conn != null) {
+				try {
 					conn.disconnect();
-				}catch(Exception e){}
+				} catch (Exception e) {
+				}
 			}
 
 		}

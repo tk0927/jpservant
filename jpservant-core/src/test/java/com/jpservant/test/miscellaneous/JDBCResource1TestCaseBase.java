@@ -35,7 +35,6 @@ import com.jpservant.core.resource.ResourcePlatform;
  */
 public class JDBCResource1TestCaseBase {
 
-
 	protected static ConfigurationManagerImpl MANAGER;
 
 	/**
@@ -45,12 +44,13 @@ public class JDBCResource1TestCaseBase {
 	 *
 	 */
 	@BeforeClass
-	public static void beforeClass()throws Exception {
+	public static void beforeClass() throws Exception {
 
 		MANAGER = new ConfigurationManagerImpl();
 		MANAGER.initialize(ConfigurationManagerTest.class.getResource("/configurations/root.json"));
 
 	}
+
 	/**
 	 *
 	 * 初期化
@@ -58,16 +58,15 @@ public class JDBCResource1TestCaseBase {
 	 *
 	 */
 	@AfterClass
-	public static void afterClass()throws Exception {
+	public static void afterClass() throws Exception {
 
 		ResourcePlatform resource = MANAGER.getResourcePlatform("/JDBCResource1");
-		DatabaseConnectionHolder holder = (DatabaseConnectionHolder)resource.getResource();
-		if(holder.isConnected()){
+		DatabaseConnectionHolder holder = (DatabaseConnectionHolder) resource.getResource();
+		if (holder.isConnected()) {
 			holder.close();
 		}
 
 	}
-
 
 	/**
 	 *
@@ -76,11 +75,11 @@ public class JDBCResource1TestCaseBase {
 	 * @throws Exception
 	 */
 	@After
-	public void after()throws Exception {
+	public void after() throws Exception {
 
 		ResourcePlatform resource = MANAGER.getResourcePlatform("/JDBCResource1");
-		DatabaseConnectionHolder holder = (DatabaseConnectionHolder)resource.getResource();
-		if(holder.isConnected()){
+		DatabaseConnectionHolder holder = (DatabaseConnectionHolder) resource.getResource();
+		if (holder.isConnected()) {
 			holder.rollback();
 		}
 

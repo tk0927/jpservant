@@ -212,4 +212,24 @@ public class Utilities {
 		return convertedStr.toUpperCase();
 
 	}
+
+	/**
+	 *
+	 * URIパストークンを連結して一つのURIにします。
+	 *
+	 * @param tokens パストークン
+	 * @return URI文字列
+	 */
+	public static String concatPathTokens(String... tokens) {
+
+		StringBuilder sb = new StringBuilder("/");
+
+		for (String token : tokens) {
+			sb.append(token);
+			sb.append("/");
+		}
+
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString().replaceAll("[/]+", "/");
+	}
 }

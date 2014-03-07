@@ -32,7 +32,7 @@ import com.jpservant.test.miscellaneous.JDBCResource1TestCaseBase;
 
 /**
 *
-* {@link MockModulePlatformTest}のテストクラス。
+* {@link MockModulePlatform}のテストクラス。
 *
 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
 * @version 0.1
@@ -51,7 +51,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 	 * @throws Exception 何らかの例外発生
 	 */
 	@Test
-	public void testQueryModulePlatformExecution() throws Exception{
+	public void testQueryModulePlatformExecution() throws Exception {
 
 		execute("/mock");
 
@@ -68,7 +68,7 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 	 * @throws Exception 何らかの例外発生
 	 */
 	@Test
-	public void testQueryModulePlatformExecution2() throws Exception{
+	public void testQueryModulePlatformExecution2() throws Exception {
 
 		execute("/mock2");
 	}
@@ -82,110 +82,107 @@ public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
 	 */
 	private void execute(String rootpath) throws Exception {
 
-
 		ModulePlatform module = MANAGER.getModulePlatform(rootpath);
-		String strtype = (String)MANAGER.getModuleConfiguration(rootpath).get(
+		String strtype = (String) MANAGER.getModuleConfiguration(rootpath).get(
 				Constant.ConfigurationName.ResourceType.name());
 		ResourceType type = ResourceType.valueOf(strtype);
 
 		//テスト用データの検索結果確認
 		StringWriter sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test","GET", null ,type.getInstance(),sw));
+				"/test/Test", "GET", null, type.createResolverInstance(), sw));
 
 		DataObject result = toDataObject(sw.toString());
-		assertEquals("Foo1",	result.get("Foo"));
-		assertEquals("Bar1",	result.get("Bar"));
+		assertEquals("Foo1", result.get("Foo"));
+		assertEquals("Bar1", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test","PUT", null ,type.getInstance(),sw));
+				"/test/Test", "PUT", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo2",	result.get("Foo"));
-		assertEquals("Bar2",	result.get("Bar"));
+		assertEquals("Foo2", result.get("Foo"));
+		assertEquals("Bar2", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test","POST", null ,type.getInstance(),sw));
+				"/test/Test", "POST", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo3",	result.get("Foo"));
-		assertEquals("Bar3",	result.get("Bar"));
+		assertEquals("Foo3", result.get("Foo"));
+		assertEquals("Bar3", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test","DELETE", null ,type.getInstance(),sw));
+				"/test/Test", "DELETE", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo4",	result.get("Foo"));
-		assertEquals("Bar4",	result.get("Bar"));
-
+		assertEquals("Foo4", result.get("Foo"));
+		assertEquals("Bar4", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test2","GET", null ,type.getInstance(),sw));
+				"/test/Test2", "GET", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo5",	result.get("Foo"));
-		assertEquals("Bar5",	result.get("Bar"));
+		assertEquals("Foo5", result.get("Foo"));
+		assertEquals("Bar5", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test2","PUT", null ,type.getInstance(),sw));
+				"/test/Test2", "PUT", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo6",	result.get("Foo"));
-		assertEquals("Bar6",	result.get("Bar"));
+		assertEquals("Foo6", result.get("Foo"));
+		assertEquals("Bar6", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test2","POST", null ,type.getInstance(),sw));
-
-		result =toDataObject(sw.toString());
-		assertEquals("Foo6",	result.get("Foo"));
-		assertEquals("Bar6",	result.get("Bar"));
-
-		sw = new StringWriter();
-		module.execute(new KernelContextImpl(
-				"/test/Test2","DELETE", null ,type.getInstance(),sw));
+				"/test/Test2", "POST", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo6",	result.get("Foo"));
-		assertEquals("Bar6",	result.get("Bar"));
-
-
-		sw = new StringWriter();
-		module.execute(new KernelContextImpl(
-				"/test/Test3","GET", null ,type.getInstance(),sw));
-
-		result = toDataObject(sw.toString());
-		assertEquals("Foo7",	result.get("Foo"));
-		assertEquals("Bar7",	result.get("Bar"));
+		assertEquals("Foo6", result.get("Foo"));
+		assertEquals("Bar6", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test3","PUT", null ,type.getInstance(),sw));
+				"/test/Test2", "DELETE", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo7",	result.get("Foo"));
-		assertEquals("Bar7",	result.get("Bar"));
+		assertEquals("Foo6", result.get("Foo"));
+		assertEquals("Bar6", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test3","POST", null ,type.getInstance(),sw));
+				"/test/Test3", "GET", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo7",	result.get("Foo"));
-		assertEquals("Bar7",	result.get("Bar"));
+		assertEquals("Foo7", result.get("Foo"));
+		assertEquals("Bar7", result.get("Bar"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/test/Test3","DELETE", null ,type.getInstance(),sw));
+				"/test/Test3", "PUT", null, type.createResolverInstance(), sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals("Foo7",	result.get("Foo"));
-		assertEquals("Bar7",	result.get("Bar"));
+		assertEquals("Foo7", result.get("Foo"));
+		assertEquals("Bar7", result.get("Bar"));
+
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/test/Test3", "POST", null, type.createResolverInstance(), sw));
+
+		result = toDataObject(sw.toString());
+		assertEquals("Foo7", result.get("Foo"));
+		assertEquals("Bar7", result.get("Bar"));
+
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/test/Test3", "DELETE", null, type.createResolverInstance(), sw));
+
+		result = toDataObject(sw.toString());
+		assertEquals("Foo7", result.get("Foo"));
+		assertEquals("Bar7", result.get("Bar"));
 	}
 
 }

@@ -40,8 +40,8 @@ public class TestUtilities {
 	 *
 	 * @throws Exception 何らかの例外発生
 	 */
-	static{
-		try{
+	static {
+		try {
 
 			Properties p = new Properties();
 			p.load(SQLProcessorTest.class.getResourceAsStream("/configurations/test.properties"));
@@ -52,7 +52,7 @@ public class TestUtilities {
 					p.getProperty("username"),
 					p.getProperty("password"));
 
-		}catch(Exception e){
+		} catch (Exception e) {
 
 			throw new RuntimeException(e);
 

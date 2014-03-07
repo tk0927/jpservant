@@ -43,9 +43,9 @@ public class SQLProcessorTest {
 	 * @throws Exception 何らかの例外発生
 	 */
 	@Test
-	public void testExecution() throws Exception{
+	public void testExecution() throws Exception {
 
-		SQLProcessor processor = new SQLProcessor( CONNECTION_HOLDER );
+		SQLProcessor processor = new SQLProcessor(CONNECTION_HOLDER);
 
 		executeTestSQL(processor);
 
@@ -84,27 +84,27 @@ public class SQLProcessorTest {
 
 		processor.executeUpdate(
 				"INSERT INTO T_SAMPLE_TEST_TABLE(STRING_COL,TIMESTAMP_COL,NUMBER_COL,BOOL_COL)" +
-				" VALUES(:StringCol,:TimestampCol,:NumberCol,:BoolCol)",rows);
+						" VALUES(:StringCol,:TimestampCol,:NumberCol,:BoolCol)", rows);
 
 		//テスト用データの検索結果確認
 		DataObject criteria1 = new DataObject();
 		criteria1.put("StringCol", "AAA");
 		DataCollection result1 = processor.executeQuery(
 				"SELECT * FROM T_SAMPLE_TEST_TABLE WHERE STRING_COL = :StringCol", criteria1);
-		assertEquals(result1.size(),1);
+		assertEquals(result1.size(), 1);
 		DataObject resultrow1 = result1.get(0);
-		assertEquals("AAA",						resultrow1.get("StringCol"));
-		assertEquals("2014-01-01 00:00:01.0",	resultrow1.get("TimestampCol"));
-		assertEquals("1024",					resultrow1.get("NumberCol"));
-		assertEquals("0",						resultrow1.get("BoolCol"));
+		assertEquals("AAA", resultrow1.get("StringCol"));
+		assertEquals("2014-01-01 00:00:01.0", resultrow1.get("TimestampCol"));
+		assertEquals("1024", resultrow1.get("NumberCol"));
+		assertEquals("0", resultrow1.get("BoolCol"));
 
 		DataObject criteria2 = new DataObject();
 		criteria2.put("StringCol", "BBB");
 		DataCollection result2 = processor.executeQuery(
 				"SELECT * FROM T_SAMPLE_TEST_TABLE WHERE STRING_COL = :StringCol", criteria2);
-		assertEquals(result2.size(),1);
+		assertEquals(result2.size(), 1);
 		DataObject resultrow2 = result2.get(0);
-		assertEquals("BBB",						resultrow2.get("StringCol"));
+		assertEquals("BBB", resultrow2.get("StringCol"));
 		assertNull(resultrow2.get("TimestampCol"));
 		assertNull(resultrow2.get("NumberCol"));
 		assertNull(resultrow2.get("BoolCol"));

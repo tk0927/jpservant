@@ -37,6 +37,17 @@ public class DataObject extends LinkedHashMap<String, Object> {
 
 	/**
 	 *
+	 * 要素一個を所有する状態にするコンストラクタ。
+	 *
+	 * @param name 名前
+	 * @param value 値
+	 */
+	public DataObject(String name, Object value) {
+		put(name, value);
+	}
+
+	/**
+	 *
 	 * コピーコンストラクタ。
 	 *
 	 * @param impl コピー元

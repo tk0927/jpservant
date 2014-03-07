@@ -148,7 +148,7 @@ public interface Constant {
 			this.clazz = clazz;
 		}
 
-		public ResourceResolver getInstance() {
+		public ResourceResolver createResolverInstance() {
 			try {
 				return clazz.newInstance();
 			} catch (Exception e) {

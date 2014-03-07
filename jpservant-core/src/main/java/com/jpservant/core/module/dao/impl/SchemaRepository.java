@@ -15,11 +15,17 @@
  */
 package com.jpservant.core.module.dao.impl;
 
+import static com.jpservant.core.common.Utilities.*;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jpservant.core.module.dao.impl.SchemaParser.TableSchema;
+import com.jpservant.core.common.Constant.ConfigurationName;
+import com.jpservant.core.common.Constant.RequestMethod;
+import com.jpservant.core.module.dao.impl.DataAccessAction.DeleteAllAction;
+import com.jpservant.core.module.dao.impl.DataAccessAction.SelectAllAction;
+import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
 
@@ -70,10 +76,22 @@ public class SchemaRepository {
 	 */
 	private static SchemaEntry analyze(ModuleConfiguration configuration) throws SQLException {
 
-		//TODO: Implementation
+		SchemaEntry schemaentry = new SchemaEntry();
+		Map<String, TableMetaData> tableschemas = SchemaParser.parse(configuration);
+		String rootpath = (String) configuration.get(ConfigurationName.RootPath.name());
 
-		Map<String, TableSchema> tableschemas = SchemaParser.parse(configuration);
+		for (Map.Entry<String, TableMetaData> entry : tableschemas.entrySet()) {
 
-		return null;
+			String tablename = entry.getKey();
+			String tablepath = convertSnakeToCamel(tablename);
+
+			schemaentry.addEntry(
+					concatPathTokens(tablepath), RequestMethod.GET, new SelectAllAction(tablename));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath), RequestMethod.DELETE, new DeleteAllAction(tablename));
+
+		}
+
+		return schemaentry;
 	}
 }

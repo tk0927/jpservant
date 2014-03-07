@@ -44,8 +44,19 @@ public class DataCollection extends ArrayList<DataObject> {
 		addAll(impl);
 	}
 
+	/**
+	 *
+	 * 要素一個を所有する状態とするコンストラクタ。
+	 *
+	 * @param obj 要素
+	 */
+	public DataCollection(DataObject obj) {
+		add(obj);
+	}
+
 	@Override
 	public String toString() {
+
 		StringBuilder sb = new StringBuilder("[\r\n");
 		for (DataObject element : this) {
 			sb.append(element == null ? "{null}" : element.toString());
@@ -53,5 +64,6 @@ public class DataCollection extends ArrayList<DataObject> {
 		}
 		sb.append("]\r\n");
 		return sb.toString();
+
 	}
 }

@@ -17,6 +17,9 @@ package com.jpservant.core.module.dao;
 
 import java.sql.SQLException;
 
+import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.exception.ApplicationException;
+import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.exception.ConfigurationException;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.SchemaEntry;
@@ -48,11 +51,19 @@ public class DAOModulePlatform implements ModulePlatform {
 	}
 
 	@Override
-	public void execute(KernelContext context) {
+	public void execute(KernelContext context) throws Exception {
 
-		SchemaEntry entry = SchemaRepository.getEntry(this);
+		try {
 
-		//TODO: Implementation
+			SchemaEntry entry = SchemaRepository.getEntry(this);
+			DataCollection response = entry.execute(config, context);
+			context.writeResponse(response);
+
+		} catch (SQLException e) {
+
+			throw new ApplicationException(ErrorType.BadRequest, e);
+
+		}
 	}
 
 }

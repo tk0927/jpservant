@@ -17,7 +17,6 @@ package com.jpservant.core.module.dao.impl;
 
 import static com.jpservant.core.common.sql.impl.DatabaseMetaDataUtils.*;
 
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.jpservant.core.common.Constant.ConfigurationName;
-import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
 import com.jpservant.core.module.spi.ModuleConfiguration;
@@ -42,17 +40,25 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  */
 public class SchemaParser {
 
-	public static class TableSchema {
+	/**
+	 * 
+	 * テーブルのメタ情報オブジェクト。
+	 * 
+	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+	 * @version 0.1
+	 *
+	 */
+	public static class TableMetaData {
 
 		private String name;
-		private List<ColumnSchema> columns = new ArrayList<ColumnSchema>();
+		private List<ColumnMetaData> columns = new ArrayList<ColumnMetaData>();
 		private List<String> primarykeys = new ArrayList<String>();
 
-		private TableSchema(String name) {
+		private TableMetaData(String name) {
 			this.name = name;
 		}
 
-		private void addColumnSchema(ColumnSchema column) {
+		private void addColumnSchema(ColumnMetaData column) {
 			this.columns.add(column);
 		}
 
@@ -64,7 +70,7 @@ public class SchemaParser {
 			return this.name;
 		}
 
-		public Iterator<ColumnSchema> getColumns() {
+		public Iterator<ColumnMetaData> getColumns() {
 			return columns.iterator();
 		}
 
@@ -74,7 +80,15 @@ public class SchemaParser {
 
 	}
 
-	public static class ColumnSchema {
+	/**
+	 * 
+	 * テーブルカラムのメタ情報オブジェクト。
+	 * 
+	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+	 * @version 0.1
+	 *
+	 */
+	public static class ColumnMetaData {
 
 		private String name;
 		private String type;
@@ -83,7 +97,7 @@ public class SchemaParser {
 		private boolean nullable;
 		private boolean autoincrement;
 
-		private ColumnSchema(DataObject column) {
+		private ColumnMetaData(DataObject column) {
 
 			this.name = (String) column.get("ColumnName");
 			this.type = (String) column.get("TypeName");
@@ -126,41 +140,45 @@ public class SchemaParser {
 	 * @param configuration モジュール設定情報
 	 * @return 解析結果
 	 */
-	public static Map<String, TableSchema> parse(ModuleConfiguration configuration) throws SQLException {
+	public static Map<String, TableMetaData> parse(ModuleConfiguration configuration) throws SQLException {
 
-		//TODO: Implementation
+		DatabaseConnectionHolder holder = null;
+		Map<String, TableMetaData> tableschemas = new HashMap<String, TableMetaData>();
 
-		DatabaseConnectionHolder holder =
-				configuration.findJDBCConnection(ConfigurationName.JDBCResourcePath.name());
+		try {
 
-		holder.connect();
-		Connection conn = holder.getConnection();
-		DatabaseMetaData dmd = conn.getMetaData();
-		String schemaname = (String) configuration.get(ConfigurationName.SchemaName.name());
+			holder = configuration.findJDBCConnection(ConfigurationName.JDBCResourcePath.name());
+			holder.connect();
 
-		Map<String, TableSchema> tableschemas = new HashMap<String, TableSchema>();
-		DataCollection tables = getSelectableTableNames(dmd, schemaname);
-		for (DataObject table : tables) {
+			DatabaseMetaData dmd = holder.getConnection().getMetaData();
+			String schemaname = (String) configuration.get(ConfigurationName.SchemaName.name());
 
-			String tablename = (String) table.get("TableName");
-			TableSchema tableschema = new TableSchema(tablename);
-			tableschemas.put(tablename, tableschema);
+			for (DataObject table : getSelectableTableNames(dmd, schemaname)) {
 
-			DataCollection pklist = getPrimaryKeys(dmd, schemaname, tablename);
-			for (DataObject pk : pklist) {
-				tableschema.addPrimaryKey((String) pk.get("ColumnName"));
+				String tablename = (String) table.get("TableName");
+				TableMetaData tableschema = new TableMetaData(tablename);
+				tableschemas.put(tablename, tableschema);
+
+				for (DataObject pk : getPrimaryKeys(dmd, schemaname, tablename)) {
+					tableschema.addPrimaryKey((String) pk.get("ColumnName"));
+				}
+
 			}
 
+			for (DataObject column : getColumnNames(dmd, schemaname)) {
+
+				TableMetaData tableschema = tableschemas.get(column.get("TableName"));
+				tableschema.addColumnSchema(new ColumnMetaData(column));
+
+			}
+
+			return tableschemas;
+
+		} finally {
+			if (holder != null) {
+				holder.close();
+			}
 		}
-
-		DataCollection columns = getColumnNames(dmd, schemaname);
-		for (DataObject column : columns) {
-
-			TableSchema tableschema = tableschemas.get(column.get("TableName"));
-			tableschema.addColumnSchema(new ColumnSchema(column));
-		}
-
-		return tableschemas;
 	}
 
 }

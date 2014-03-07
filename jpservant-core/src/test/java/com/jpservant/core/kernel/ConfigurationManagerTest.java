@@ -37,7 +37,7 @@ import com.jpservant.test.miscellaneous.JDBCResource1TestCaseBase;
 * @version 0.1
 *
 */
-public class ConfigurationManagerTest  extends JDBCResource1TestCaseBase {
+public class ConfigurationManagerTest extends JDBCResource1TestCaseBase {
 
 	/**
 	 *
@@ -46,7 +46,7 @@ public class ConfigurationManagerTest  extends JDBCResource1TestCaseBase {
 	 * @throws Exception 何らかの例外発生
 	 */
 	@Test
-	public void testConfigurationLoading()throws Exception {
+	public void testConfigurationLoading() throws Exception {
 
 		ModuleConfiguration sqlconfig = MANAGER.getModuleConfiguration("/sql");
 
@@ -69,10 +69,10 @@ public class ConfigurationManagerTest  extends JDBCResource1TestCaseBase {
 	 * @throws Exception 何らかの例外発生
 	 */
 	@Test
-	public void testJDBCDriverManagerResourceExecution() throws Exception{
+	public void testJDBCDriverManagerResourceExecution() throws Exception {
 
 		ResourcePlatform resource = MANAGER.getResourcePlatform("/JDBCResource1");
-		DatabaseConnectionHolder holder = (DatabaseConnectionHolder)resource.getResource();
+		DatabaseConnectionHolder holder = (DatabaseConnectionHolder) resource.getResource();
 
 		//テスト用のSQL実行
 		SQLProcessorTest.executeTestSQL(new SQLProcessor(holder));
