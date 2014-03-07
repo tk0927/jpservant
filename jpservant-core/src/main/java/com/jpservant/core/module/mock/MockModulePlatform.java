@@ -49,22 +49,21 @@ public class MockModulePlatform implements ModulePlatform {
 	@Override
 	public void execute(KernelContext context) throws Exception {
 
-		String path = createResourcePath(this.config,context,FileExtern.JSON);
+		String path = createResourcePath(this.config, context, FileExtern.JSON);
 		String method = context.getMethod();
 		String content = findResource(context.getResource(path)).trim();
 
 		DataObject mock = toDataObject(content);
 		Object object = mock.get(method);
 
-		if(object == null){
+		if (object == null) {
 			object = mock.get(RequestMethod.DEFAULT.name());
 		}
-		if(object == null){
+		if (object == null) {
 			object = mock;
 		}
 
-		context.writeResponse(new DataObject((Map<String,Object>)object));
+		context.writeResponse(new DataObject((Map<String, Object>) object));
 	}
-
 
 }

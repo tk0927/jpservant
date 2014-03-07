@@ -29,7 +29,7 @@ import com.jpservant.core.resource.ResourcePlatform;
  * @version 0.1
  *
  */
-public class ModuleConfiguration extends HashMap<String,Object>{
+public class ModuleConfiguration extends HashMap<String, Object> {
 
 	/** 管理オブジェクトへの参照 */
 	private ConfigurationManager manager;
@@ -40,7 +40,7 @@ public class ModuleConfiguration extends HashMap<String,Object>{
 	 *
 	 * @param manager 管理オブジェクトへの参照
 	 */
-	public ModuleConfiguration(ConfigurationManager manager){
+	public ModuleConfiguration(ConfigurationManager manager) {
 		this.manager = manager;
 	}
 
@@ -50,7 +50,7 @@ public class ModuleConfiguration extends HashMap<String,Object>{
 	 *
 	 * @return 管理オブジェクトへの参照
 	 */
-	public ConfigurationManager getConfigurationManager(){
+	public ConfigurationManager getConfigurationManager() {
 		return this.manager;
 	}
 
@@ -63,7 +63,7 @@ public class ModuleConfiguration extends HashMap<String,Object>{
 	 */
 	public DatabaseConnectionHolder findJDBCConnection(String name) {
 
-		ResourcePlatform resource = getConfigurationManager().getResourcePlatform((String)get(name));
+		ResourcePlatform resource = getConfigurationManager().getResourcePlatform((String) get(name));
 		return resource == null ? null : (DatabaseConnectionHolder) resource.getResource();
 
 	}

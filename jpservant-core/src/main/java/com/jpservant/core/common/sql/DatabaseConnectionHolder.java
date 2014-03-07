@@ -54,7 +54,6 @@ public interface DatabaseConnectionHolder {
 	 */
 	void close() throws SQLException;
 
-
 	/**
 	 *
 	 * 現在接続状態であるかのフラグを返します。
@@ -69,7 +68,7 @@ public interface DatabaseConnectionHolder {
 	 *
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	void commit()throws SQLException;
+	void commit() throws SQLException;
 
 	/**
 	 *
@@ -77,7 +76,7 @@ public interface DatabaseConnectionHolder {
 	 *
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	void rollback()throws SQLException;
+	void rollback() throws SQLException;
 
 	/**
 	 *
@@ -88,7 +87,6 @@ public interface DatabaseConnectionHolder {
 	 */
 	Savepoint getSavepoint() throws SQLException;
 
-
 	/**
 	 *
 	 * セーブポイントへのロールバックを行います。
@@ -96,7 +94,7 @@ public interface DatabaseConnectionHolder {
 	 * @param s セーブポイント
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	void rollbackSavepoint(Savepoint s)throws SQLException;
+	void rollbackSavepoint(Savepoint s) throws SQLException;
 
 	/**
 	 *
@@ -105,7 +103,7 @@ public interface DatabaseConnectionHolder {
 	 * @param s セーブポイント
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	void releaseSavepoint(Savepoint s)throws SQLException;
+	void releaseSavepoint(Savepoint s) throws SQLException;
 
 	/**
 	 *
@@ -114,5 +112,5 @@ public interface DatabaseConnectionHolder {
 	 *
 	 * @throws Exception 何らかの例外発生
 	 */
-	void releaseSession()throws Exception;
+	void releaseSession() throws Exception;
 }

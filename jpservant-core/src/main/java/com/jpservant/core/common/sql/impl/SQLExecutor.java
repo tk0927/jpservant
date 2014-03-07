@@ -20,7 +20,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 /**
  *
  * Query文 ({@link java.sql.PreparedStatement#executeQuery()}で実行可能なSQL）の実行
@@ -31,7 +30,7 @@ import java.sql.SQLException;
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
  */
-public abstract class SQLExecutor<T>{
+public abstract class SQLExecutor<T> {
 
 	/**
 	 * SQL Query文
@@ -49,7 +48,7 @@ public abstract class SQLExecutor<T>{
 	 * @param sql SQL Query文
 	 * @param conn JDBCコネクション
 	 */
-	public SQLExecutor(BindParameterParsedSQL sql,Connection conn){
+	public SQLExecutor(BindParameterParsedSQL sql, Connection conn) {
 		this.sql = sql;
 		this.conn = conn;
 	}
@@ -61,11 +60,11 @@ public abstract class SQLExecutor<T>{
 	 * @return SQL Query文実行結果（{@link #readResultSet(ResultSet)}の戻り値）
 	 * @throws SQLException 何らかのSQL例外が発生
 	 */
-	public T execute() throws SQLException{
+	public T execute() throws SQLException {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try{
+		try {
 			ps = this.conn.prepareStatement(this.sql.getParsedSQL());
 
 			bindParameters(ps);
@@ -74,17 +73,17 @@ public abstract class SQLExecutor<T>{
 
 			return readResultSet(rs);
 
-		}finally{
-			if(rs != null){
-				try{
+		} finally {
+			if (rs != null) {
+				try {
 					rs.close();
-				}catch(Exception e){
+				} catch (Exception e) {
 				}
 			}
-			if(ps != null){
-				try{
+			if (ps != null) {
+				try {
 					ps.close();
-				}catch(Exception e){
+				} catch (Exception e) {
 				}
 			}
 		}
@@ -97,7 +96,7 @@ public abstract class SQLExecutor<T>{
 	 *
 	 * @return SQL解析処理オブジェクト
 	 */
-	protected BindParameterParsedSQL getBindParameterParsedSQL(){
+	protected BindParameterParsedSQL getBindParameterParsedSQL() {
 		return sql;
 	}
 

@@ -38,21 +38,20 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 	/** JDBC コネクション */
 	private Connection connection;
 
-
 	@Override
 	public synchronized void connect() throws SQLException {
 
-		if(this.isconnected){
+		if (this.isconnected) {
 			throw new SQLException("Already connected.");
 		}
 
-		try{
+		try {
 
 			this.connection = connectImpl();
 			this.connection.setAutoCommit(false);
 			this.isconnected = true;
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new SQLException(e);
 		}
 
@@ -75,12 +74,12 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 	@Override
 	public synchronized void close() throws SQLException {
 
-		if(!this.isConnected()){
+		if (!this.isConnected()) {
 			throw new SQLException("Not connected.");
 		}
-		try{
+		try {
 			this.connection.close();
-		}finally{
+		} finally {
 			this.isconnected = false;
 		}
 	}
@@ -91,9 +90,9 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 	}
 
 	@Override
-	public void commit()throws SQLException{
+	public void commit() throws SQLException {
 
-		if(!this.isConnected()){
+		if (!this.isConnected()) {
 			throw new SQLException("Not connected.");
 		}
 		this.connection.commit();
@@ -101,9 +100,9 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 	}
 
 	@Override
-	public void rollback()throws SQLException{
+	public void rollback() throws SQLException {
 
-		if(!this.isConnected()){
+		if (!this.isConnected()) {
 			throw new SQLException("Not connected.");
 		}
 		this.connection.rollback();
@@ -111,20 +110,19 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 	}
 
 	@Override
-	public Savepoint getSavepoint() throws SQLException{
+	public Savepoint getSavepoint() throws SQLException {
 
-		if(!this.isConnected()){
+		if (!this.isConnected()) {
 			throw new SQLException("Not connected.");
 		}
 		return this.connection.setSavepoint();
 
 	}
 
-
 	@Override
-	public void rollbackSavepoint(Savepoint s)throws SQLException{
+	public void rollbackSavepoint(Savepoint s) throws SQLException {
 
-		if(!this.isConnected()){
+		if (!this.isConnected()) {
 			throw new SQLException("Not connected.");
 		}
 		this.connection.rollback(s);
@@ -132,9 +130,9 @@ public abstract class AbstractDatabaseConnectionHolder implements DatabaseConnec
 	}
 
 	@Override
-	public void releaseSavepoint(Savepoint s)throws SQLException{
+	public void releaseSavepoint(Savepoint s) throws SQLException {
 
-		if(!this.isConnected()){
+		if (!this.isConnected()) {
 			throw new SQLException("Not connected.");
 		}
 		this.connection.releaseSavepoint(s);

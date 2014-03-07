@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package com.jpservant.core.exception;
+
 /**
  *
  * 設定誤り例外。
@@ -24,13 +25,15 @@ package com.jpservant.core.exception;
  */
 public class ConfigurationException extends Exception {
 
-	public ConfigurationException(Exception e){
+	public ConfigurationException(Exception e) {
 		super(e);
 	}
-	public ConfigurationException(String message){
+
+	public ConfigurationException(String message) {
 		super(message);
 	}
-	public ConfigurationException(String message,Exception e){
-		super(message,e);
+
+	public ConfigurationException(String message, Exception e) {
+		super(message, e);
 	}
 }

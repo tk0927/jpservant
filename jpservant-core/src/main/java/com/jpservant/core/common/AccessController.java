@@ -28,7 +28,6 @@ import com.jpservant.core.kernel.KernelContext;
  */
 public class AccessController {
 
-
 	/**
 	 *
 	 * 許容するリクエストメソッドであるかをチェックします。
@@ -38,11 +37,11 @@ public class AccessController {
 	 * @param accepts 許容するリクエストメソッド
 	 * @return 許容するならtrue
 	 */
-	public static boolean checkAccessMethod(KernelContext context,RequestMethod... accepts){
+	public static boolean checkAccessMethod(KernelContext context, RequestMethod... accepts) {
 
-		for(RequestMethod accept :accepts){
+		for (RequestMethod accept : accepts) {
 
-			if(context.getMethod().equals(accept.name())){
+			if (context.getMethod().equals(accept.name())) {
 				return true;
 			}
 

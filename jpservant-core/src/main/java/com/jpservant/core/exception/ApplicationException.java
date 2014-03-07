@@ -35,28 +35,27 @@ public class ApplicationException extends Exception {
 
 	private ErrorType type;
 
-	public ApplicationException(ErrorType type){
+	public ApplicationException(ErrorType type) {
 		super();
 		this.type = type;
 	}
 
-	public ApplicationException(ErrorType type,Exception e){
+	public ApplicationException(ErrorType type, Exception e) {
 		super(e);
 		this.type = type;
 	}
 
-	public ApplicationException(ErrorType type,String message){
+	public ApplicationException(ErrorType type, String message) {
 		super(message);
 		this.type = type;
 	}
 
-
-	public ApplicationException(ErrorType type,String message,Exception e){
-		super(message,e);
+	public ApplicationException(ErrorType type, String message, Exception e) {
+		super(message, e);
 		this.type = type;
 	}
 
-	public ErrorType getErrorType(){
+	public ErrorType getErrorType() {
 		return this.type;
 	}
 }

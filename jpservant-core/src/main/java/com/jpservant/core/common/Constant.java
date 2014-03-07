@@ -33,12 +33,12 @@ public interface Constant {
 	/**
 	 * エンコード名。常時UTF-8。
 	 */
-	String ENCODE_NAME ="UTF-8";
+	String ENCODE_NAME = "UTF-8";
 
 	/**
 	 * Servletの初期化パラメータ名
 	 */
-	String SERVLET_INIT_CONFIG_NAME ="config";
+	String SERVLET_INIT_CONFIG_NAME = "config";
 
 	/**
 	 *
@@ -48,21 +48,20 @@ public interface Constant {
 	 * @version 0.1
 	 *
 	 */
-	public static enum FileExtern{
+	public static enum FileExtern {
 
 		/** JSONファイル */
 		JSON(".json"),
 		/** SQLファイル */
-		SQL(".sql"),
-		;
+		SQL(".sql"), ;
 
 		private String ext;
 
-		private FileExtern(String ext){
+		private FileExtern(String ext) {
 			this.ext = ext;
 		}
 
-		public String toString(){
+		public String toString() {
 			return this.ext;
 		}
 	}
@@ -75,7 +74,7 @@ public interface Constant {
 	 * @version 0.1
 	 *
 	 */
-	public static enum RequestMethod{
+	public static enum RequestMethod {
 
 		/** GET */
 		GET,
@@ -98,7 +97,7 @@ public interface Constant {
 	 * @version 0.1
 	 *
 	 */
-	public static enum ConfigurationName{
+	public static enum ConfigurationName {
 
 		/** モジュールインスタンスの識別名 兼 モジュールへのディスパッチ対象REST URLパストークン */
 		RootPath(true),
@@ -111,20 +110,18 @@ public interface Constant {
 		/** モジュールが利用するJDBCリソースの識別名 */
 		JDBCResourcePath(false),
 		/** （DAOモジュール用）スキーマ名 */
-		SchemaName(false),
-		;
+		SchemaName(false), ;
 
 		private boolean required;
 
-		private ConfigurationName(boolean required){
+		private ConfigurationName(boolean required) {
 			this.required = required;
 		}
 
-		public boolean isRequired(){
+		public boolean isRequired() {
 			return this.required;
 		}
 	}
-
 
 	/**
 	 *
@@ -134,27 +131,27 @@ public interface Constant {
 	 * @version 0.1
 	 *
 	 */
-	public static enum ResourceType{
+	public static enum ResourceType {
 
 		/** クラスパスから解決する */
-		ClassPath (ClassPathResolver.class),
+		ClassPath(ClassPathResolver.class),
 		/** サーブレットコンテクストから解決する */
-		ServletContext (ServletContextResolver.class),
+		ServletContext(ServletContextResolver.class),
 		/** ファイルシステムから解決する */
-		FileSystem (FileSystemResolver.class),
+		FileSystem(FileSystemResolver.class),
 
 		;
 
 		Class<? extends ResourceResolver> clazz;
 
-		private ResourceType(Class<? extends ResourceResolver> clazz){
+		private ResourceType(Class<? extends ResourceResolver> clazz) {
 			this.clazz = clazz;
 		}
 
-		public ResourceResolver getInstance(){
-			try{
+		public ResourceResolver getInstance() {
+			try {
 				return clazz.newInstance();
-			}catch(Exception e){
+			} catch (Exception e) {
 				throw new RuntimeException();
 			}
 		}

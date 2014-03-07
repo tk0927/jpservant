@@ -47,8 +47,7 @@ public class BindParameterParsedSQL {
 	private String parsedsql;
 
 	/** バインドパラメータの位置情報格納マップ */
-	private LinkedHashMap<String,Integer> positionmap = new LinkedHashMap<String,Integer>();
-
+	private LinkedHashMap<String, Integer> positionmap = new LinkedHashMap<String, Integer>();
 
 	/**
 	 *
@@ -56,7 +55,7 @@ public class BindParameterParsedSQL {
 	 *
 	 * @param definedsql SQL文
 	 */
-	public BindParameterParsedSQL(String definedsql){
+	public BindParameterParsedSQL(String definedsql) {
 		this.definedsql = definedsql;
 		parse();
 	}
@@ -67,7 +66,7 @@ public class BindParameterParsedSQL {
 	 *
 	 * @return SQL文
 	 */
-	public String getDefinedSQL(){
+	public String getDefinedSQL() {
 		return this.definedsql;
 	}
 
@@ -78,7 +77,7 @@ public class BindParameterParsedSQL {
 	 *
 	 * @return JDBCにて実行可能なSQL文
 	 */
-	public String getParsedSQL(){
+	public String getParsedSQL() {
 		return this.parsedsql;
 	}
 
@@ -88,7 +87,7 @@ public class BindParameterParsedSQL {
 	 *
 	 * @return バインドパラメータリスト
 	 */
-	public Iterator<String> getBindParameterNames(){
+	public Iterator<String> getBindParameterNames() {
 		return this.positionmap.keySet().iterator();
 	}
 
@@ -99,10 +98,10 @@ public class BindParameterParsedSQL {
 	 * @param name バインドパラメータ名
 	 * @return パラメータの位置(パラメータ名が無ければ NOT_FOUND)
 	 */
-	public int getParameterPosition(String name){
+	public int getParameterPosition(String name) {
 
 		Integer position = this.positionmap.get(name);
-		return ( position == null ? NOT_FOUND : position);
+		return (position == null ? NOT_FOUND : position);
 
 	}
 
@@ -111,14 +110,14 @@ public class BindParameterParsedSQL {
 	 * SQL文のパース処理。
 	 *
 	 */
-	private void parse(){
+	private void parse() {
 
 		Pattern pattern = Pattern.compile(PARAMETER_REGEXP);
 		Matcher matcher = pattern.matcher(definedsql);
 
 		int position = 0;
 		int number = 1;
-		while(matcher.find(position)){
+		while (matcher.find(position)) {
 			this.positionmap.put(matcher.group(1), number++);
 			position = matcher.end();
 		}
@@ -140,20 +139,20 @@ public class BindParameterParsedSQL {
 	 * @param value パラメータ値
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	public void bind(PreparedStatement ps,ParameterMetaData pmd,String name,Object value)
-		throws SQLException{
+	public void bind(PreparedStatement ps, ParameterMetaData pmd, String name, Object value)
+			throws SQLException {
 
 		int position = this.getParameterPosition(name);
-		if(position == NOT_FOUND){
+		if (position == NOT_FOUND) {
 			return;
 		}
-		if(value == null){
+		if (value == null) {
 
 			int type = pmd.getParameterType(position);
 			ps.setNull(position, type);
 
-		}else{
-			ps.setString(position ,value.toString());
+		} else {
+			ps.setString(position, value.toString());
 		}
 	}
 }

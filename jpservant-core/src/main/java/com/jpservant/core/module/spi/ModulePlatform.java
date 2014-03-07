@@ -35,7 +35,7 @@ public interface ModulePlatform {
 	 * @param config 設定情報
 	 * @throws ConfigurationException 設定誤り
 	 */
-	void initialize(ModuleConfiguration config)throws ConfigurationException;
+	void initialize(ModuleConfiguration config) throws ConfigurationException;
 
 	/**
 	 *
@@ -44,6 +44,6 @@ public interface ModulePlatform {
 	 * @param context コンテキスト情報
 	 * @throws Exception 何らかの例外発生
 	 */
-	void execute(KernelContext context)throws Exception;
+	void execute(KernelContext context) throws Exception;
 
 }

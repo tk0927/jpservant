@@ -42,22 +42,20 @@ import com.jpservant.core.resource.ResourcePlatform;
  */
 public class ConfigurationManagerImpl implements ConfigurationManager {
 
-
 	/**
 	 * 設定情報のオンメモリストア
 	 */
-	private HashMap<String,ModuleConfiguration> configmap = new  HashMap<String,ModuleConfiguration>();
+	private HashMap<String, ModuleConfiguration> configmap = new HashMap<String, ModuleConfiguration>();
 
 	/**
 	 * モジュールオブジェクトのオンメモリストア
 	 */
-	private HashMap<String,ModulePlatform> modulemap = new  HashMap<String,ModulePlatform>();
+	private HashMap<String, ModulePlatform> modulemap = new HashMap<String, ModulePlatform>();
 
 	/**
 	 * リソースオブジェクトのオンメモリストア
 	 */
-	private HashMap<String,ResourcePlatform> resourcemap = new  HashMap<String,ResourcePlatform>();
-
+	private HashMap<String, ResourcePlatform> resourcemap = new HashMap<String, ResourcePlatform>();
 
 	/**
 	 *
@@ -66,26 +64,26 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 	 * @param url 設定ファイルへのURL
 	 * @throws ConfigurationException 初期化失敗
 	 */
-	public void initialize(URL url)throws ConfigurationException{
+	public void initialize(URL url) throws ConfigurationException {
 
 		InputStream in = null;
-		try{
+		try {
 
 			in = url.openStream();
 			DataCollection parsed = readDataCollection(in);
 			parseConfiguration(parsed);
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new ConfigurationException(e);
-		}finally{
-			if(in != null){
-				try{
+		} finally {
+			if (in != null) {
+				try {
 					in.close();
-				}catch(Exception e){}
+				} catch (Exception e) {
+				}
 			}
 		}
 	}
-
 
 	/**
 	 *
@@ -94,30 +92,29 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 	 * @param parsed JSON形式設定ファイルをPOJOに置換した結果
 	 * @throws ConfigurationException 初期化失敗
 	 */
-	private void parseConfiguration(DataCollection parsed)throws ConfigurationException{
+	private void parseConfiguration(DataCollection parsed) throws ConfigurationException {
 
-		try{
+		try {
 
-			for(DataObject element: parsed){
+			for (DataObject element : parsed) {
 				generatePlatform(element);
 			}
 
-			for(Map.Entry<String, ResourcePlatform> entry: resourcemap.entrySet()){
+			for (Map.Entry<String, ResourcePlatform> entry : resourcemap.entrySet()) {
 				entry.getValue().initialize(configmap.get(entry.getKey()));
 			}
 
-			for(Map.Entry<String, ModulePlatform> entry: modulemap.entrySet()){
+			for (Map.Entry<String, ModulePlatform> entry : modulemap.entrySet()) {
 				entry.getValue().initialize(configmap.get(entry.getKey()));
 			}
 
-		}catch(ConfigurationException e){
+		} catch (ConfigurationException e) {
 			throw e;
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new ConfigurationException(e);
 		}
 
 	}
-
 
 	/**
 	 *
@@ -138,53 +135,49 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 
 		String path = (String) element.get(RootPath.name());
 
-		if(configmap.containsKey(path)){
-			throw new ConfigurationException(String.format("Duplicated RootPath[%s]",path));
+		if (configmap.containsKey(path)) {
+			throw new ConfigurationException(String.format("Duplicated RootPath[%s]", path));
 		}
-		configmap.put(path,config);
+		configmap.put(path, config);
 
-		String classname = (String)element.get(PlatformClass.name());
+		String classname = (String) element.get(PlatformClass.name());
 
 		Class<?> clazz = Class.forName(classname);
 
 		Object platform = clazz.newInstance();
 
-		if(platform instanceof ModulePlatform){
+		if (platform instanceof ModulePlatform) {
 
-			ModulePlatform module = (ModulePlatform)platform;
+			ModulePlatform module = (ModulePlatform) platform;
 			modulemap.put(path, module);
 
-		}else if(platform instanceof ResourcePlatform){
+		} else if (platform instanceof ResourcePlatform) {
 
-			ResourcePlatform module = (ResourcePlatform)platform;
+			ResourcePlatform module = (ResourcePlatform) platform;
 			resourcemap.put(path, module);
 
-		}else{
-			throw new ConfigurationException(String.format("[%s] is not Platform-Class",classname));
+		} else {
+			throw new ConfigurationException(String.format("[%s] is not Platform-Class", classname));
 		}
 	}
 
-
 	@Override
-	public ArrayList<String> getRootPathList(){
+	public ArrayList<String> getRootPathList() {
 		return new ArrayList<String>(configmap.keySet());
 	}
 
-
 	@Override
-	public ModuleConfiguration getModuleConfiguration(String path){
+	public ModuleConfiguration getModuleConfiguration(String path) {
 		return configmap.get(path);
 	}
 
-
 	@Override
-	public ModulePlatform getModulePlatform(String path){
+	public ModulePlatform getModulePlatform(String path) {
 		return modulemap.get(path);
 	}
 
-
 	@Override
-	public ResourcePlatform getResourcePlatform(String path){
+	public ResourcePlatform getResourcePlatform(String path) {
 		return resourcemap.get(path);
 	}
 

@@ -19,8 +19,8 @@ import java.sql.SQLException;
 
 import com.jpservant.core.exception.ConfigurationException;
 import com.jpservant.core.kernel.KernelContext;
-import com.jpservant.core.kernel.impl.SchemaRepository;
-import com.jpservant.core.kernel.impl.SchemaRepository.SchemaEntry;
+import com.jpservant.core.module.dao.impl.SchemaEntry;
+import com.jpservant.core.module.dao.impl.SchemaRepository;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
 
@@ -37,12 +37,12 @@ public class DAOModulePlatform implements ModulePlatform {
 	private ModuleConfiguration config;
 
 	@Override
-	public void initialize(ModuleConfiguration config) throws ConfigurationException{
+	public void initialize(ModuleConfiguration config) throws ConfigurationException {
 
 		this.config = config;
-		try{
+		try {
 			SchemaRepository.addEntry(this, config);
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			throw new ConfigurationException(e);
 		}
 	}

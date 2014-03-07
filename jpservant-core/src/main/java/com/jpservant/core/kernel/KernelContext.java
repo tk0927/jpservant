@@ -56,7 +56,6 @@ public interface KernelContext {
 	 */
 	public DataCollection getParameters();
 
-
 	/**
 	 *
 	 * 指定されたリソースのURLを得る。
@@ -65,18 +64,7 @@ public interface KernelContext {
 	 * @return URL
 	 * @thrwos Exception 何らかの例外発生
 	 */
-	public URL getResource(String path)throws Exception;
-
-
-	/**
-	 *
-	 * レスポンス(JSONオブジェクトの要素)を出力する。
-	 *
-	 *
-	 * @param response レスポンス
-	 * @throws  IOException 出力失敗
-	 */
-	public void writeResponse(DataCollection response)throws IOException;
+	public URL getResource(String path) throws Exception;
 
 	/**
 	 *
@@ -86,8 +74,17 @@ public interface KernelContext {
 	 * @param response レスポンス
 	 * @throws  IOException 出力失敗
 	 */
-	public void writeResponse(DataObject response)throws IOException;
+	public void writeResponse(DataCollection response) throws IOException;
 
+	/**
+	 *
+	 * レスポンス(JSONオブジェクトの要素)を出力する。
+	 *
+	 *
+	 * @param response レスポンス
+	 * @throws  IOException 出力失敗
+	 */
+	public void writeResponse(DataObject response) throws IOException;
 
 	/**
 	 *

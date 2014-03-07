@@ -25,13 +25,14 @@ import java.util.ArrayList;
  * @version 0.1
  *
  */
-public class DataCollection extends ArrayList<DataObject>{
+public class DataCollection extends ArrayList<DataObject> {
 
 	/**
 	 * デフォルトコンストラクタ。
 	 *
 	 */
-	public DataCollection(){}
+	public DataCollection() {
+	}
 
 	/**
 	 *
@@ -39,14 +40,14 @@ public class DataCollection extends ArrayList<DataObject>{
 	 *
 	 * @param impl コピー元
 	 */
-	public DataCollection(ArrayList<DataObject> impl){
+	public DataCollection(ArrayList<DataObject> impl) {
 		addAll(impl);
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		StringBuilder sb = new StringBuilder("[\r\n");
-		for(DataObject element:this){
+		for (DataObject element : this) {
 			sb.append(element == null ? "{null}" : element.toString());
 			sb.append("\r\n");
 		}

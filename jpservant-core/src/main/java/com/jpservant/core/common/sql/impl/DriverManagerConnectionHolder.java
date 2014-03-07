@@ -44,7 +44,7 @@ public class DriverManagerConnectionHolder extends AbstractDatabaseConnectionHol
 	 * @param username ユーザー名
 	 * @param password パスワード
 	 */
-	public DriverManagerConnectionHolder(String drivername,String url,String username,String password){
+	public DriverManagerConnectionHolder(String drivername, String url, String username, String password) {
 
 		this.drivername = drivername;
 		this.url = url;
@@ -56,7 +56,7 @@ public class DriverManagerConnectionHolder extends AbstractDatabaseConnectionHol
 	@Override
 	public synchronized Connection connectImpl() throws Exception {
 
-		if(this.drivername != null && this.drivername.length() > 0){
+		if (this.drivername != null && this.drivername.length() > 0) {
 			Class.forName(this.drivername);
 		}
 		return DriverManager.getConnection(this.url, this.username, this.password);
@@ -66,6 +66,5 @@ public class DriverManagerConnectionHolder extends AbstractDatabaseConnectionHol
 	public void releaseSession() throws Exception {
 		close();
 	}
-
 
 }

@@ -58,7 +58,7 @@ public class DatabaseMetaDataUtils {
 		 *
 		 * @param accepts ResultSetからの抽出対象カラム名リスト
 		 */
-		private AccessProcessor(String... accepts){
+		private AccessProcessor(String... accepts) {
 			this.accepts.addAll(Arrays.asList(accepts));
 		}
 
@@ -83,7 +83,7 @@ public class DatabaseMetaDataUtils {
 
 					for (int i = 1; i <= rsm.getColumnCount(); i++) {
 						String colname = convertSnakeToCamel(rsm.getColumnName(i));
-						if(this.accepts.contains(colname)){
+						if (this.accepts.contains(colname)) {
 							row.put(colname, rs.getString(i));
 						}
 					}
@@ -121,12 +121,12 @@ public class DatabaseMetaDataUtils {
 	 * @throws SQLException SQL例外発生
 	 */
 	public static DataCollection getSelectableTableNames(
-			final DatabaseMetaData dmd,final String schema) throws SQLException{
+			final DatabaseMetaData dmd, final String schema) throws SQLException {
 
-		return new AccessProcessor("TableName","TableType"){
+		return new AccessProcessor("TableName", "TableType") {
 			@Override
 			public ResultSet execute() throws SQLException {
-				return dmd.getTables(null, schema, "%", new String[]{"TABLE","VIEW"});
+				return dmd.getTables(null, schema, "%", new String[] { "TABLE", "VIEW" });
 			}
 		}.read();
 
@@ -142,9 +142,10 @@ public class DatabaseMetaDataUtils {
 	 * @throws SQLException SQL例外発生
 	 */
 	public static DataCollection getColumnNames(
-			final DatabaseMetaData dmd,final String schema) throws SQLException{
+			final DatabaseMetaData dmd, final String schema) throws SQLException {
 
-		return new AccessProcessor("ColumnName","TableName","TableType","ColumnSize","Nullable") {
+		return new AccessProcessor("ColumnName", "TableName", "DataType", "TypeName", "ColumnSize", "IsNullable",
+				"IsAutoincrement") {
 			@Override
 			public ResultSet execute() throws SQLException {
 				return dmd.getColumns(null, schema, "%", "%");
@@ -164,7 +165,7 @@ public class DatabaseMetaDataUtils {
 	 * @throws SQLException SQL例外発生
 	 */
 	public static DataCollection getPrimaryKeys(
-			final DatabaseMetaData dmd,final String schema,final String table)throws SQLException{
+			final DatabaseMetaData dmd, final String schema, final String table) throws SQLException {
 
 		return new AccessProcessor("ColumnName") {
 			@Override
@@ -173,6 +174,30 @@ public class DatabaseMetaDataUtils {
 			}
 		}.read();
 
+	}
+
+	/**
+	 *
+	 * 検索結果値"YES"/"NO"をboolean型へ変換する。
+	 *
+	 * @param value 検索結果値
+	 * @return 変換後の値
+	 */
+	public static boolean toBoolean(Object value) {
+
+		return value == null ? false : "YES".equals(value);
+
+	}
+
+	/**
+	 *
+	 * 検索結果値をint型へ変換する。
+	 *
+	 * @param value 検索結果値
+	 * @return 変換後の値
+	 */
+	public static int toInteger(Object value) {
+		return value == null ? 0 : Integer.parseInt(value.toString());
 	}
 
 }

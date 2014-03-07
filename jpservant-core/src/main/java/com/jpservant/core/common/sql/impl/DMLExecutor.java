@@ -20,7 +20,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 /**
  *
  * SQL DML文 ({@link java.sql.PreparedStatement#executeUpdate()}で実行可能なSQL）の実行
@@ -49,7 +48,7 @@ public abstract class DMLExecutor {
 	 * @param dml SQL DML文
 	 * @param conn JDBCコネクション
 	 */
-	public DMLExecutor(BindParameterParsedSQL dml,Connection conn){
+	public DMLExecutor(BindParameterParsedSQL dml, Connection conn) {
 		this.dml = dml;
 		this.conn = conn;
 	}
@@ -61,40 +60,41 @@ public abstract class DMLExecutor {
 	 * @return バッチリクエストごとの更新レコード数
 	 * @throws SQLException 何らかのSQL例外が発生
 	 */
-	public int[] execute() throws SQLException{
+	public int[] execute() throws SQLException {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		try{
+		try {
 			ps = conn.prepareStatement(dml.getParsedSQL());
 
 			bindParameters(ps);
 
 			return ps.executeBatch();
 
-		}finally{
-			if(rs != null){
-				try{
+		} finally {
+			if (rs != null) {
+				try {
 					rs.close();
-				}catch(Exception e){
+				} catch (Exception e) {
 				}
 			}
-			if(ps != null){
-				try{
+			if (ps != null) {
+				try {
 					ps.close();
-				}catch(Exception e){
+				} catch (Exception e) {
 				}
 			}
 		}
 
 	};
+
 	/**
 	 *
 	 * SQL解析処理オブジェクトを取得する。
 	 *
 	 * @return SQL解析処理オブジェクト
 	 */
-	protected BindParameterParsedSQL getBindParameterParsedSQL(){
+	protected BindParameterParsedSQL getBindParameterParsedSQL() {
 		return dml;
 	}
 

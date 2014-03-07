@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.jpservant.core.module.dao.impl;
+
 /**
  *
- * システム全体で共用する各種クラスを格納するパッケージ。
+ * モジュール単位の、紐づくデータベーススキーマの解析結果を格納するクラス。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
- *
  */
-package com.jpservant.core.common;
+public class SchemaEntry {
 
+}

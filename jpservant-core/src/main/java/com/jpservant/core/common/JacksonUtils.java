@@ -45,8 +45,8 @@ public class JacksonUtils {
 	 * @throws JsonParseException
 	 * @throws IOException
 	 */
-	public static void writeJSONString(Writer out,Object object)
-			throws JsonMappingException,JsonParseException,IOException {
+	public static void writeJSONString(Writer out, Object object)
+			throws JsonMappingException, JsonParseException, IOException {
 
 		INSTANCE.writeValue(out, object);
 
@@ -62,7 +62,7 @@ public class JacksonUtils {
 	 * @throws IOException
 	 */
 	public static String toJSONString(Object object)
-			throws JsonMappingException,JsonParseException,IOException {
+			throws JsonMappingException, JsonParseException, IOException {
 
 		return INSTANCE.writeValueAsString(object);
 
@@ -79,7 +79,7 @@ public class JacksonUtils {
 	 * @throws IOException
 	 */
 	public static DataCollection readDataCollection(InputStream in)
-			throws JsonMappingException,JsonParseException,IOException {
+			throws JsonMappingException, JsonParseException, IOException {
 
 		return INSTANCE.readValue(in, DataCollection.class);
 
@@ -96,7 +96,7 @@ public class JacksonUtils {
 	 * @throws IOException
 	 */
 	public static DataObject readDataObject(InputStream in)
-			throws JsonMappingException,JsonParseException,IOException {
+			throws JsonMappingException, JsonParseException, IOException {
 
 		return INSTANCE.readValue(in, DataObject.class);
 
@@ -114,7 +114,7 @@ public class JacksonUtils {
 	 * @throws IOException
 	 */
 	public static DataCollection readOneDataObjectContainedCollection(InputStream in)
-			throws JsonMappingException,JsonParseException,IOException {
+			throws JsonMappingException, JsonParseException, IOException {
 
 		DataObject obj = INSTANCE.readValue(in, DataObject.class);
 		DataCollection parameter = new DataCollection();
@@ -134,7 +134,7 @@ public class JacksonUtils {
 	 * @throws IOException
 	 */
 	public static DataCollection toDataCollection(String content)
-			throws JsonMappingException,JsonParseException,IOException {
+			throws JsonMappingException, JsonParseException, IOException {
 
 		return INSTANCE.readValue(content, DataCollection.class);
 
@@ -151,7 +151,7 @@ public class JacksonUtils {
 	 * @throws IOException
 	 */
 	public static DataObject toDataObject(String content)
-			throws JsonMappingException,JsonParseException,IOException {
+			throws JsonMappingException, JsonParseException, IOException {
 
 		return INSTANCE.readValue(content, DataObject.class);
 
@@ -169,7 +169,7 @@ public class JacksonUtils {
 	 * @throws IOException
 	 */
 	public static DataCollection toOneDataObjectContainedCollection(String content)
-			throws JsonMappingException,JsonParseException,IOException {
+			throws JsonMappingException, JsonParseException, IOException {
 
 		DataObject obj = INSTANCE.readValue(content, DataObject.class);
 		DataCollection parameter = new DataCollection();

@@ -45,7 +45,7 @@ public class DataCollectionDMLExecutor extends DMLExecutor {
 	 * @param sql SQL文
 	 * @param conn データベースコネクション
 	 */
-	public DataCollectionDMLExecutor(String sql,Connection conn){
+	public DataCollectionDMLExecutor(String sql, Connection conn) {
 		this(sql, conn, null);
 	}
 
@@ -57,8 +57,8 @@ public class DataCollectionDMLExecutor extends DMLExecutor {
 	 * @param conn データベースコネクション
 	 * @param parameterrows バインドパラメータ
 	 */
-	public DataCollectionDMLExecutor(String sql,Connection conn,DataCollection parameterrows){
-		super(new BindParameterParsedSQL(sql),conn);
+	public DataCollectionDMLExecutor(String sql, Connection conn, DataCollection parameterrows) {
+		super(new BindParameterParsedSQL(sql), conn);
 		this.parameterrows = parameterrows;
 	}
 
@@ -68,18 +68,18 @@ public class DataCollectionDMLExecutor extends DMLExecutor {
 	@Override
 	public void bindParameters(PreparedStatement ps) throws SQLException {
 
-		if(this.parameterrows != null){
+		if (this.parameterrows != null) {
 
 			ParameterMetaData pmd = ps.getParameterMetaData();
 
-			for(DataObject row : this.parameterrows){
-				for(Map.Entry<String, Object> entry : row.entrySet()){
+			for (DataObject row : this.parameterrows) {
+				for (Map.Entry<String, Object> entry : row.entrySet()) {
 					getBindParameterParsedSQL().bind(
 							ps, pmd, entry.getKey(), entry.getValue());
 				}
 				ps.addBatch();
 			}
-		}else{
+		} else {
 			ps.addBatch();
 		}
 	}

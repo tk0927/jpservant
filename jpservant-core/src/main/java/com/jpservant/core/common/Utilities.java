@@ -50,11 +50,11 @@ public class Utilities {
 	 * @return パス文字列
 	 */
 	public static String createResourcePath(
-			ModuleConfiguration config,KernelContext context,FileExtern ext) {
+			ModuleConfiguration config, KernelContext context, FileExtern ext) {
 
 		return String.format("%s%s%s",
 				config.get(ConfigurationName.ResourceRoot.name()),
-				context.getRequestPath(),ext.toString());
+				context.getRequestPath(), ext.toString());
 
 	}
 
@@ -66,13 +66,13 @@ public class Utilities {
 	 * @return 読み取り結果
 	 * @throws ApplicationException リソースが見つからない場合、NotFound例外を創出
 	 */
-	public static String findResource(URL url)throws ApplicationException {
+	public static String findResource(URL url) throws ApplicationException {
 
-		try{
+		try {
 
 			return loadResource(url);
 
-		}catch(IOException e){
+		} catch (IOException e) {
 			throw new ApplicationException(ErrorType.NotFound, e);
 		}
 	}
@@ -85,20 +85,21 @@ public class Utilities {
 	 * @return 読み取り結果
 	 * @throws IOException IO例外発生
 	 */
-	public static String loadResource(URL url)throws IOException {
+	public static String loadResource(URL url) throws IOException {
 
 		InputStream in = null;
 
-		try{
+		try {
 
 			in = url.openStream();
 			return loadStream(in);
 
-		}finally{
-			if(in != null){
-				try{
+		} finally {
+			if (in != null) {
+				try {
 					in.close();
-				}catch(Exception e){}
+				} catch (Exception e) {
+				}
 			}
 		}
 	}
@@ -111,13 +112,13 @@ public class Utilities {
 	 * @return 読み取り結果
 	 * @throws IOException IO例外発生
 	 */
-	public static String loadStream(InputStream in)throws IOException {
+	public static String loadStream(InputStream in) throws IOException {
 
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		byte[] buff = new byte[1024];
 		int len = 0;
-		while((len = in.read(buff)) > 0){
-			bout.write(buff,0,len);
+		while ((len = in.read(buff)) > 0) {
+			bout.write(buff, 0, len);
 		}
 
 		bout.close();
@@ -132,7 +133,7 @@ public class Utilities {
 	 * @param uri URI
 	 * @return 3要素の文字列配列(コンテキストパス、設定分割用パス、資源指定用パス)
 	 */
-	public static String[] splitURI(String uri){
+	public static String[] splitURI(String uri) {
 
 		Pattern p = Pattern.compile("(/[^/]+)(/[^/]+)(/[\\S]+)");
 		Matcher m = p.matcher(uri);
@@ -153,20 +154,25 @@ public class Utilities {
 	 * @param list List
 	 * @return 先頭要素
 	 */
-	public static <T> T findFirstObjectOrNull(List<T> list){
+	public static <T> T findFirstObjectOrNull(List<T> list) {
 
 		return (list == null || list.isEmpty()) ? null : list.get(0);
 	}
 
-
 	/**
 	 *
-	 * スネークケース文字列をキャメルケース文字列に変換
+	 * スネークケース文字列をキャメルケース文字列に変換する。
+	 *
+	 * <pre>
+	 * 文字列構成要素は半角英大小文字、半角アンダースコアのみ。
+	 * (データベースのオブジェクトシンボル名を想定)
+	 * "TEST_FOO_BAR"->"TestFooBar"
+	 * <pre>
 	 *
 	 * @param src スネークケース文字列
 	 * @return キャメルケース文字列
 	 */
-	public static String convertSnakeToCamel(String src){
+	public static String convertSnakeToCamel(String src) {
 
 		Pattern p = Pattern.compile("_([a-z])");
 		Matcher m = p.matcher(src.toLowerCase());
@@ -177,7 +183,7 @@ public class Utilities {
 		}
 		m.appendTail(sb);
 
-		if(sb.length()>0){
+		if (sb.length() > 0) {
 			sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
 		}
 
@@ -186,12 +192,19 @@ public class Utilities {
 
 	/**
 	 *
-	 * キャメルケース文字列をスネークケース文字列に変換
+	 * キャメルケース文字列をスネークケース文字列に変換する。
+	 *
+	 * <pre>
+	 * 文字列構成要素は半角英大小文字、英数字のみ
+	 * (JSONの属性名を想定)
+	 * "TestFooBar"->"TEST_FOO_BAR"
+	 * "TESTFooBar"->"TEST_FOO_BAR"
+	 * <pre>
 	 *
 	 * @param src キャメルケース文字列
 	 * @return スネークケース文字列
 	 */
-	public static String convertCamelToSnake(String src){
+	public static String convertCamelToSnake(String src) {
 
 		String convertedStr = src
 				.replaceAll("([A-Z0-9]+)([A-Z0-9][a-z0-9])", "$1_$2")

@@ -37,23 +37,22 @@ public class DataSourceConnectionHolder extends AbstractDatabaseConnectionHolder
 	/** DataSource */
 	private DataSource datasource;
 
-
 	/**
 	 *
 	 * コンストラクタ
 	 *
 	 * @param jndiname リソースのJNDIバインド名
 	 */
-	public DataSourceConnectionHolder(String jndiname){
-		this.jndiname =jndiname;
+	public DataSourceConnectionHolder(String jndiname) {
+		this.jndiname = jndiname;
 	}
 
 	@Override
 	public synchronized Connection connectImpl() throws Exception {
 
-		if(this.datasource == null){
+		if (this.datasource == null) {
 			InitialContext ctx = new InitialContext();
-			this.datasource = (DataSource)ctx.lookup(jndiname);
+			this.datasource = (DataSource) ctx.lookup(jndiname);
 		}
 		return this.datasource.getConnection();
 	}

@@ -17,7 +17,6 @@ package com.jpservant.core.resolver;
 
 import java.net.URL;
 
-
 /**
  *
  * ClassPathによるリソース解決処理。

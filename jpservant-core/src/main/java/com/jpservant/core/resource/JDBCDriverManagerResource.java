@@ -32,7 +32,7 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  */
 public class JDBCDriverManagerResource implements ResourcePlatform {
 
-	public static enum ConfigurationName{
+	public static enum ConfigurationName {
 		JDBCDriver,
 		JDBCURL,
 		JDBCUser,
@@ -50,11 +50,10 @@ public class JDBCDriverManagerResource implements ResourcePlatform {
 	public Object getResource() {
 
 		return new DriverManagerConnectionHolder(
-				(String)config.get(ConfigurationName.JDBCDriver.name()),
-				(String)config.get(ConfigurationName.JDBCURL.name()),
-				(String)config.get(ConfigurationName.JDBCUser.name()),
-				(String)config.get(ConfigurationName.JDBCPassword.name())
-			);
+				(String) config.get(ConfigurationName.JDBCDriver.name()),
+				(String) config.get(ConfigurationName.JDBCURL.name()),
+				(String) config.get(ConfigurationName.JDBCUser.name()),
+				(String) config.get(ConfigurationName.JDBCPassword.name()));
 
 	}
 

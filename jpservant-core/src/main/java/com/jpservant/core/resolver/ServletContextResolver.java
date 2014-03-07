@@ -20,7 +20,6 @@ import java.net.URL;
 
 import javax.servlet.ServletContext;
 
-
 /**
  *
  * ServletContextによるリソース解決処理。
@@ -35,12 +34,12 @@ public class ServletContextResolver implements ResourceResolver {
 
 	@Override
 	public void setReference(Object ref) {
-		this.ref = (ServletContext)ref;
+		this.ref = (ServletContext) ref;
 
 	}
 
 	@Override
-	public URL resolve(String path) throws MalformedURLException{
+	public URL resolve(String path) throws MalformedURLException {
 
 		return ref.getResource(path);
 	}

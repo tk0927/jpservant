@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jpservant.core.kernel.impl;
+package com.jpservant.core.module.dao.impl;
 
-import static com.jpservant.core.common.sql.impl.DatabaseMetaDataUtils.*;
-
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
-import com.jpservant.core.common.Constant.ConfigurationName;
-import com.jpservant.core.common.DataCollection;
-import com.jpservant.core.common.DataObject;
-import com.jpservant.core.common.sql.DatabaseConnectionHolder;
+import com.jpservant.core.module.dao.impl.SchemaParser.TableSchema;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
 
@@ -40,21 +34,10 @@ import com.jpservant.core.module.spi.ModulePlatform;
 public class SchemaRepository {
 
 	/**
-	 *
-	 * モジュール単位の、紐づくデータベーススキーマの解析結果を格納するクラス。
-	 *
-	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
-	 * @version 0.1
-	 */
-	public static class SchemaEntry{
-
-	}
-
-	/**
 	 * ディクショナリの実体。
 	 * モジュールインスタンス毎にエントリを持つ。
 	 */
-	private static HashMap<ModulePlatform,SchemaEntry> POOL = new HashMap<ModulePlatform,SchemaEntry>();
+	private static HashMap<ModulePlatform, SchemaEntry> POOL = new HashMap<ModulePlatform, SchemaEntry>();
 
 	/**
 	 *
@@ -63,7 +46,7 @@ public class SchemaRepository {
 	 * @param module モジュールインスタンス参照
 	 * @return ディクショナリエントリー
 	 */
-	public static SchemaEntry getEntry(ModulePlatform module){
+	public static SchemaEntry getEntry(ModulePlatform module) {
 		return POOL.get(module);
 	}
 
@@ -74,8 +57,8 @@ public class SchemaRepository {
 	 * @param module モジュールインスタンス参照
 	 * @param configuration モジュール設定情報
 	 */
-	public static void addEntry(ModulePlatform module,ModuleConfiguration configuration)throws SQLException{
-		POOL.put(module,analyze(configuration));
+	public static void addEntry(ModulePlatform module, ModuleConfiguration configuration) throws SQLException {
+		POOL.put(module, analyze(configuration));
 	}
 
 	/**
@@ -85,29 +68,11 @@ public class SchemaRepository {
 	 * @param configuration モジュール設定情報
 	 * @return ディクショナリエントリー
 	 */
-	private static SchemaEntry analyze(ModuleConfiguration configuration)throws SQLException{
+	private static SchemaEntry analyze(ModuleConfiguration configuration) throws SQLException {
 
 		//TODO: Implementation
 
-		DatabaseConnectionHolder holder =
-				configuration.findJDBCConnection(ConfigurationName.JDBCResourcePath.name());
-
-		holder.connect();
-		Connection conn = holder.getConnection();
-		DatabaseMetaData dmd = conn.getMetaData();
-		String schemaname = (String)configuration.get(ConfigurationName.SchemaName.name());
-
-		DataCollection tables = getSelectableTableNames(dmd, schemaname);
-		DataCollection columns = getColumnNames(dmd, schemaname);
-
-		System.out.println(tables);
-		System.out.println(columns);
-
-		for(DataObject table : tables){
-			String tablename = (String)table.get("TableName");
-			DataCollection pklist = getPrimaryKeys(dmd, schemaname, tablename);
-			System.out.println("PK:" + tablename +"="+ pklist);
-		}
+		Map<String, TableSchema> tableschemas = SchemaParser.parse(configuration);
 
 		return null;
 	}

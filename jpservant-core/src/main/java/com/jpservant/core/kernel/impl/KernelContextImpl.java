@@ -71,7 +71,8 @@ public class KernelContextImpl implements KernelContext {
 	 * @param resolver リソース位置の解決処理オブジェクト
 	 * @param writer Httpレスポンス出力用Writer
 	 */
-	public KernelContextImpl(String path,String method,DataCollection request,ResourceResolver resolver,Writer writer){
+	public KernelContextImpl(String path, String method, DataCollection request, ResourceResolver resolver,
+			Writer writer) {
 
 		this.path = path;
 		this.method = method;
@@ -97,25 +98,25 @@ public class KernelContextImpl implements KernelContext {
 	}
 
 	@Override
-	public URL getResource(String path) throws Exception{
+	public URL getResource(String path) throws Exception {
 		return this.resolver.resolve(path);
 	}
 
 	@Override
 	public void writeResponse(DataCollection response) throws IOException {
 
-		try{
+		try {
 
-			if(response == null || response.size() == 0){
+			if (response == null || response.size() == 0) {
 				writeJSONString(this.writer, new DataObject());
-			}else if(response.size() == 1){
-				writeJSONString(this.writer,response.get(0));
-			}else{
+			} else if (response.size() == 1) {
+				writeJSONString(this.writer, response.get(0));
+			} else {
 				writeJSONString(this.writer, response);
 			}
 			this.writer.flush();
 
-		}catch(JsonMappingException e){
+		} catch (JsonMappingException e) {
 			throw new IOException(e);
 		}
 	}
@@ -123,20 +124,19 @@ public class KernelContextImpl implements KernelContext {
 	@Override
 	public void writeResponse(DataObject response) throws IOException {
 
-		try{
+		try {
 
-			if(response == null){
+			if (response == null) {
 				writeJSONString(this.writer, new DataObject());
-			}else{
+			} else {
 				writeJSONString(this.writer, response);
 			}
 			this.writer.flush();
 
-		}catch(JsonMappingException e){
+		} catch (JsonMappingException e) {
 			throw new IOException(e);
 		}
 	}
-
 
 	@Override
 	public void addPostProcessor(PostProcessor processor) {
@@ -154,22 +154,23 @@ public class KernelContextImpl implements KernelContext {
 	 *
 	 * @throws Exception
 	 */
-	public void doPostProcess()throws Exception{
+	public void doPostProcess() throws Exception {
 
-		for(PostProcessor process: this.processlist){
+		for (PostProcessor process : this.processlist) {
 			process.execute();
 		}
 
 	}
+
 	/**
 	 *
 	 * 登録されたエラー時後処理を実施する。
 	 *
 	 * @throws Exception
 	 */
-	public void doErrorProcess()throws Exception{
+	public void doErrorProcess() throws Exception {
 
-		for(PostProcessor process: this.errorlist){
+		for (PostProcessor process : this.errorlist) {
 			process.execute();
 		}
 

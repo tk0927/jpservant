@@ -49,8 +49,8 @@ public class DataObjectSQLExecutor extends SQLExecutor<DataCollection> {
 	 * @param sql SQL文
 	 * @param conn データベースコネクション
 	 */
-	public DataObjectSQLExecutor(String sql,Connection conn){
-		this(sql,conn,null);
+	public DataObjectSQLExecutor(String sql, Connection conn) {
+		this(sql, conn, null);
 	}
 
 	/**
@@ -61,9 +61,9 @@ public class DataObjectSQLExecutor extends SQLExecutor<DataCollection> {
 	 * @param conn データベースコネクション
 	 * @param parameters バインドパラメータ
 	 */
-	public DataObjectSQLExecutor(String sql,Connection conn,DataObject parameters){
+	public DataObjectSQLExecutor(String sql, Connection conn, DataObject parameters) {
 
-		super(new BindParameterParsedSQL(sql),conn);
+		super(new BindParameterParsedSQL(sql), conn);
 		this.parameters = parameters;
 
 	}
@@ -74,11 +74,11 @@ public class DataObjectSQLExecutor extends SQLExecutor<DataCollection> {
 	@Override
 	public void bindParameters(PreparedStatement ps) throws SQLException {
 
-		if(this.parameters != null){
+		if (this.parameters != null) {
 
 			ParameterMetaData pmd = ps.getParameterMetaData();
 
-			for(Map.Entry<String, Object> entry : this.parameters.entrySet()){
+			for (Map.Entry<String, Object> entry : this.parameters.entrySet()) {
 				getBindParameterParsedSQL().bind(
 						ps, pmd, entry.getKey(), entry.getValue());
 			}
@@ -94,11 +94,11 @@ public class DataObjectSQLExecutor extends SQLExecutor<DataCollection> {
 
 		DataCollection result = new DataCollection();
 		ResultSetMetaData rsm = rs.getMetaData();
-		while(rs.next()){
+		while (rs.next()) {
 
 			DataObject row = new DataObject();
-			for(int i = 1 ; i <= rsm.getColumnCount() ; i++){
-				row.put(convertSnakeToCamel(rsm.getColumnName(i)),rs.getString(i));
+			for (int i = 1; i <= rsm.getColumnCount(); i++) {
+				row.put(convertSnakeToCamel(rsm.getColumnName(i)), rs.getString(i));
 			}
 
 			result.add(row);

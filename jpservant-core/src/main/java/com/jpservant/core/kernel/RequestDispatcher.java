@@ -138,15 +138,15 @@ public class RequestDispatcher extends HttpServlet {
 	 * @param e 発生した例外
 	 */
 	private static void handleApplicationException(
-			HttpServletRequest request, HttpServletResponse response,ApplicationException e){
+			HttpServletRequest request, HttpServletResponse response, ApplicationException e) {
 
 		int code = 0;
 
-		if(e.getErrorType() == ErrorType.InternalError){
+		if (e.getErrorType() == ErrorType.InternalError) {
 			code = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-		}else if(e.getErrorType() == ErrorType.BadRequest){
+		} else if (e.getErrorType() == ErrorType.BadRequest) {
 			code = HttpServletResponse.SC_BAD_REQUEST;
-		}else if(e.getErrorType() == ErrorType.NotFound){
+		} else if (e.getErrorType() == ErrorType.NotFound) {
 			code = HttpServletResponse.SC_NOT_FOUND;
 		}
 

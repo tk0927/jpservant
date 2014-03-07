@@ -18,7 +18,6 @@ package com.jpservant.core.resolver;
 import java.io.File;
 import java.net.URL;
 
-
 /**
  *
  * 通常のファイルシステムによるリソース解決処理。
@@ -36,9 +35,9 @@ public class FileSystemResolver implements ResourceResolver {
 
 	@Override
 	public URL resolve(String path) {
-		try{
+		try {
 			return new File(path).toURI().toURL();
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

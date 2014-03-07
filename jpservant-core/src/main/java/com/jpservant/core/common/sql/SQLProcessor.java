@@ -43,10 +43,10 @@ public class SQLProcessor {
 	 * @param holder データベース接続保持オブジェクト
 	 * @throws SQLException 何らかの例外発生
 	 */
-	public SQLProcessor(DatabaseConnectionHolder holder)throws SQLException{
+	public SQLProcessor(DatabaseConnectionHolder holder) throws SQLException {
 
 		this.holder = holder;
-		if(!this.holder.isConnected()){
+		if (!this.holder.isConnected()) {
 			this.holder.connect();
 		}
 
@@ -60,7 +60,7 @@ public class SQLProcessor {
 	 * @return 検索結果
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	public DataCollection executeQuery(String sql)throws SQLException{
+	public DataCollection executeQuery(String sql) throws SQLException {
 
 		return new DataObjectSQLExecutor(
 				sql, this.holder.getConnection()).execute();
@@ -76,10 +76,10 @@ public class SQLProcessor {
 	 * @return 検索結果
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	public DataCollection executeQuery(String sql,DataObject parameters)throws SQLException{
+	public DataCollection executeQuery(String sql, DataObject parameters) throws SQLException {
 
 		return new DataObjectSQLExecutor(
-				sql, this.holder.getConnection(),parameters).execute();
+				sql, this.holder.getConnection(), parameters).execute();
 
 	}
 
@@ -91,7 +91,7 @@ public class SQLProcessor {
 	 * @return 更新件数
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	public int executeUpdate(String dml)throws SQLException{
+	public int executeUpdate(String dml) throws SQLException {
 
 		return new DataCollectionDMLExecutor(
 				dml, this.holder.getConnection()).execute()[0];
@@ -107,11 +107,11 @@ public class SQLProcessor {
 	 * @return 更新件数
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	public int executeUpdate(String dml,DataObject row)throws SQLException{
+	public int executeUpdate(String dml, DataObject row) throws SQLException {
 
 		DataCollection rows = new DataCollection();
 		rows.add(row);
-		return executeUpdate(dml,rows)[0];
+		return executeUpdate(dml, rows)[0];
 
 	}
 
@@ -124,10 +124,10 @@ public class SQLProcessor {
 	 * @return 更新件数
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	public int[] executeUpdate(String dml,DataCollection rows)throws SQLException{
+	public int[] executeUpdate(String dml, DataCollection rows) throws SQLException {
 
 		return new DataCollectionDMLExecutor(
-				dml, this.holder.getConnection(),rows).execute();
+				dml, this.holder.getConnection(), rows).execute();
 
 	}
 

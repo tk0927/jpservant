@@ -26,13 +26,14 @@ import java.util.Map;
  * @version 0.1
  *
  */
-public class DataObject extends LinkedHashMap<String,Object>{
+public class DataObject extends LinkedHashMap<String, Object> {
 
 	/**
 	 * デフォルトコンストラクタ。
 	 *
 	 */
-	public DataObject(){}
+	public DataObject() {
+	}
 
 	/**
 	 *
@@ -40,7 +41,7 @@ public class DataObject extends LinkedHashMap<String,Object>{
 	 *
 	 * @param impl コピー元
 	 */
-	public DataObject(Map<String,Object> impl){
+	public DataObject(Map<String, Object> impl) {
 		putAll(impl);
 	}
 }

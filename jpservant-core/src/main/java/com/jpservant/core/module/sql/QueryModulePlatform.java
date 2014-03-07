@@ -63,9 +63,9 @@ public class QueryModulePlatform implements ModulePlatform {
 
 		DatabaseConnectionHolder holder = null;
 
-		try{
+		try {
 
-			if(!AccessController.checkAccessMethod(context, POST)){
+			if (!AccessController.checkAccessMethod(context, POST)) {
 				throw new ApplicationException(ErrorType.BadRequest);
 			}
 
@@ -82,11 +82,11 @@ public class QueryModulePlatform implements ModulePlatform {
 				executeUpdate(context, content, processor);
 			}
 
-		}catch(SQLException e){
+		} catch (SQLException e) {
 
-			throw new ApplicationException(ErrorType.BadRequest,e);
+			throw new ApplicationException(ErrorType.BadRequest, e);
 
-		}finally{
+		} finally {
 
 			registerPostProcess(context, holder);
 
@@ -115,12 +115,12 @@ public class QueryModulePlatform implements ModulePlatform {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	private static void executeQuery(KernelContext context, String content,SQLProcessor processor)
+	private static void executeQuery(KernelContext context, String content, SQLProcessor processor)
 			throws SQLException, IOException {
 
 		DataCollection collection = context.getParameters();
 		DataCollection result = processor.executeQuery(
-				content,findFirstObjectOrNull(collection));
+				content, findFirstObjectOrNull(collection));
 
 		context.writeResponse(result);
 	}
@@ -156,7 +156,7 @@ public class QueryModulePlatform implements ModulePlatform {
 	 */
 	public static void registerPostProcess(KernelContext context, final DatabaseConnectionHolder holder) {
 
-		if(holder == null){
+		if (holder == null) {
 			return;
 		}
 
@@ -171,14 +171,14 @@ public class QueryModulePlatform implements ModulePlatform {
 		context.addErrorProcessor(new PostProcessor() {
 			@Override
 			public void execute() throws Exception {
-				try{
+				try {
 					holder.rollback();
-				}catch(SQLException e){
+				} catch (SQLException e) {
 					//no operation
 				}
-				try{
+				try {
 					holder.releaseSession();
-				}catch(SQLException e){
+				} catch (SQLException e) {
 					//no operation
 				}
 			}
