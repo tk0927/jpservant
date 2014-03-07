@@ -154,7 +154,7 @@ public class QueryModulePlatform implements ModulePlatform {
 	 * @param context コンテキスト
 	 * @param holder データベース接続
 	 */
-	public static void registerPostProcess(KernelContext context, final DatabaseConnectionHolder holder) {
+	private static void registerPostProcess(KernelContext context, final DatabaseConnectionHolder holder) {
 
 		if (holder == null) {
 			return;

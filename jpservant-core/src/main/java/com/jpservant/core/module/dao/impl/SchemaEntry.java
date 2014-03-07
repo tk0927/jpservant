@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jpservant.core.common.Constant.ConfigurationName;
 import com.jpservant.core.common.Constant.RequestMethod;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
@@ -84,23 +83,23 @@ public class SchemaEntry {
 	 *
 	 * @param config 設定情報
 	 * @param context コンテキスト情報
+	 * @param holder データベース接続
 	 * @return 実行結果
 	 * @throws SQLException 何らかのSQL例外発生
 	 * @throws ApplicationException URIに対応するアクションが存在しない
 	 */
-	public DataCollection execute(ModuleConfiguration config, KernelContext context)
+	public DataCollection execute(ModuleConfiguration config, KernelContext context, DatabaseConnectionHolder holder)
 			throws SQLException, ApplicationException {
 
 		String path = context.getRequestPath();
 		String method = context.getMethod();
+
 		DataAccessAction action = impl.get(
 				new SchemaEntryKey(path, RequestMethod.valueOf(method)));
 		if (action == null) {
 			throw new ApplicationException(ErrorType.NotFound);
 		}
 
-		DatabaseConnectionHolder holder = config.findJDBCConnection(
-				ConfigurationName.JDBCResourcePath.name());
 		SQLProcessor processor = new SQLProcessor(holder);
 
 		return action.execute(processor, config, context);
