@@ -21,7 +21,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jpservant.core.common.Constant.ConfigurationName;
 import com.jpservant.core.common.Constant.RequestMethod;
 import com.jpservant.core.module.dao.impl.DataAccessAction.DeleteAllAction;
 import com.jpservant.core.module.dao.impl.DataAccessAction.SelectAllAction;
@@ -40,14 +39,13 @@ import com.jpservant.core.module.spi.ModulePlatform;
 public class SchemaRepository {
 
 	/**
-	 * ディクショナリの実体。
-	 * モジュールインスタンス毎にエントリを持つ。
+	 * ディクショナリの実体。モジュールインスタンス毎にエントリーを持つ。
 	 */
 	private static HashMap<ModulePlatform, SchemaEntry> POOL = new HashMap<ModulePlatform, SchemaEntry>();
 
 	/**
 	 *
-	 * モジュールに対応するエントリーを得る。
+	 * モジュールに対応するREST APIのディクショナリエントリーを得る。
 	 *
 	 * @param module モジュールインスタンス参照
 	 * @return ディクショナリエントリー
@@ -58,7 +56,7 @@ public class SchemaRepository {
 
 	/**
 	 *
-	 * モジュールに紐づくデータベースの解析を行い、得られたエントリーをディクショナリへ登録する。
+	 * モジュールに紐づくデータベースの解析を行い、得られたREST APIのディクショナリエントリーをディクショナリへ登録する。
 	 *
 	 * @param module モジュールインスタンス参照
 	 * @param configuration モジュール設定情報
@@ -69,7 +67,7 @@ public class SchemaRepository {
 
 	/**
 	 *
-	 * データベーススキーマの解析処理を行い、ディクショナリエントリーを生成する。
+	 * データベーススキーマの解析処理を行い、REST APIのディクショナリエントリーを生成する。
 	 *
 	 * @param configuration モジュール設定情報
 	 * @return ディクショナリエントリー
@@ -78,7 +76,6 @@ public class SchemaRepository {
 
 		SchemaEntry schemaentry = new SchemaEntry();
 		Map<String, TableMetaData> tableschemas = SchemaParser.parse(configuration);
-		String rootpath = (String) configuration.get(ConfigurationName.RootPath.name());
 
 		for (Map.Entry<String, TableMetaData> entry : tableschemas.entrySet()) {
 

@@ -41,9 +41,9 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
 public class SchemaParser {
 
 	/**
-	 * 
+	 *
 	 * テーブルのメタ情報オブジェクト。
-	 * 
+	 *
 	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
 	 * @version 0.1
 	 *
@@ -81,9 +81,9 @@ public class SchemaParser {
 	}
 
 	/**
-	 * 
+	 *
 	 * テーブルカラムのメタ情報オブジェクト。
-	 * 
+	 *
 	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
 	 * @version 0.1
 	 *
@@ -176,7 +176,11 @@ public class SchemaParser {
 
 		} finally {
 			if (holder != null) {
-				holder.close();
+				try {
+					holder.releaseSession();
+				} catch (Exception e) {
+					//no operation
+				}
 			}
 		}
 	}
