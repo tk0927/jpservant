@@ -28,6 +28,7 @@ import com.jpservant.core.module.dao.impl.SchemaParser.ColumnMetaData;
 import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.dao.impl.action.DeleteAllAction;
 import com.jpservant.core.module.dao.impl.action.InsertAction;
+import com.jpservant.core.module.dao.impl.action.RowCountAction;
 import com.jpservant.core.module.dao.impl.action.SelectAllAction;
 import com.jpservant.core.module.dao.impl.action.SelectByPrimaryKeyAction;
 import com.jpservant.core.module.spi.ModuleConfiguration;
@@ -79,8 +80,8 @@ public class SchemaRepository {
 	 */
 	private static SchemaEntry analyze(ModuleConfiguration configuration) throws SQLException {
 
-		SchemaEntry schemaentry = new SchemaEntry();
 		Map<String, TableMetaData> tableschemas = SchemaParser.parse(configuration);
+		SchemaEntry schemaentry = new SchemaEntry(tableschemas);
 
 		for (Map.Entry<String, TableMetaData> entry : tableschemas.entrySet()) {
 
@@ -102,6 +103,9 @@ public class SchemaRepository {
 			schemaentry.addEntry(
 					concatPathTokens(tablepath), RequestMethod.DELETE,
 					new DeleteAllAction(tablename));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath, "count"), RequestMethod.GET,
+					new RowCountAction(tablename));
 			schemaentry.addEntry(
 					concatPathTokens(tablepath, primarykeys), RequestMethod.GET,
 					new SelectByPrimaryKeyAction(tablename, convertSnakeToCamel(primarykeys)));

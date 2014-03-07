@@ -26,6 +26,7 @@ import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.exception.ApplicationException;
 import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.KernelContext;
+import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
@@ -62,8 +63,20 @@ public class SchemaEntry {
 		}
 	}
 
+	private Map<String, TableMetaData> metadata;
+
 	/** 格納位置の実体 */
 	private Map<SchemaEntryKey, DataAccessAction> impl = new HashMap<SchemaEntryKey, DataAccessAction>();
+
+	/**
+	 *
+	 * コンストラクタ
+	 *
+	 * @param metadata メタデータ
+	 */
+	public SchemaEntry(Map<String, TableMetaData> metadata) {
+		this.metadata = metadata;
+	}
 
 	/**
 	 *
@@ -97,6 +110,8 @@ public class SchemaEntry {
 		DataAccessAction action = impl.get(
 				new SchemaEntryKey(path, RequestMethod.valueOf(method)));
 		if (action == null) {
+			//TODO: 可変パス検査
+
 			throw new ApplicationException(ErrorType.NotFound);
 		}
 

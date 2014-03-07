@@ -18,7 +18,6 @@ package com.jpservant.core.module.dao.impl.action;
 import java.sql.SQLException;
 
 import com.jpservant.core.common.DataCollection;
-import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.DataAccessAction;
@@ -26,18 +25,18 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
  *
- * 全件削除Action。
+ * 行数取得Action。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
  *
  */
-public class DeleteAllAction implements DataAccessAction {
+public class RowCountAction implements DataAccessAction {
 
 	private String sql;
 
-	public DeleteAllAction(String tablename) {
-		this.sql = String.format("DELETE FROM %s", tablename);
+	public RowCountAction(String tablename) {
+		this.sql = String.format("SELECT COUNT(*) AS COUNT FROM %s", tablename);
 	}
 
 	@Override
@@ -45,8 +44,7 @@ public class DeleteAllAction implements DataAccessAction {
 			SQLProcessor processor, ModuleConfiguration config, KernelContext context)
 			throws SQLException {
 
-		int result = processor.executeUpdate(this.sql);
-		return new DataCollection(new DataObject("count", result));
+		return processor.executeQuery(this.sql);
 
 	}
 }

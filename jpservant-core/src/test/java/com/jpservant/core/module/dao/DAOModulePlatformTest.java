@@ -22,8 +22,6 @@ import java.io.StringWriter;
 
 import org.junit.Test;
 
-import com.jpservant.core.common.Constant;
-import com.jpservant.core.common.Constant.ResourceType;
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
@@ -54,7 +52,6 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 	@Test
 	public void testDAOModulePlatformExecution() throws Exception {
 
-		initData();
 		execute("/dao");
 
 	}
@@ -63,20 +60,18 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 	 *
 	 * テスト用初期化処理
 	 */
-	private void initData() throws Exception {
+	private void execute(String path) throws Exception {
 
-		ModulePlatform module = MANAGER.getModulePlatform("/sql");
-		String strtype = (String) MANAGER.getModuleConfiguration("/sql").get(
-				Constant.ConfigurationName.ResourceType.name());
-		ResourceType type = ResourceType.valueOf(strtype);
+		ModulePlatform module = MANAGER.getModulePlatform(path);
 
 		StringWriter sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/TSampleTestTable/DeleteAll", "POST", null, type.createResolverInstance(), sw));
+				"/TSampleTestTable", "DELETE", null, null, sw));
 
 		//テスト用データの挿入
 		DataCollection rows = new DataCollection();
 		DataObject row1 = new DataObject();
+		row1.put("Id", "1");
 		row1.put("StringCol", "AAA");
 		row1.put("TimestampCol", "2014-01-01 00:00:01.0");
 		row1.put("NumberCol", "1024");
@@ -84,6 +79,7 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 		rows.add(row1);
 
 		DataObject row2 = new DataObject();
+		row2.put("Id", "2");
 		row2.put("StringCol", "BBB");
 		row2.put("TimestampCol", null);
 		row2.put("NumberCol", null);
@@ -91,14 +87,10 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 		rows.add(row2);
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/TSampleTestTable/Insert", "POST", rows, type.createResolverInstance(), sw));
-	}
+				"/TSampleTestTable", "POST", rows, null, sw));
 
-	private void execute(String path) throws Exception {
-
-		ModulePlatform module = MANAGER.getModulePlatform(path);
-
-		StringWriter sw = new StringWriter();
+		//全件検索
+		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable", "GET", null, null, sw));
 
@@ -107,11 +99,13 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 
 		for (DataObject obj : result) {
 			if ("AAA".equals(obj.get("StringCol"))) {
+				assertEquals("1", obj.get("Id"));
 				assertEquals("2014-01-01 00:00:01.0", obj.get("TimestampCol"));
 				assertEquals("1024", obj.get("NumberCol"));
 				assertEquals("0", obj.get("BoolCol"));
 			}
 			else if ("BBB".equals(obj.get("StringCol"))) {
+				assertEquals("2", obj.get("Id"));
 				assertNull(obj.get("TimestampCol"));
 				assertNull(obj.get("NumberCol"));
 				assertNull(obj.get("BoolCol"));
@@ -119,6 +113,40 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 				fail();
 			}
 		}
+		/*
+				//PK指定検索
+				sw = new StringWriter();
+				module.execute(new KernelContextImpl(
+						"/TSampleTestTable/1", "GET", null, null, sw));
+				result = toDataCollection(sw.toString());
+				assertEquals(1, result.size());
+
+				assertEquals("1", result.get(0).get("Id"));
+				assertEquals("AAA", result.get(0).get("StringCol"));
+				assertEquals("2014-01-01 00:00:01.0", result.get(0).get("TimestampCol"));
+				assertEquals("1024", result.get(0).get("NumberCol"));
+				assertEquals("0", result.get(0).get("BoolCol"));
+
+				sw = new StringWriter();
+				module.execute(new KernelContextImpl(
+						"/TSampleTestTable/2", "GET", null, null, sw));
+				result = toDataCollection(sw.toString());
+				assertEquals(1, result.size());
+
+				assertEquals("2", result.get(0).get("Id"));
+				assertEquals("BBB", result.get(0).get("StringCol"));
+				assertNull(result.get(0).get("TimestampCol"));
+				assertNull(result.get(0).get("NumberCol"));
+				assertNull(result.get(0).get("BoolCol"));
+		*/
+
+		//行カウント
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/count", "GET", null, null, sw));
+		DataObject result2 = toDataObject(sw.toString());
+		assertEquals("2", result2.get("Count"));
+
 	}
 
 }
