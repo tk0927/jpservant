@@ -27,6 +27,12 @@
 		"ResourceRoot"     : "C:/temp/module/mock"
 	},
 	{
+		"RootPath"         : "/dao" ,
+		"PlatformClass"    : "com.jpservant.core.module.dao.DAOModulePlatform" ,
+		"JDBCResourcePath" : "/JDBCResource1",
+		"SchemaName"       : "test"
+	},
+	{
 		"RootPath"         : "/JDBCResource1",
 		"PlatformClass"    : "com.jpservant.core.resource.JDBCDriverManagerResource" ,
 		"JDBCDriver"       : "com.mysql.jdbc.Driver" ,

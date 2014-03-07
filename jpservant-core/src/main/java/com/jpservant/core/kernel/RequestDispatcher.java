@@ -120,10 +120,13 @@ public class RequestDispatcher extends HttpServlet {
 
 		ModuleConfiguration config = this.manager.getModuleConfiguration(uritoken[1]);
 
-		ResourceType type = ResourceType.valueOf((String)
-				config.get(Constant.ConfigurationName.ResourceType.name()));
-		ResourceResolver resolver = type.createResolverInstance();
-		resolver.setReference(request.getSession().getServletContext());
+		String strtype = (String)config.get(Constant.ConfigurationName.ResourceType.name());
+		ResourceResolver resolver = null;
+		if(strtype != null){
+			ResourceType type = ResourceType.valueOf(strtype);
+			resolver = type.createResolverInstance();
+			resolver.setReference(request.getSession().getServletContext());
+		}
 
 		return new KernelContextImpl(uritoken[2], method, parameter, resolver, response.getWriter());
 

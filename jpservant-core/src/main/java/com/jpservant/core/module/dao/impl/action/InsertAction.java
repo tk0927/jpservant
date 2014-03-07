@@ -53,7 +53,7 @@ public class InsertAction implements DataAccessAction {
 			throws SQLException {
 
 		int[] result = processor.executeUpdate(this.sql, context.getParameters());
-		return new DataCollection(new DataObject("count", result));
+		return new DataCollection(new DataObject("Count", result));
 
 	}
 

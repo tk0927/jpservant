@@ -143,7 +143,7 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 		//行カウント
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
-				"/TSampleTestTable/count", "GET", null, null, sw));
+				"/TSampleTestTable/Count", "GET", null, null, sw));
 		DataObject result2 = toDataObject(sw.toString());
 		assertEquals("2", result2.get("Count"));
 

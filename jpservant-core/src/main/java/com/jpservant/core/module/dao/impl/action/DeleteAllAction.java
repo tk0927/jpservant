@@ -46,7 +46,7 @@ public class DeleteAllAction implements DataAccessAction {
 			throws SQLException {
 
 		int result = processor.executeUpdate(this.sql);
-		return new DataCollection(new DataObject("count", result));
+		return new DataCollection(new DataObject("Count", result));
 
 	}
 }

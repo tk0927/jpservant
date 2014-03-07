@@ -104,7 +104,7 @@ public class SchemaRepository {
 					concatPathTokens(tablepath), RequestMethod.DELETE,
 					new DeleteAllAction(tablename));
 			schemaentry.addEntry(
-					concatPathTokens(tablepath, "count"), RequestMethod.GET,
+					concatPathTokens(tablepath, "Count"), RequestMethod.GET,
 					new RowCountAction(tablename));
 			schemaentry.addEntry(
 					concatPathTokens(tablepath, primarykeys), RequestMethod.GET,
