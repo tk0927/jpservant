@@ -104,9 +104,9 @@ public class SchemaRepository {
 		System.out.println(columns);
 
 		for(DataObject table : tables){
-			String tablename = (String)table.get("TABLE_NAME");
+			String tablename = (String)table.get("TableName");
 			DataCollection pklist = getPrimaryKeys(dmd, schemaname, tablename);
-			System.out.println(tablename +"="+ pklist);
+			System.out.println("PK:" + tablename +"="+ pklist);
 		}
 
 		return null;

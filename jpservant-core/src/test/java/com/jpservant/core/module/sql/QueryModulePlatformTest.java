@@ -120,10 +120,10 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 				"/TSampleTestTable/SelectByStringCol","POST", criteriarows1 ,type.getInstance(),sw));
 
 		DataObject result = toDataObject(sw.toString());
-		assertEquals("AAA",						result.get("STRING_COL"));
-		assertEquals("2014-01-01 00:00:01.0",	result.get("TIMESTAMP_COL"));
-		assertEquals("1024",					result.get("NUMBER_COL"));
-		assertEquals("0",						result.get("BOOL_COL"));
+		assertEquals("AAA",						result.get("StringCol"));
+		assertEquals("2014-01-01 00:00:01.0",	result.get("TimestampCol"));
+		assertEquals("1024",					result.get("NumberCol"));
+		assertEquals("0",						result.get("BoolCol"));
 
 		//テスト用データの検索結果確認
 		DataCollection criteriarows2 = new DataCollection();
@@ -135,10 +135,10 @@ public class QueryModulePlatformTest extends JDBCResource1TestCaseBase {
 				"/TSampleTestTable/SelectByStringCol","POST", criteriarows2 ,type.getInstance(),sw));
 
 		DataObject result2 = toDataObject(sw.toString());
-		assertEquals("BBB",						result2.get("STRING_COL"));
-		assertNull(result2.get("TIMESTAMP_COL"));
-		assertNull(result2.get("NUMBER_COL"));
-		assertNull(result2.get("BOOL_COL"));
+		assertEquals("BBB",						result2.get("StringCol"));
+		assertNull(result2.get("TimestampCol"));
+		assertNull(result2.get("NumberCol"));
+		assertNull(result2.get("BoolCol"));
 	}
 
 }

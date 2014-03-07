@@ -157,4 +157,46 @@ public class Utilities {
 
 		return (list == null || list.isEmpty()) ? null : list.get(0);
 	}
+
+
+	/**
+	 *
+	 * スネークケース文字列をキャメルケース文字列に変換
+	 *
+	 * @param src スネークケース文字列
+	 * @return キャメルケース文字列
+	 */
+	public static String convertSnakeToCamel(String src){
+
+		Pattern p = Pattern.compile("_([a-z])");
+		Matcher m = p.matcher(src.toLowerCase());
+
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			m.appendReplacement(sb, m.group(1).toUpperCase());
+		}
+		m.appendTail(sb);
+
+		if(sb.length()>0){
+			sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+		}
+
+		return sb.toString();
+	}
+
+	/**
+	 *
+	 * キャメルケース文字列をスネークケース文字列に変換
+	 *
+	 * @param src キャメルケース文字列
+	 * @return スネークケース文字列
+	 */
+	public static String convertCamelToSnake(String src){
+
+		String convertedStr = src
+				.replaceAll("([A-Z0-9]+)([A-Z0-9][a-z0-9])", "$1_$2")
+				.replaceAll("([a-z0-9])([A-Z0-9])", "$1_$2");
+		return convertedStr.toUpperCase();
+
+	}
 }

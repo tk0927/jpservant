@@ -15,6 +15,8 @@
  */
 package com.jpservant.core.common.sql.impl;
 
+import static com.jpservant.core.common.Utilities.*;
+
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -80,7 +82,7 @@ public class DatabaseMetaDataUtils {
 					DataObject row = new DataObject();
 
 					for (int i = 1; i <= rsm.getColumnCount(); i++) {
-						String colname = rsm.getColumnName(i);
+						String colname = convertSnakeToCamel(rsm.getColumnName(i));
 						if(this.accepts.contains(colname)){
 							row.put(colname, rs.getString(i));
 						}
@@ -121,7 +123,7 @@ public class DatabaseMetaDataUtils {
 	public static DataCollection getSelectableTableNames(
 			final DatabaseMetaData dmd,final String schema) throws SQLException{
 
-		return new AccessProcessor("TABLE_NAME","TALE_TYPE"){
+		return new AccessProcessor("TableName","TableType"){
 			@Override
 			public ResultSet execute() throws SQLException {
 				return dmd.getTables(null, schema, "%", new String[]{"TABLE","VIEW"});
@@ -142,7 +144,7 @@ public class DatabaseMetaDataUtils {
 	public static DataCollection getColumnNames(
 			final DatabaseMetaData dmd,final String schema) throws SQLException{
 
-		return new AccessProcessor("COLUMN_NAME","TABLE_NAME","TYPE_NAME","COLUMN_SIZE","NULLABLE") {
+		return new AccessProcessor("ColumnName","TableName","TableType","ColumnSize","Nullable") {
 			@Override
 			public ResultSet execute() throws SQLException {
 				return dmd.getColumns(null, schema, "%", "%");
@@ -164,7 +166,7 @@ public class DatabaseMetaDataUtils {
 	public static DataCollection getPrimaryKeys(
 			final DatabaseMetaData dmd,final String schema,final String table)throws SQLException{
 
-		return new AccessProcessor("COLUMN_NAME") {
+		return new AccessProcessor("ColumnName") {
 			@Override
 			public ResultSet execute() throws SQLException {
 				return dmd.getPrimaryKeys(null, schema, table);

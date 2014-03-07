@@ -43,4 +43,14 @@ public class DataCollection extends ArrayList<DataObject>{
 		addAll(impl);
 	}
 
+	@Override
+	public String toString(){
+		StringBuilder sb = new StringBuilder("[\r\n");
+		for(DataObject element:this){
+			sb.append(element == null ? "{null}" : element.toString());
+			sb.append("\r\n");
+		}
+		sb.append("]\r\n");
+		return sb.toString();
+	}
 }

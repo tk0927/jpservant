@@ -15,6 +15,8 @@
  */
 package com.jpservant.core.common.sql.impl;
 
+import static com.jpservant.core.common.Utilities.*;
+
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
@@ -96,7 +98,7 @@ public class DataObjectSQLExecutor extends SQLExecutor<DataCollection> {
 
 			DataObject row = new DataObject();
 			for(int i = 1 ; i <= rsm.getColumnCount() ; i++){
-				row.put(rsm.getColumnName(i),rs.getString(i));
+				row.put(convertSnakeToCamel(rsm.getColumnName(i)),rs.getString(i));
 			}
 
 			result.add(row);
