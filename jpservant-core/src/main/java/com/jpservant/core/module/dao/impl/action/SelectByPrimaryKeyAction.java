@@ -1,0 +1,91 @@
+/*
+ * Copyright 2014 Toshiaki Kamoshida
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.jpservant.core.module.dao.impl.action;
+
+import static com.jpservant.core.common.Utilities.*;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.common.DataObject;
+import com.jpservant.core.common.sql.SQLProcessor;
+import com.jpservant.core.kernel.KernelContext;
+import com.jpservant.core.module.dao.impl.DataAccessAction;
+import com.jpservant.core.module.spi.ModuleConfiguration;
+
+/**
+ *
+ * プライマリーキー指定での検索Action。
+ *
+ * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+ * @version 0.1
+ *
+ */
+public class SelectByPrimaryKeyAction implements DataAccessAction {
+
+	private String sql;
+	private List<String> primarykeynames;
+
+	public SelectByPrimaryKeyAction(String tablename, List<String> primarykeynames) {
+
+		this.primarykeynames = primarykeynames;
+		this.sql = String.format("SELECT * FROM %s WHERE %s ORDER BY %s",
+				tablename,
+				createWhereClause(primarykeynames),
+				createOrderByClause(primarykeynames));
+
+	}
+
+	@Override
+	public DataCollection execute(
+			SQLProcessor processor, ModuleConfiguration config, KernelContext context)
+			throws SQLException {
+
+		String[] pathtokens = context.getRequestPath().split("/");
+		DataObject criteria = new DataObject();
+		for (int i = 0; i < primarykeynames.size(); i++) {
+			criteria.put(primarykeynames.get(i), pathtokens[i + 1]);
+		}
+		return processor.executeQuery(this.sql, criteria);
+
+	}
+
+	private static String createWhereClause(List<String> primarykeynames) {
+
+		StringBuilder sb = new StringBuilder();
+		for (String colname : primarykeynames) {
+			sb.append(colname);
+			sb.append("=:");
+			sb.append(convertSnakeToCamel(colname));
+			sb.append(" AND ");
+		}
+
+		return sb.substring(0, sb.length() - 4);
+	}
+
+	private static String createOrderByClause(List<String> primarykeynames) {
+
+		StringBuilder sb = new StringBuilder();
+		for (String colname : primarykeynames) {
+			sb.append(colname);
+			sb.append(",");
+		}
+
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+	}
+}

@@ -18,13 +18,18 @@ package com.jpservant.core.module.dao.impl;
 import static com.jpservant.core.common.Utilities.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.jpservant.core.common.Constant.RequestMethod;
-import com.jpservant.core.module.dao.impl.DataAccessAction.DeleteAllAction;
-import com.jpservant.core.module.dao.impl.DataAccessAction.SelectAllAction;
+import com.jpservant.core.module.dao.impl.SchemaParser.ColumnMetaData;
 import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
+import com.jpservant.core.module.dao.impl.action.DeleteAllAction;
+import com.jpservant.core.module.dao.impl.action.InsertAction;
+import com.jpservant.core.module.dao.impl.action.SelectAllAction;
+import com.jpservant.core.module.dao.impl.action.SelectByPrimaryKeyAction;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
 
@@ -80,12 +85,26 @@ public class SchemaRepository {
 		for (Map.Entry<String, TableMetaData> entry : tableschemas.entrySet()) {
 
 			String tablename = entry.getKey();
+			TableMetaData tmd = entry.getValue();
+			ArrayList<String> colnames = new ArrayList<String>();
+			for (ColumnMetaData column : tmd.getColumns()) {
+				colnames.add(column.getName());
+			}
+			List<String> primarykeys = tmd.getPrimaryKeys();
 			String tablepath = convertSnakeToCamel(tablename);
 
 			schemaentry.addEntry(
-					concatPathTokens(tablepath), RequestMethod.GET, new SelectAllAction(tablename));
+					concatPathTokens(tablepath), RequestMethod.GET,
+					new SelectAllAction(tablename));
 			schemaentry.addEntry(
-					concatPathTokens(tablepath), RequestMethod.DELETE, new DeleteAllAction(tablename));
+					concatPathTokens(tablepath), RequestMethod.POST,
+					new InsertAction(tablename, colnames));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath), RequestMethod.DELETE,
+					new DeleteAllAction(tablename));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath, primarykeys), RequestMethod.GET,
+					new SelectByPrimaryKeyAction(tablename, convertSnakeToCamel(primarykeys)));
 
 		}
 

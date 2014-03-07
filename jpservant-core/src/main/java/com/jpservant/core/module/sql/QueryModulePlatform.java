@@ -31,9 +31,9 @@ import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.exception.ApplicationException;
 import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.KernelContext;
-import com.jpservant.core.kernel.PostProcessor;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
+import com.jpservant.core.module.spi.ModuleUtils;
 
 /**
  *
@@ -88,7 +88,7 @@ public class QueryModulePlatform implements ModulePlatform {
 
 		} finally {
 
-			registerPostProcess(context, holder);
+			ModuleUtils.registerPostProcessForConnection(context, holder);
 
 		}
 
@@ -145,44 +145,6 @@ public class QueryModulePlatform implements ModulePlatform {
 
 		context.writeResponse(response);
 
-	}
-
-	/**
-	 *
-	 * 後処理を登録します。
-	 *
-	 * @param context コンテキスト
-	 * @param holder データベース接続
-	 */
-	private static void registerPostProcess(KernelContext context, final DatabaseConnectionHolder holder) {
-
-		if (holder == null) {
-			return;
-		}
-
-		context.addPostProcessor(new PostProcessor() {
-			@Override
-			public void execute() throws Exception {
-				holder.commit();
-				holder.releaseSession();
-			}
-		});
-
-		context.addErrorProcessor(new PostProcessor() {
-			@Override
-			public void execute() throws Exception {
-				try {
-					holder.rollback();
-				} catch (SQLException e) {
-					//no operation
-				}
-				try {
-					holder.releaseSession();
-				} catch (SQLException e) {
-					//no operation
-				}
-			}
-		});
 	}
 
 }

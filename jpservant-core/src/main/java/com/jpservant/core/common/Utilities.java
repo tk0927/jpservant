@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -161,6 +162,23 @@ public class Utilities {
 
 	/**
 	 *
+	 * リストに含まれるスネークケース文字列をキャメルケース文字列に変換する。
+	 *
+	 *
+	 * @param src スネークケース文字列リスト
+	 * @return キャメルケース文字列リスト
+	 * @see #convertSnakeToCamel(String)
+	 */
+	public static List<String> convertSnakeToCamel(List<String> src) {
+		List<String> retvalue = new ArrayList<String>();
+		for (String element : src) {
+			retvalue.add(convertSnakeToCamel(element));
+		}
+		return retvalue;
+	}
+
+	/**
+	 *
 	 * スネークケース文字列をキャメルケース文字列に変換する。
 	 *
 	 * <pre>
@@ -192,6 +210,22 @@ public class Utilities {
 
 	/**
 	 *
+	 * キャメルケース文字列リストをスネークケース文字列リストに変換する。
+	 *
+	 * @param src キャメルケース文字列リスト
+	 * @return スネークケース文字列リスト
+	 * @see #convertCamelToSnake(String)
+	 */
+	public static List<String> convertCamelToSnake(List<String> src) {
+		List<String> retvalue = new ArrayList<String>();
+		for (String element : src) {
+			retvalue.add(convertCamelToSnake(element));
+		}
+		return retvalue;
+	}
+
+	/**
+	 *
 	 * キャメルケース文字列をスネークケース文字列に変換する。
 	 *
 	 * <pre>
@@ -211,6 +245,26 @@ public class Utilities {
 				.replaceAll("([a-z0-9])([A-Z0-9])", "$1_$2");
 		return convertedStr.toUpperCase();
 
+	}
+
+	/**
+	 *
+	 * URIパストークンを連結して一つのURIにします。
+	 *
+	 * @param root ルートパストークン
+	 * @param tokens パストークン
+	 * @return URI文字列
+	 */
+	public static String concatPathTokens(String root, List<String> tokens) {
+
+		String[] array = new String[tokens.size() + 1];
+		array[0] = root;
+		int i = 1;
+		for (String token : tokens) {
+			array[i++] = token;
+		}
+
+		return concatPathTokens(array);
 	}
 
 	/**

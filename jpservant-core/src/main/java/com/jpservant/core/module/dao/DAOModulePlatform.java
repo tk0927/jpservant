@@ -24,11 +24,11 @@ import com.jpservant.core.exception.ApplicationException;
 import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.exception.ConfigurationException;
 import com.jpservant.core.kernel.KernelContext;
-import com.jpservant.core.kernel.PostProcessor;
 import com.jpservant.core.module.dao.impl.SchemaEntry;
 import com.jpservant.core.module.dao.impl.SchemaRepository;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
+import com.jpservant.core.module.spi.ModuleUtils;
 
 /**
  *
@@ -63,54 +63,17 @@ public class DAOModulePlatform implements ModulePlatform {
 					ConfigurationName.JDBCResourcePath.name());
 
 			SchemaEntry entry = SchemaRepository.getEntry(this);
-			DataCollection response = entry.execute(config, context,holder);
+			DataCollection response = entry.execute(config, context, holder);
 			context.writeResponse(response);
 
 		} catch (SQLException e) {
 
 			throw new ApplicationException(ErrorType.BadRequest, e);
 
-		}finally{
-			registerPostProcess(context, holder);
+		} finally {
+
+			ModuleUtils.registerPostProcessForConnection(context, holder);
+
 		}
 	}
-
-	/**
-	 *
-	 * 後処理を登録します。
-	 *
-	 * @param context コンテキスト
-	 * @param holder データベース接続
-	 */
-	private static void registerPostProcess(KernelContext context, final DatabaseConnectionHolder holder) {
-
-		if (holder == null) {
-			return;
-		}
-
-		context.addPostProcessor(new PostProcessor() {
-			@Override
-			public void execute() throws Exception {
-				holder.commit();
-				holder.releaseSession();
-			}
-		});
-
-		context.addErrorProcessor(new PostProcessor() {
-			@Override
-			public void execute() throws Exception {
-				try {
-					holder.rollback();
-				} catch (SQLException e) {
-					//no operation
-				}
-				try {
-					holder.releaseSession();
-				} catch (SQLException e) {
-					//no operation
-				}
-			}
-		});
-	}
-
 }

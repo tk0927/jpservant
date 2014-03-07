@@ -21,7 +21,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -70,12 +69,12 @@ public class SchemaParser {
 			return this.name;
 		}
 
-		public Iterator<ColumnMetaData> getColumns() {
-			return columns.iterator();
+		public List<ColumnMetaData> getColumns() {
+			return columns;
 		}
 
-		public Iterator<String> getPrimaryKeys() {
-			return primarykeys.iterator();
+		public List<String> getPrimaryKeys() {
+			return primarykeys;
 		}
 
 	}

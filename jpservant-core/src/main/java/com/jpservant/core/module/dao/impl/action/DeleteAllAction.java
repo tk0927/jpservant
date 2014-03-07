@@ -13,37 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jpservant.core.module.dao.impl;
+package com.jpservant.core.module.dao.impl.action;
 
 import java.sql.SQLException;
 
 import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
+import com.jpservant.core.module.dao.impl.DataAccessAction;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
  *
- * DAO REST APIに紐づく処理を実装する位置。
+ * 全件削除Action。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
  *
  */
-public interface DataAccessAction {
+public class DeleteAllAction implements DataAccessAction {
 
-	/**
-	 *
-	 * 処理を実行します。
-	 *
-	 * @param processor SQL実行機
-	 * @param config 設定情報
-	 * @param context コンテキスト
-	 * @return 検索・更新実行結果
-	 * @throws SQLException 何らかのSQL例外発生
-	 */
-	DataCollection execute(
+	private String sql;
+
+	public DeleteAllAction(String tablename) {
+		this.sql = String.format("DELETE * FROM %s", tablename);
+	}
+
+	@Override
+	public DataCollection execute(
 			SQLProcessor processor, ModuleConfiguration config, KernelContext context)
-			throws SQLException;
+			throws SQLException {
 
+		int result = processor.executeUpdate(this.sql);
+		return new DataCollection(new DataObject("count", result));
+
+	}
 }
