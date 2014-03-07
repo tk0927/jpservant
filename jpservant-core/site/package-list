@@ -7,6 +7,8 @@ com.jpservant.core.kernel
 com.jpservant.core.kernel.impl
 com.jpservant.core.module.complex
 com.jpservant.core.module.dao
+com.jpservant.core.module.dao.impl
+com.jpservant.core.module.dao.impl.action
 com.jpservant.core.module.filesystem
 com.jpservant.core.module.mock
 com.jpservant.core.module.spi
