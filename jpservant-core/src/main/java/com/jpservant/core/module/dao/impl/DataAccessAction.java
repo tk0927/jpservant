@@ -16,6 +16,7 @@
 package com.jpservant.core.module.dao.impl;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.sql.SQLProcessor;
@@ -39,11 +40,12 @@ public interface DataAccessAction {
 	 * @param processor SQL実行機
 	 * @param config 設定情報
 	 * @param context コンテキスト
+	 * @param pathtokens URLパストークンリスト
 	 * @return 検索・更新実行結果
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
 	DataCollection execute(
-			SQLProcessor processor, ModuleConfiguration config, KernelContext context)
+			SQLProcessor processor, ModuleConfiguration config, KernelContext context, List<String> pathtokens)
 			throws SQLException;
 
 }

@@ -16,8 +16,12 @@
 package com.jpservant.core.module.dao.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.jpservant.core.common.Constant.RequestMethod;
 import com.jpservant.core.common.DataCollection;
@@ -38,13 +42,21 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  */
 public class SchemaEntry {
 
+	/**
+	 *
+	 * データベーススキーマの検索キーオブジェクト。
+	 *
+	 * @author Toshiaki.Kamoshida <kamoshida.toshiaki@gmail.com>
+	 * @version 0.1
+	 *
+	 */
 	public static class SchemaEntryKey {
 
 		private String path;
 		private RequestMethod method;
 		int hashcode;
 
-		public SchemaEntryKey(String path, RequestMethod method) {
+		private SchemaEntryKey(String path, RequestMethod method) {
 			this.path = path;
 			this.method = method;
 			this.hashcode = (path + method).hashCode();
@@ -63,7 +75,7 @@ public class SchemaEntry {
 		}
 	}
 
-	private Map<String, TableMetaData> metadata;
+//	private Map<String, TableMetaData> metadata;
 
 	/** 格納位置の実体 */
 	private Map<SchemaEntryKey, DataAccessAction> impl = new HashMap<SchemaEntryKey, DataAccessAction>();
@@ -75,7 +87,7 @@ public class SchemaEntry {
 	 * @param metadata メタデータ
 	 */
 	public SchemaEntry(Map<String, TableMetaData> metadata) {
-		this.metadata = metadata;
+//		this.metadata = metadata;
 	}
 
 	/**
@@ -106,18 +118,61 @@ public class SchemaEntry {
 
 		String path = context.getRequestPath();
 		String method = context.getMethod();
+		List<String> pathtokens = null;
 
 		DataAccessAction action = impl.get(
 				new SchemaEntryKey(path, RequestMethod.valueOf(method)));
-		if (action == null) {
-			//TODO: 可変パス検査
 
-			throw new ApplicationException(ErrorType.NotFound);
+		if (action == null) {
+
+			for (SchemaEntryKey key : impl.keySet()) {
+
+				pathtokens = findPathTokens(key, path, method);
+				if(pathtokens != null){
+					action = impl.get(key);
+					break;
+				}
+			}
+
+			if (action == null) {
+				throw new ApplicationException(ErrorType.NotFound);
+			}
 		}
 
 		SQLProcessor processor = new SQLProcessor(holder);
 
-		return action.execute(processor, config, context);
+		return action.execute(processor, config, context, pathtokens);
 
+	}
+
+	/**
+	 *
+	 * パスのパラメータ部分(テーブル名を示す最上位を除く部分)を考慮して、
+	 * リクエストパラメータ、メソッドとエントリーキーが一致するかを検査する。
+	 *
+	 *
+	 * @param key エントリーキー
+	 * @param path リクエストURIパス
+	 * @param method リクエストメソッド
+	 * @return 一致する場合に限り、パスパラメータ部分リスト 一致しない場合null
+	 */
+	private static List<String> findPathTokens(SchemaEntryKey key,String path,String method){
+
+		if (!key.method.name().equals(method)) {
+			return null;
+		}
+
+		Pattern p = Pattern.compile(key.path);
+		Matcher m = p.matcher(path);
+
+		if (!m.matches()) {
+			return null;
+		}
+		List<String> retvalue = new ArrayList<String>();
+		for(int i = 1 ; i <= m.groupCount() ; i++){
+			retvalue.add(m.group(i));
+		}
+
+		return retvalue;
 	}
 }

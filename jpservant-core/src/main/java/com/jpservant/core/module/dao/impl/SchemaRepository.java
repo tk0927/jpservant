@@ -24,13 +24,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.jpservant.core.common.Constant.RequestMethod;
-import com.jpservant.core.module.dao.impl.SchemaParser.ColumnMetaData;
 import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.dao.impl.action.DeleteAllAction;
+import com.jpservant.core.module.dao.impl.action.DeleteByPrimaryKeyAction;
 import com.jpservant.core.module.dao.impl.action.InsertAction;
 import com.jpservant.core.module.dao.impl.action.RowCountAction;
 import com.jpservant.core.module.dao.impl.action.SelectAllAction;
 import com.jpservant.core.module.dao.impl.action.SelectByPrimaryKeyAction;
+import com.jpservant.core.module.dao.impl.action.UpdateByPrimaryKeyAction;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
 
@@ -87,10 +88,7 @@ public class SchemaRepository {
 
 			String tablename = entry.getKey();
 			TableMetaData tmd = entry.getValue();
-			ArrayList<String> colnames = new ArrayList<String>();
-			for (ColumnMetaData column : tmd.getColumns()) {
-				colnames.add(column.getName());
-			}
+			List<String> colnames = tmd.getColumnNames();
 			List<String> primarykeys = tmd.getPrimaryKeys();
 			String tablepath = convertSnakeToCamel(tablename);
 
@@ -107,11 +105,27 @@ public class SchemaRepository {
 					concatPathTokens(tablepath, "Count"), RequestMethod.GET,
 					new RowCountAction(tablename));
 			schemaentry.addEntry(
-					concatPathTokens(tablepath, primarykeys), RequestMethod.GET,
+					concatPathTokens(tablepath, convertToRegexpTokens(primarykeys)), RequestMethod.GET,
 					new SelectByPrimaryKeyAction(tablename, convertSnakeToCamel(primarykeys)));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath, convertToRegexpTokens(primarykeys)), RequestMethod.DELETE,
+					new DeleteByPrimaryKeyAction(tablename, convertSnakeToCamel(primarykeys)));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath, convertToRegexpTokens(primarykeys)), RequestMethod.PUT,
+					new UpdateByPrimaryKeyAction(tablename, colnames, convertSnakeToCamel(primarykeys)));
 
 		}
 
 		return schemaentry;
+	}
+
+	private static List<String> convertToRegexpTokens(List<String> src) {
+
+		List<String> retvalue = new ArrayList<String>();
+		for (int i = 0; i < src.size(); i++) {
+			retvalue.add("/([^/]+)");
+		}
+		return retvalue;
+
 	}
 }

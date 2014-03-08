@@ -120,9 +120,9 @@ public class RequestDispatcher extends HttpServlet {
 
 		ModuleConfiguration config = this.manager.getModuleConfiguration(uritoken[1]);
 
-		String strtype = (String)config.get(Constant.ConfigurationName.ResourceType.name());
+		String strtype = (String) config.get(Constant.ConfigurationName.ResourceType.name());
 		ResourceResolver resolver = null;
-		if(strtype != null){
+		if (strtype != null) {
 			ResourceType type = ResourceType.valueOf(strtype);
 			resolver = type.createResolverInstance();
 			resolver.setReference(request.getSession().getServletContext());

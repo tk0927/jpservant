@@ -15,7 +15,7 @@
  */
 package com.jpservant.core.module.dao.impl.action;
 
-import static com.jpservant.core.common.Utilities.*;
+import static com.jpservant.core.module.dao.impl.action.ActionUtils.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -44,42 +44,17 @@ public class InsertAction implements DataAccessAction {
 		this.sql = String.format("INSERT INTO %s( %s )VALUES( %s )",
 				tablename,
 				createColumnsToken(columnnames),
-				createPlaceholderToken(columnnames));
+				createInsertPlaceholderToken(columnnames));
 	}
 
 	@Override
 	public DataCollection execute(
-			SQLProcessor processor, ModuleConfiguration config, KernelContext context)
+			SQLProcessor processor, ModuleConfiguration config, KernelContext context, List<String> pathtokens)
 			throws SQLException {
 
 		int[] result = processor.executeUpdate(this.sql, context.getParameters());
 		return new DataCollection(new DataObject("Count", result));
 
-	}
-
-	private static String createColumnsToken(List<String> columnnames) {
-
-		StringBuilder sb = new StringBuilder();
-		for (String colname : columnnames) {
-			sb.append(colname);
-			sb.append(",");
-		}
-		sb.deleteCharAt(sb.length() - 1);
-		return sb.toString();
-
-	}
-
-	private static String createPlaceholderToken(List<String> columnnames) {
-
-		StringBuilder sb = new StringBuilder();
-		for (String colname : columnnames) {
-			sb.append(":");
-			sb.append(convertSnakeToCamel(colname));
-			sb.append(",");
-		}
-
-		sb.deleteCharAt(sb.length() - 1);
-		return sb.toString();
 	}
 
 }

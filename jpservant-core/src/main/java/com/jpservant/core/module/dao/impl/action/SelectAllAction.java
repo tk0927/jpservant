@@ -16,6 +16,7 @@
 package com.jpservant.core.module.dao.impl.action;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.sql.SQLProcessor;
@@ -41,8 +42,10 @@ public class SelectAllAction implements DataAccessAction {
 
 	@Override
 	public DataCollection execute(
-			SQLProcessor processor, ModuleConfiguration config, KernelContext context)
+			SQLProcessor processor, ModuleConfiguration config, KernelContext context, List<String> pathtokens)
 			throws SQLException {
+
 		return processor.executeQuery(this.sql);
+
 	}
 }

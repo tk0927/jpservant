@@ -77,6 +77,15 @@ public class SchemaParser {
 			return primarykeys;
 		}
 
+		public List<String> getColumnNames() {
+
+			ArrayList<String> colnames = new ArrayList<String>();
+			for (ColumnMetaData column : getColumns()) {
+				colnames.add(column.getName());
+			}
+			return colnames;
+
+		}
 	}
 
 	/**

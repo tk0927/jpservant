@@ -113,39 +113,70 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 				fail();
 			}
 		}
-		/*
-				//PK指定検索
-				sw = new StringWriter();
-				module.execute(new KernelContextImpl(
-						"/TSampleTestTable/1", "GET", null, null, sw));
-				result = toDataCollection(sw.toString());
-				assertEquals(1, result.size());
 
-				assertEquals("1", result.get(0).get("Id"));
-				assertEquals("AAA", result.get(0).get("StringCol"));
-				assertEquals("2014-01-01 00:00:01.0", result.get(0).get("TimestampCol"));
-				assertEquals("1024", result.get(0).get("NumberCol"));
-				assertEquals("0", result.get(0).get("BoolCol"));
+		//PK指定検索
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/1", "GET", null, null, sw));
+		DataObject result2 = toDataObject(sw.toString());
+		assertEquals("1", result2.get("Id"));
+		assertEquals("AAA", result2.get("StringCol"));
+		assertEquals("2014-01-01 00:00:01.0", result2.get("TimestampCol"));
+		assertEquals("1024", result2.get("NumberCol"));
+		assertEquals("0", result2.get("BoolCol"));
 
-				sw = new StringWriter();
-				module.execute(new KernelContextImpl(
-						"/TSampleTestTable/2", "GET", null, null, sw));
-				result = toDataCollection(sw.toString());
-				assertEquals(1, result.size());
-
-				assertEquals("2", result.get(0).get("Id"));
-				assertEquals("BBB", result.get(0).get("StringCol"));
-				assertNull(result.get(0).get("TimestampCol"));
-				assertNull(result.get(0).get("NumberCol"));
-				assertNull(result.get(0).get("BoolCol"));
-		*/
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/2", "GET", null, null, sw));
+		result2 = toDataObject(sw.toString());
+		assertEquals("2", result2.get("Id"));
+		assertEquals("BBB", result2.get("StringCol"));
+		assertNull(result2.get("TimestampCol"));
+		assertNull(result2.get("NumberCol"));
+		assertNull(result2.get("BoolCol"));
 
 		//行カウント
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/Count", "GET", null, null, sw));
-		DataObject result2 = toDataObject(sw.toString());
+		result2 = toDataObject(sw.toString());
 		assertEquals("2", result2.get("Count"));
+
+		//PK指定更新
+		//テスト用データの挿入
+		DataCollection rows2 = new DataCollection();
+		DataObject row3 = new DataObject();
+		row3.put("Id", "1");
+		row3.put("StringCol", "XXX");
+		row3.put("TimestampCol", "2015-01-01 00:00:01.0");
+		row3.put("NumberCol", "2048");
+		row3.put("BoolCol", "1");
+		rows2.add(row3);
+
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/1", "PUT", rows2, null, sw));
+
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/1", "GET", null, null, sw));
+		DataObject result3 = toDataObject(sw.toString());
+		assertEquals("1", result3.get("Id"));
+		assertEquals("XXX", result3.get("StringCol"));
+		assertEquals("2015-01-01 00:00:01.0", result3.get("TimestampCol"));
+		assertEquals("2048", result3.get("NumberCol"));
+		assertEquals("1", result3.get("BoolCol"));
+
+		//一件削除
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/1", "DELETE", null, null, sw));
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/Count", "GET", null, null, sw));
+		result2 = toDataObject(sw.toString());
+		assertEquals("1", result2.get("Count"));
+
 
 	}
 

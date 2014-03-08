@@ -15,13 +15,12 @@
  */
 package com.jpservant.core.module.dao.impl.action;
 
-import static com.jpservant.core.common.Utilities.*;
+import static com.jpservant.core.module.dao.impl.action.ActionUtils.*;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import com.jpservant.core.common.DataCollection;
-import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.DataAccessAction;
@@ -52,40 +51,11 @@ public class SelectByPrimaryKeyAction implements DataAccessAction {
 
 	@Override
 	public DataCollection execute(
-			SQLProcessor processor, ModuleConfiguration config, KernelContext context)
+			SQLProcessor processor, ModuleConfiguration config, KernelContext context, List<String> pathtokens)
 			throws SQLException {
 
-		String[] pathtokens = context.getRequestPath().split("/");
-		DataObject criteria = new DataObject();
-		for (int i = 0; i < primarykeynames.size(); i++) {
-			criteria.put(primarykeynames.get(i), pathtokens[i + 1]);
-		}
-		return processor.executeQuery(this.sql, criteria);
+		return processor.executeQuery(this.sql,
+				bindPathTokens(this.primarykeynames, pathtokens));
 
-	}
-
-	private static String createWhereClause(List<String> primarykeynames) {
-
-		StringBuilder sb = new StringBuilder();
-		for (String colname : primarykeynames) {
-			sb.append(colname);
-			sb.append("=:");
-			sb.append(convertSnakeToCamel(colname));
-			sb.append(" AND ");
-		}
-
-		return sb.substring(0, sb.length() - 4);
-	}
-
-	private static String createOrderByClause(List<String> primarykeynames) {
-
-		StringBuilder sb = new StringBuilder();
-		for (String colname : primarykeynames) {
-			sb.append(colname);
-			sb.append(",");
-		}
-
-		sb.deleteCharAt(sb.length() - 1);
-		return sb.toString();
 	}
 }
