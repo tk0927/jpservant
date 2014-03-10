@@ -25,12 +25,16 @@ import java.util.Map;
 
 import com.jpservant.core.common.Constant.RequestMethod;
 import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
+import com.jpservant.core.module.dao.impl.action.CountByCriteriaAction;
 import com.jpservant.core.module.dao.impl.action.DeleteAllAction;
+import com.jpservant.core.module.dao.impl.action.DeleteByCriteriaAction;
 import com.jpservant.core.module.dao.impl.action.DeleteByPrimaryKeyAction;
 import com.jpservant.core.module.dao.impl.action.InsertAction;
 import com.jpservant.core.module.dao.impl.action.RowCountAction;
 import com.jpservant.core.module.dao.impl.action.SelectAllAction;
+import com.jpservant.core.module.dao.impl.action.SelectByCriteriaAction;
 import com.jpservant.core.module.dao.impl.action.SelectByPrimaryKeyAction;
+import com.jpservant.core.module.dao.impl.action.UpdateByCriteriaAction;
 import com.jpservant.core.module.dao.impl.action.UpdateByPrimaryKeyAction;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
@@ -104,6 +108,18 @@ public class SchemaRepository {
 			schemaentry.addEntry(
 					concatPathTokens(tablepath, "Count"), RequestMethod.GET,
 					new RowCountAction(tablename));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath, "Count"), RequestMethod.POST,
+					new CountByCriteriaAction(tablename));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath, "Select"), RequestMethod.POST,
+					new SelectByCriteriaAction(tablename));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath, "Update"), RequestMethod.POST,
+					new UpdateByCriteriaAction(tablename));
+			schemaentry.addEntry(
+					concatPathTokens(tablepath, "Delete"), RequestMethod.POST,
+					new DeleteByCriteriaAction(tablename));
 			schemaentry.addEntry(
 					concatPathTokens(tablepath, convertToRegexpTokens(primarykeys)), RequestMethod.GET,
 					new SelectByPrimaryKeyAction(tablename, convertSnakeToCamel(primarykeys)));

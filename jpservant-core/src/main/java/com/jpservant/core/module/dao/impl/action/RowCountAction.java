@@ -32,7 +32,7 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  * @version 0.1
  *
  */
-public class RowCountAction implements DataAccessAction {
+public class RowCountAction extends DataAccessAction {
 
 	private String sql;
 

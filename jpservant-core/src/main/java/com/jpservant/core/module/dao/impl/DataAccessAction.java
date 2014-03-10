@@ -31,7 +31,9 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  * @version 0.1
  *
  */
-public interface DataAccessAction {
+public abstract class DataAccessAction {
+
+	private SchemaEntry entry;
 
 	/**
 	 *
@@ -44,8 +46,19 @@ public interface DataAccessAction {
 	 * @return 検索・更新実行結果
 	 * @throws SQLException 何らかのSQL例外発生
 	 */
-	DataCollection execute(
+	public abstract DataCollection execute(
 			SQLProcessor processor, ModuleConfiguration config, KernelContext context, List<String> pathtokens)
 			throws SQLException;
 
+	public String toString() {
+		return getClass().getSimpleName();
+	}
+
+	public void setSchemaEntry(SchemaEntry entry) {
+		this.entry = entry;
+	}
+
+	public SchemaEntry getSchemaEntry(){
+		return this.entry;
+	}
 }

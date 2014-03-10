@@ -35,6 +35,9 @@ public class ActionUtils {
 
 	public static String createColumnsToken(List<String> columnnames) {
 
+		if(columnnames == null | columnnames.isEmpty()){
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		for (String colname : columnnames) {
 			sb.append(colname);
@@ -47,6 +50,9 @@ public class ActionUtils {
 
 	public static String createInsertPlaceholderToken(List<String> columnnames) {
 
+		if(columnnames == null | columnnames.isEmpty()){
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		for (String colname : columnnames) {
 			sb.append(":");
@@ -60,6 +66,9 @@ public class ActionUtils {
 
 	public static String createUpdatePlaceholderToken(List<String> columnnames) {
 
+		if(columnnames == null | columnnames.isEmpty()){
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		for (String colname : columnnames) {
 			sb.append(colname);
@@ -72,10 +81,13 @@ public class ActionUtils {
 		return sb.toString();
 	}
 
-	public static String createWhereClause(List<String> colnames) {
+	public static String createWhereClause(List<String> columnnames) {
 
+		if(columnnames == null | columnnames.isEmpty()){
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
-		for (String colname : colnames) {
+		for (String colname : columnnames) {
 			sb.append(colname);
 			sb.append("=:");
 			sb.append(convertSnakeToCamel(colname));
@@ -85,11 +97,33 @@ public class ActionUtils {
 		return sb.substring(0, sb.length() - 4);
 	}
 
-	public static String createWhereClause(List<String> colnames,List<String> bindnames) {
+	/**
+	 *
+	 * 検索条件に合致するSQL Where句を生成する。
+	 *
+	 * @param colnames テーブルのカラム名リスト
+	 * @param criteria 検索条件オブジェクト
+	 * @return SQL Where句
+	 */
+	public static String createWhereClause(List<String> colnames, DataObject criteria) {
 
+		ArrayList<String> criteriatokens = new ArrayList<String>();
+		for (String colname : colnames) {
+			if (criteria.containsKey(convertSnakeToCamel(colname))) {
+				criteriatokens.add(colname);
+			}
+		}
+		return ActionUtils.createWhereClause(criteriatokens);
+
+	}
+	public static String createWhereClause(List<String> columnnames,List<String> bindnames) {
+
+		if(columnnames == null | columnnames.isEmpty()){
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
-		for (String colname : colnames) {
+		for (String colname : columnnames) {
 			sb.append(colname);
 			sb.append("=:");
 			sb.append(bindnames.get(i++));
@@ -99,10 +133,13 @@ public class ActionUtils {
 		return sb.substring(0, sb.length() - 4);
 	}
 
-	public static String createOrderByClause(List<String> colnames) {
+	public static String createOrderByClause(List<String> columnnames) {
 
+		if(columnnames == null | columnnames.isEmpty()){
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
-		for (String colname : colnames) {
+		for (String colname : columnnames) {
 			sb.append(colname);
 			sb.append(",");
 		}

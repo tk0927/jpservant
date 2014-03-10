@@ -36,7 +36,7 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  * @version 0.1
  *
  */
-public class UpdateByPrimaryKeyAction implements DataAccessAction {
+public class UpdateByPrimaryKeyAction extends DataAccessAction {
 
 	private String sql;
 	private List<String> criterianames;
@@ -59,7 +59,7 @@ public class UpdateByPrimaryKeyAction implements DataAccessAction {
 		DataCollection paramas = bindPathTokens(
 				context.getParameters(), this.criterianames, pathtokens);
 		int[] result = processor.executeUpdate(this.sql, paramas);
-		return new DataCollection(new DataObject("Count", result));
+		return new DataCollection(new DataObject("Count", toStringArray(result)));
 
 	}
 

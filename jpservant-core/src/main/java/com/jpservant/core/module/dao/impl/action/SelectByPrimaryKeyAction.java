@@ -34,7 +34,7 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  * @version 0.1
  *
  */
-public class SelectByPrimaryKeyAction implements DataAccessAction {
+public class SelectByPrimaryKeyAction extends DataAccessAction {
 
 	private String sql;
 	private List<String> primarykeynames;

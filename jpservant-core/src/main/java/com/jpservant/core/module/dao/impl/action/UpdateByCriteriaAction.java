@@ -15,13 +15,10 @@
  */
 package com.jpservant.core.module.dao.impl.action;
 
-import static com.jpservant.core.module.dao.impl.action.ActionUtils.*;
-
 import java.sql.SQLException;
 import java.util.List;
 
 import com.jpservant.core.common.DataCollection;
-import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.DataAccessAction;
@@ -29,23 +26,17 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
  *
- * プライマリーキー指定での削除Action。
+ * 条件指定更新Action。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
  *
  */
-public class DeleteByPrimaryKeyAction extends DataAccessAction {
+public class UpdateByCriteriaAction extends DataAccessAction {
 
 	private String sql;
-	private List<String> primarykeynames;
 
-	public DeleteByPrimaryKeyAction(String tablename, List<String> primarykeynames) {
-
-		this.primarykeynames = primarykeynames;
-		this.sql = String.format("DELETE FROM %s WHERE %s",
-				tablename,
-				createWhereClause(primarykeynames));
+	public UpdateByCriteriaAction(String tablename) {
 
 	}
 
@@ -54,9 +45,8 @@ public class DeleteByPrimaryKeyAction extends DataAccessAction {
 			SQLProcessor processor, ModuleConfiguration config, KernelContext context, List<String> pathtokens)
 			throws SQLException {
 
-		int result = processor.executeUpdate(this.sql,
-				bindPathTokens(this.primarykeynames, pathtokens));
-		return new DataCollection(new DataObject("Count", result));
+		return null;
 
 	}
+
 }

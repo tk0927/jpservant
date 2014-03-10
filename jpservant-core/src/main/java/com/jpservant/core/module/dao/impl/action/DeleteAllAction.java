@@ -33,7 +33,7 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  * @version 0.1
  *
  */
-public class DeleteAllAction implements DataAccessAction {
+public class DeleteAllAction extends DataAccessAction {
 
 	private String sql;
 

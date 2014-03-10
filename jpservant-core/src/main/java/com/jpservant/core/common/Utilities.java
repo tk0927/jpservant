@@ -286,4 +286,13 @@ public class Utilities {
 		sb.deleteCharAt(sb.length() - 1);
 		return sb.toString().replaceAll("[/]+", "/");
 	}
+
+	public static String[] toStringArray(int[] data){
+
+		String[] retvalue = new String[data.length];
+		for(int i=0 ; i< data.length ; i++){
+			retvalue[i]=String.valueOf(data[i]);
+		}
+		return retvalue;
+	}
 }

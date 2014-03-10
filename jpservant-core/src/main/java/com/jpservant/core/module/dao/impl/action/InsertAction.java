@@ -15,6 +15,7 @@
  */
 package com.jpservant.core.module.dao.impl.action;
 
+import static com.jpservant.core.common.Utilities.*;
 import static com.jpservant.core.module.dao.impl.action.ActionUtils.*;
 
 import java.sql.SQLException;
@@ -35,7 +36,7 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  * @version 0.1
  *
  */
-public class InsertAction implements DataAccessAction {
+public class InsertAction extends DataAccessAction {
 
 	private String sql;
 
@@ -53,7 +54,7 @@ public class InsertAction implements DataAccessAction {
 			throws SQLException {
 
 		int[] result = processor.executeUpdate(this.sql, context.getParameters());
-		return new DataCollection(new DataObject("Count", result));
+		return new DataCollection(new DataObject("Count", toStringArray(result)));
 
 	}
 

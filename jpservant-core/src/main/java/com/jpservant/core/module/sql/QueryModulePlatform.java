@@ -141,7 +141,7 @@ public class QueryModulePlatform implements ModulePlatform {
 		DataCollection collection = context.getParameters();
 		int[] result = processor.executeUpdate(content, collection);
 		DataObject response = new DataObject();
-		response.put("Count", result);
+		response.put("Count", toStringArray(result));
 
 		context.writeResponse(response);
 

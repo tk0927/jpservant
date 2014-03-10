@@ -25,27 +25,26 @@ import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.DataAccessAction;
+import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
  *
- * プライマリーキー指定での削除Action。
+ * 条件指定検索Action。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
  *
  */
-public class DeleteByPrimaryKeyAction extends DataAccessAction {
+public class CountByCriteriaAction extends DataAccessAction {
 
+	private String tablename;
 	private String sql;
-	private List<String> primarykeynames;
 
-	public DeleteByPrimaryKeyAction(String tablename, List<String> primarykeynames) {
+	public CountByCriteriaAction(String tablename) {
 
-		this.primarykeynames = primarykeynames;
-		this.sql = String.format("DELETE FROM %s WHERE %s",
-				tablename,
-				createWhereClause(primarykeynames));
+		this.tablename = tablename;
+		this.sql = String.format("SELECT COUNT(*) AS COUNT FROM %s WHERE ", tablename);
 
 	}
 
@@ -54,9 +53,27 @@ public class DeleteByPrimaryKeyAction extends DataAccessAction {
 			SQLProcessor processor, ModuleConfiguration config, KernelContext context, List<String> pathtokens)
 			throws SQLException {
 
-		int result = processor.executeUpdate(this.sql,
-				bindPathTokens(this.primarykeynames, pathtokens));
-		return new DataCollection(new DataObject("Count", result));
+		TableMetaData tmd = getSchemaEntry().getTableMetaData(tablename);
+		List<String> colnames = tmd.getColumnNames();
+		DataCollection critrias = context.getParameters();
+		DataCollection retvalue = new DataCollection();
+
+		if (critrias == null || critrias.isEmpty()) {
+			return retvalue;
+		}
+
+		int count = 1;
+		for (DataObject criteria : critrias) {
+
+			retvalue.add(new DataObject(String.valueOf(count++),
+					processor.executeQuery(
+							sql + createWhereClause(colnames, criteria), criteria)));
+
+		}
+
+		return retvalue.size() == 1 ?
+				(DataCollection) retvalue.get(0).get("1") : retvalue;
 
 	}
+
 }

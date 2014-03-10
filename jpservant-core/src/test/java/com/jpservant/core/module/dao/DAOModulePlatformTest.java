@@ -26,7 +26,6 @@ import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
 import com.jpservant.core.module.spi.ModulePlatform;
-import com.jpservant.core.module.sql.QueryModulePlatform;
 import com.jpservant.test.miscellaneous.JDBCResource1TestCaseBase;
 
 /**
@@ -41,28 +40,15 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 
 	/**
 	 *
-	 * src/test/resources/configurations/root.jsonの設定値に基づく{@link QueryModulePlatform}の初期化/稼働テスト
+	 * src/test/resources/configurations/root.jsonの設定値に基づく{@link DAOModulePlatform}の初期化/稼働テスト
 	 *
-	 * <pre>
-	 * クラスパス上の資源読み取り設定。
-	 * </pre>
 	 *
 	 * @throws Exception 何らかの例外発生
 	 */
 	@Test
-	public void testDAOModulePlatformExecution() throws Exception {
+	public void execute1() throws Exception {
 
-		execute("/dao");
-
-	}
-
-	/**
-	 *
-	 * テスト用初期化処理
-	 */
-	private void execute(String path) throws Exception {
-
-		ModulePlatform module = MANAGER.getModulePlatform(path);
+		ModulePlatform module = MANAGER.getModulePlatform("/dao");
 
 		StringWriter sw = new StringWriter();
 		module.execute(new KernelContextImpl(
@@ -177,6 +163,110 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 		result2 = toDataObject(sw.toString());
 		assertEquals("1", result2.get("Count"));
 
+	}
+
+	@Test
+	public void execute2() throws Exception {
+
+		ModulePlatform module = MANAGER.getModulePlatform("/dao");
+
+		StringWriter sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable", "DELETE", null, null, sw));
+
+		//テスト用データの挿入
+		DataCollection rows = new DataCollection();
+		DataObject row1 = new DataObject();
+		row1.put("Id", "1");
+		row1.put("StringCol", "AAA");
+		row1.put("TimestampCol", "2014-01-01 00:00:01.0");
+		row1.put("NumberCol", "1024");
+		row1.put("BoolCol", "0");
+		rows.add(row1);
+
+		row1 = new DataObject();
+		row1.put("Id", "2");
+		row1.put("StringCol", "BBB");
+		row1.put("TimestampCol", "2015-01-01 00:00:01.0");
+		row1.put("NumberCol", "1025");
+		row1.put("BoolCol", "1");
+		rows.add(row1);
+
+		row1 = new DataObject();
+		row1.put("Id", "3");
+		row1.put("StringCol", "CCC");
+		row1.put("TimestampCol", "2016-01-01 00:00:01.0");
+		row1.put("NumberCol", "1026");
+		row1.put("BoolCol", "0");
+		rows.add(row1);
+
+		row1 = new DataObject();
+		row1.put("Id", "4");
+		row1.put("StringCol", "DDD");
+		row1.put("TimestampCol", "2017-01-01 00:00:01.0");
+		row1.put("NumberCol", "1027");
+		row1.put("BoolCol", "1");
+		rows.add(row1);
+		sw = new StringWriter();
+
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable", "POST", rows, null, sw));
+
+		//条件指定検索
+		DataCollection rows1 = new DataCollection();
+		row1 = new DataObject();
+		row1.put("StringCol", "DDD");
+		rows1.add(row1);
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/Select", "POST", rows1, null, sw));
+
+		DataObject result = toDataObject(sw.toString());
+		assertEquals("4", result.get("Id"));
+		assertEquals("DDD", result.get("StringCol"));
+		assertEquals("2017-01-01 00:00:01.0", result.get("TimestampCol"));
+		assertEquals("1027", result.get("NumberCol"));
+		assertEquals("1", result.get("BoolCol"));
+
+		//条件指定検索
+		rows1 = new DataCollection();
+		row1 = new DataObject();
+		row1.put("TimestampCol", "2016-01-01 00:00:01.0");
+		rows1.add(row1);
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/Select", "POST", rows1, null, sw));
+
+		result = toDataObject(sw.toString());
+		assertEquals("3", result.get("Id"));
+		assertEquals("CCC", result.get("StringCol"));
+		assertEquals("2016-01-01 00:00:01.0", result.get("TimestampCol"));
+		assertEquals("1026", result.get("NumberCol"));
+		assertEquals("0", result.get("BoolCol"));
+
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/Count", "POST", rows1, null, sw));
+		result = toDataObject(sw.toString());
+		assertEquals("1", result.get("Count"));
+
+		//条件指定削除
+		rows1 = new DataCollection();
+		row1 = new DataObject();
+		row1.put("TimestampCol", "2016-01-01 00:00:01.0");
+		rows1.add(row1);
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/Delete", "POST", rows1, null, sw));
+		result = toDataObject(sw.toString());
+		assertEquals("1",result.get("Count"));
+
+		sw = new StringWriter();
+		module.execute(new KernelContextImpl(
+				"/TSampleTestTable/Select", "POST", rows1, null, sw));
+
+		result = toDataObject(sw.toString());
+		assertEquals(0,result.size());
 
 	}
 

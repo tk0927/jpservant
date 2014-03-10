@@ -32,7 +32,7 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  * @version 0.1
  *
  */
-public class SelectAllAction implements DataAccessAction {
+public class SelectAllAction extends DataAccessAction {
 
 	private String sql;
 

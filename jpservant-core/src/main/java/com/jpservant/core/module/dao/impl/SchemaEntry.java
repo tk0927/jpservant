@@ -73,9 +73,13 @@ public class SchemaEntry {
 			SchemaEntryKey dstobj = (SchemaEntryKey) dst;
 			return (this.path.equals(dstobj.path) && this.method.equals(dstobj.method));
 		}
+
+		public String toString(){
+			return path + ":" + method;
+		}
 	}
 
-//	private Map<String, TableMetaData> metadata;
+	private Map<String, TableMetaData> metadata;
 
 	/** 格納位置の実体 */
 	private Map<SchemaEntryKey, DataAccessAction> impl = new HashMap<SchemaEntryKey, DataAccessAction>();
@@ -87,7 +91,7 @@ public class SchemaEntry {
 	 * @param metadata メタデータ
 	 */
 	public SchemaEntry(Map<String, TableMetaData> metadata) {
-//		this.metadata = metadata;
+		this.metadata = metadata;
 	}
 
 	/**
@@ -99,6 +103,7 @@ public class SchemaEntry {
 	 * @param action 対応するアクション
 	 */
 	public void addEntry(String path, RequestMethod method, DataAccessAction action) {
+		action.setSchemaEntry(this);
 		impl.put(new SchemaEntryKey(path, method), action);
 	}
 
@@ -174,5 +179,9 @@ public class SchemaEntry {
 		}
 
 		return retvalue;
+	}
+
+	public TableMetaData getTableMetaData(String tablename){
+		return this.metadata.get(tablename);
 	}
 }
