@@ -15,6 +15,7 @@
  */
 package com.jpservant.core.module.dao.impl;
 
+import static com.jpservant.core.common.Constant.RequestMethod.*;
 import static com.jpservant.core.common.Utilities.*;
 
 import java.sql.SQLException;
@@ -23,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.jpservant.core.common.Constant.RequestMethod;
 import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.dao.impl.action.CountByCriteriaAction;
 import com.jpservant.core.module.dao.impl.action.DeleteAllAction;
@@ -85,54 +85,38 @@ public class SchemaRepository {
 	 */
 	private static SchemaEntry analyze(ModuleConfiguration configuration) throws SQLException {
 
-		Map<String, TableMetaData> tableschemas = SchemaParser.parse(configuration);
-		SchemaEntry schemaentry = new SchemaEntry(tableschemas);
+		Map<String, TableMetaData> tables = SchemaParser.parse(configuration);
+		SchemaEntry sentry = new SchemaEntry(tables);
 
-		for (Map.Entry<String, TableMetaData> entry : tableschemas.entrySet()) {
+		for (Map.Entry<String, TableMetaData> entry : tables.entrySet()) {
 
 			String tablename = entry.getKey();
-			TableMetaData tmd = entry.getValue();
-			List<String> colnames = tmd.getColumnNames();
-			List<String> primarykeys = tmd.getPrimaryKeys();
-			String tablepath = convertSnakeToCamel(tablename);
+			List<String> pks = entry.getValue().getPrimaryKeys();
+			String root = convertSnakeToCamel(tablename);
 
-			schemaentry.addEntry(
-					concatPathTokens(tablepath), RequestMethod.GET,
-					new SelectAllAction(tablename));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath), RequestMethod.POST,
-					new InsertAction(tablename, colnames));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath), RequestMethod.DELETE,
-					new DeleteAllAction(tablename));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath, "Count"), RequestMethod.GET,
-					new RowCountAction(tablename));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath, "Count"), RequestMethod.POST,
-					new CountByCriteriaAction(tablename));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath, "Select"), RequestMethod.POST,
-					new SelectByCriteriaAction(tablename));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath, "Update"), RequestMethod.POST,
-					new UpdateByCriteriaAction(tablename));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath, "Delete"), RequestMethod.POST,
-					new DeleteByCriteriaAction(tablename));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath, convertToRegexpTokens(primarykeys)), RequestMethod.GET,
-					new SelectByPrimaryKeyAction(tablename, convertSnakeToCamel(primarykeys)));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath, convertToRegexpTokens(primarykeys)), RequestMethod.DELETE,
-					new DeleteByPrimaryKeyAction(tablename, convertSnakeToCamel(primarykeys)));
-			schemaentry.addEntry(
-					concatPathTokens(tablepath, convertToRegexpTokens(primarykeys)), RequestMethod.PUT,
-					new UpdateByPrimaryKeyAction(tablename, colnames, convertSnakeToCamel(primarykeys)));
+			sentry.addEntry(toPath(root), GET, new SelectAllAction(tablename));
+			sentry.addEntry(toPath(root), POST, new InsertAction(tablename));
+			sentry.addEntry(toPath(root), DELETE, new DeleteAllAction(tablename));
+			sentry.addEntry(toPath(root, "Count"), GET, new RowCountAction(tablename));
+			sentry.addEntry(toPath(root, "Count"), POST, new CountByCriteriaAction(tablename));
+			sentry.addEntry(toPath(root, "Select"), POST, new SelectByCriteriaAction(tablename));
+			sentry.addEntry(toPath(root, "Update"), POST, new UpdateByCriteriaAction(tablename));
+			sentry.addEntry(toPath(root, "Delete"), POST, new DeleteByCriteriaAction(tablename));
+			sentry.addEntry(toPath(root, pks), GET, new SelectByPrimaryKeyAction(tablename));
+			sentry.addEntry(toPath(root, pks), DELETE, new DeleteByPrimaryKeyAction(tablename));
+			sentry.addEntry(toPath(root, pks), PUT, new UpdateByPrimaryKeyAction(tablename));
 
 		}
 
-		return schemaentry;
+		return sentry;
+	}
+
+	private static String toPath(String... tokens) {
+		return concatPathTokens(tokens);
+	}
+
+	private static String toPath(String root, List<String> tokens) {
+		return concatPathTokens(root, convertToRegexpTokens(tokens));
 	}
 
 	private static List<String> convertToRegexpTokens(List<String> src) {

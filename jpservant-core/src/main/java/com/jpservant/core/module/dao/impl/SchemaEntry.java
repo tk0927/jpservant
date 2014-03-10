@@ -104,6 +104,7 @@ public class SchemaEntry {
 	 */
 	public void addEntry(String path, RequestMethod method, DataAccessAction action) {
 		action.setSchemaEntry(this);
+		action.initialize();
 		impl.put(new SchemaEntryKey(path, method), action);
 	}
 

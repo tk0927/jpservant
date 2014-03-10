@@ -15,6 +15,7 @@
  */
 package com.jpservant.core.module.dao.impl.action;
 
+import static com.jpservant.core.common.Utilities.*;
 import static com.jpservant.core.module.dao.impl.action.ActionUtils.*;
 
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.DataAccessAction;
+import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
@@ -37,15 +39,23 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  */
 public class DeleteByPrimaryKeyAction extends DataAccessAction {
 
+	private String tablename;
 	private String sql;
 	private List<String> primarykeynames;
 
-	public DeleteByPrimaryKeyAction(String tablename, List<String> primarykeynames) {
+	public DeleteByPrimaryKeyAction(String tablename) {
 
-		this.primarykeynames = primarykeynames;
+		this.tablename = tablename;
+	}
+
+	@Override
+	protected void initialize(){
+
+		TableMetaData tmd = getSchemaEntry().getTableMetaData(this.tablename);
+		this.primarykeynames = convertSnakeToCamel(tmd.getPrimaryKeys());
 		this.sql = String.format("DELETE FROM %s WHERE %s",
 				tablename,
-				createWhereClause(primarykeynames));
+				createWhereClause(tmd.getPrimaryKeys()));
 
 	}
 

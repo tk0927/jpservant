@@ -61,4 +61,8 @@ public abstract class DataAccessAction {
 	public SchemaEntry getSchemaEntry(){
 		return this.entry;
 	}
+
+	protected void initialize(){
+
+	}
 }

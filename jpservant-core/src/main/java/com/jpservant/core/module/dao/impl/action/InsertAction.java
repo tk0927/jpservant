@@ -26,6 +26,7 @@ import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.DataAccessAction;
+import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
@@ -38,14 +39,26 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  */
 public class InsertAction extends DataAccessAction {
 
+	private String tablename;
 	private String sql;
 
-	public InsertAction(String tablename, List<String> columnnames) {
+	public InsertAction(String tablename) {
+
+		this.tablename = tablename;
+
+	}
+
+	@Override
+	protected void initialize() {
+
+		TableMetaData tmd = getSchemaEntry().getTableMetaData(this.tablename);
+		List<String> columnnames = tmd.getColumnNames();
 
 		this.sql = String.format("INSERT INTO %s( %s )VALUES( %s )",
 				tablename,
 				createColumnsToken(columnnames),
 				createInsertPlaceholderToken(columnnames));
+
 	}
 
 	@Override

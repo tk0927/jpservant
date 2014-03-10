@@ -26,6 +26,7 @@ import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.DataAccessAction;
+import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
@@ -38,17 +39,25 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  */
 public class UpdateByPrimaryKeyAction extends DataAccessAction {
 
+	private String tablename;
 	private String sql;
 	private List<String> criterianames;
 
-	public UpdateByPrimaryKeyAction(String tablename, List<String> columnnames, List<String> primarykeys) {
+	public UpdateByPrimaryKeyAction(String tablename) {
+		this.tablename = tablename;
+	}
 
-		this.criterianames = convertSnakeToCamel(appendPrefixes(primarykeys, "CRITERIA_"));
+	@Override
+	protected void initialize() {
+
+		TableMetaData tmd = getSchemaEntry().getTableMetaData(this.tablename);
+		this.criterianames = convertSnakeToCamel(
+				appendPrefixes(tmd.getPrimaryKeys(), "CRITERIA_"));
 
 		this.sql = String.format("UPDATE %s SET %s WHERE %s",
 				tablename,
-				createUpdatePlaceholderToken(columnnames),
-				createWhereClause(primarykeys, this.criterianames));
+				createUpdatePlaceholderToken(tmd.getColumnNames()),
+				createWhereClause(tmd.getPrimaryKeys(), this.criterianames));
 	}
 
 	@Override
