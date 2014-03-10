@@ -15,13 +15,17 @@
  */
 package com.jpservant.core.module.dao.impl.action;
 
+import static com.jpservant.core.module.dao.impl.action.ActionUtils.*;
+
 import java.sql.SQLException;
 import java.util.List;
 
 import com.jpservant.core.common.DataCollection;
+import com.jpservant.core.common.DataObject;
 import com.jpservant.core.common.sql.SQLProcessor;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.dao.impl.DataAccessAction;
+import com.jpservant.core.module.dao.impl.SchemaParser.TableMetaData;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 
 /**
@@ -34,10 +38,21 @@ import com.jpservant.core.module.spi.ModuleConfiguration;
  */
 public class UpdateByCriteriaAction extends DataAccessAction {
 
+	private String tablename;
 	private String sql;
 
 	public UpdateByCriteriaAction(String tablename) {
+		this.tablename = tablename;
+	}
 
+	@Override
+	protected void initialize() {
+
+		TableMetaData tmd = getSchemaEntry().getTableMetaData(this.tablename);
+
+		this.sql = String.format("UPDATE %s SET %s WHERE ",
+				tablename,
+				createUpdatePlaceholderToken(tmd.getColumnNames()));
 	}
 
 	@Override
@@ -45,8 +60,25 @@ public class UpdateByCriteriaAction extends DataAccessAction {
 			SQLProcessor processor, ModuleConfiguration config, KernelContext context, List<String> pathtokens)
 			throws SQLException {
 
-		return null;
+		TableMetaData tmd = getSchemaEntry().getTableMetaData(tablename);
+		List<String> colnames = tmd.getColumnNames();
+		DataCollection critrias = context.getParameters();
+		DataCollection retvalue = new DataCollection();
+
+		if (critrias == null || critrias.isEmpty()) {
+			return retvalue;
+		}
+
+		int count = 1;
+		for (DataObject criteria : critrias) {
+
+			retvalue.add(new DataObject(String.valueOf(count++),
+					new DataObject("Count",processor.executeUpdate(
+							sql + createWhereClause(colnames, criteria,"Criteria"), criteria))));
+
+		}
+
+		return retvalue;
 
 	}
-
 }

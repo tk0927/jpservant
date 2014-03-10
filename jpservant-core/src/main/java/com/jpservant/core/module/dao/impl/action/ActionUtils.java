@@ -19,6 +19,7 @@ import static com.jpservant.core.common.Utilities.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.common.DataObject;
@@ -35,7 +36,7 @@ public class ActionUtils {
 
 	public static String createColumnsToken(List<String> columnnames) {
 
-		if(columnnames == null | columnnames.isEmpty()){
+		if (columnnames == null | columnnames.isEmpty()) {
 			return "";
 		}
 		StringBuilder sb = new StringBuilder();
@@ -50,7 +51,7 @@ public class ActionUtils {
 
 	public static String createInsertPlaceholderToken(List<String> columnnames) {
 
-		if(columnnames == null | columnnames.isEmpty()){
+		if (columnnames == null | columnnames.isEmpty()) {
 			return "";
 		}
 		StringBuilder sb = new StringBuilder();
@@ -66,7 +67,7 @@ public class ActionUtils {
 
 	public static String createUpdatePlaceholderToken(List<String> columnnames) {
 
-		if(columnnames == null | columnnames.isEmpty()){
+		if (columnnames == null | columnnames.isEmpty()) {
 			return "";
 		}
 		StringBuilder sb = new StringBuilder();
@@ -82,15 +83,19 @@ public class ActionUtils {
 	}
 
 	public static String createWhereClause(List<String> columnnames) {
+		return createWhereClause(columnnames, "");
+	}
 
-		if(columnnames == null | columnnames.isEmpty()){
+	public static String createWhereClause(List<String> columnnames, String prefix) {
+
+		if (columnnames == null | columnnames.isEmpty()) {
 			return "";
 		}
 		StringBuilder sb = new StringBuilder();
 		for (String colname : columnnames) {
 			sb.append(colname);
 			sb.append("=:");
-			sb.append(convertSnakeToCamel(colname));
+			sb.append(prefix + convertSnakeToCamel(colname));
 			sb.append(" AND ");
 		}
 
@@ -105,20 +110,29 @@ public class ActionUtils {
 	 * @param criteria 検索条件オブジェクト
 	 * @return SQL Where句
 	 */
-	public static String createWhereClause(List<String> colnames, DataObject criteria) {
+	public static String createWhereClause(List<String> columnnames, DataObject criteria) {
 
-		ArrayList<String> criteriatokens = new ArrayList<String>();
-		for (String colname : colnames) {
-			if (criteria.containsKey(convertSnakeToCamel(colname))) {
-				criteriatokens.add(colname);
-			}
-		}
-		return ActionUtils.createWhereClause(criteriatokens);
+		return createWhereClause(columnnames, criteria, "");
 
 	}
-	public static String createWhereClause(List<String> columnnames,List<String> bindnames) {
 
-		if(columnnames == null | columnnames.isEmpty()){
+	public static String createWhereClause(List<String> columnnames, DataObject criteria, String prefix) {
+
+		ArrayList<String> criteriatokens = new ArrayList<String>();
+		for (Map.Entry<String, Object> entry : criteria.entrySet()) {
+
+			String ccolname = entry.getKey();
+			if (ccolname.startsWith(prefix)) {
+				criteriatokens.add(convertCamelToSnake(ccolname.replaceAll(prefix, "")));
+			}
+		}
+		return createWhereClause(criteriatokens, prefix);
+
+	}
+
+	public static String createWhereClause(List<String> columnnames, List<String> bindnames) {
+
+		if (columnnames == null | columnnames.isEmpty()) {
 			return "";
 		}
 		StringBuilder sb = new StringBuilder();
@@ -135,7 +149,7 @@ public class ActionUtils {
 
 	public static String createOrderByClause(List<String> columnnames) {
 
-		if(columnnames == null | columnnames.isEmpty()){
+		if (columnnames == null | columnnames.isEmpty()) {
 			return "";
 		}
 		StringBuilder sb = new StringBuilder();
