@@ -21,6 +21,7 @@ import static com.jpservant.core.common.Utilities.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.channels.FileLock;
@@ -85,9 +86,30 @@ public class FileSystemModulePlatform implements ModulePlatform {
 	 */
 	private static void readFile(File file, KernelContext context) throws Exception {
 
-		String content = findResource(file.toURI().toURL());
-		context. writeResponse(toDataObjectList(content));
+		FileInputStream in = null;
+		FileLock fl = null;
+		try {
+			in = new FileInputStream(file);
+			fl = in.getChannel().lock(0, Long.MAX_VALUE, true);
+			String content = loadStream(in);
+			context.writeResponse(toDataObjectList(content));
+		} catch (Exception e) {
+			throw new ApplicationException(ErrorType.NotFound);
+		} finally {
+			if (fl != null) {
+				try {
+					fl.release();
+				} catch (Exception e) {
+				}
+			}
 
+			if (in != null) {
+				try {
+					in.close();
+				} catch (Exception e) {
+				}
+			}
+		}
 	}
 
 	/**
@@ -108,7 +130,7 @@ public class FileSystemModulePlatform implements ModulePlatform {
 			fs = new FileOutputStream(file, append);
 
 			try {
-				fl = fs.getChannel().tryLock();
+				fl = fs.getChannel().lock(0, Long.MAX_VALUE, false);
 			} catch (Exception e) {
 				throw new ApplicationException(ErrorType.InternalError,
 						String.format("File resource is busy %s", file.getAbsolutePath()));
@@ -117,7 +139,7 @@ public class FileSystemModulePlatform implements ModulePlatform {
 			writer = new BufferedWriter(
 					new OutputStreamWriter(fs, Constant.ENCODE_NAME));
 
-			for(DataObject element: context.getParameters()){
+			for (DataObject element : context.getParameters()) {
 
 				String content = toJSONString(element);
 				writer.write(content);
