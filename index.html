@@ -37,29 +37,12 @@
 <li>「必要最低限のセットアップ」については、”設定より規約”（convention over configuration：以降CoC）
 の考え方で、可能な限りの単純化を目指します。</li>
 </ul><h3>
-<a name="%E4%BE%8B%E3%81%88%E3%81%B0" class="anchor" href="#%E4%BE%8B%E3%81%88%E3%81%B0"><span class="octicon octicon-link"></span></a>例えば…</h3>
+<a name="%E4%BE%8B%E3%81%88%E3%81%B0" class="anchor" href="#%E4%BE%8B%E3%81%88%E3%81%B0"><span class="octicon octicon-link"></span></a>要するに</h3>
 
 <ul>
-<li>O/Rマッピングツールが提供するようなRDBMSアクセスであれば、REST URLごとにテーブルに、また
-GET、PUT、POST、DELETEの各メソッドを当該テーブルの操作に、プログラムレスで自動的にマッピングします。
-対象データベースのスキーマ定義を実行時に解析し、提供可能なREST URLを動的生成します。</li>
-<li>カスタムSQLベースのRDBMSアクセスであれば、URLを「SQL文を記載したファイル」に紐づけます。
-SQLに名前付きプレースホルダを設定することで、JPServantが受信したJSON形式の属性データを自動的にプレース
-ホルダへバインドします。レスポンスはそのままJSONのリスト形式データにして返します。このとき、定義済みSQL
-ファイルのシステム内での位置をそのままREST URLにマッピングします。</li>
-<li>ファイルシステム、あるいはGoogle Cloud Storageのような各種のファイルストレージの位置を指定するだけで、
-当該ストレージに対するWebDAV APIを自動的に提供します。</li>
+<li>「ダウンロードして5分でREST APIサーバーが完成！」するものです。ユーザーがすべき作業は「設定ファイルをほんの
+少しだけいじって」「アプリケーションサーバーに配備」するだけです！</li>
 </ul><h3>
-<a name="%E3%81%9D%E3%81%AE%E4%BB%96%E8%80%83%E3%81%88%E3%81%A6%E3%81%84%E3%82%8B%E6%A9%9F%E8%83%BD" class="anchor" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E8%80%83%E3%81%88%E3%81%A6%E3%81%84%E3%82%8B%E6%A9%9F%E8%83%BD"><span class="octicon octicon-link"></span></a>その他考えている機能</h3>
-
-<ul>
-<li>トランザクション</li>
-<li>ユーザー認証、ロール管理</li>
-<li>アクセスログ、各種レポーティング</li>
-<li>Publish-Subscribe モデルのサポート（WebSocketでサーバープッシュ）</li>
-<li>各種の著名なPaaSのサポート</li>
-<li>プラッガブルアーキテクチャ - 追加機能開発を行うためのSPI提供</li>
-</ul><h2>
 <a name="%E7%9B%AE%E7%9A%84" class="anchor" href="#%E7%9B%AE%E7%9A%84"><span class="octicon octicon-link"></span></a>目的</h2>
 
 <ul>
