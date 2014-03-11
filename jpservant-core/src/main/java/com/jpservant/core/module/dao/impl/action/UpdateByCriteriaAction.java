@@ -72,13 +72,16 @@ public class UpdateByCriteriaAction extends DataAccessAction {
 		int count = 1;
 		for (DataObject criteria : critrias) {
 
+			int resultcount = processor.executeUpdate(
+					sql + createWhereClause(colnames, criteria, "Criteria"), criteria);
+
 			retvalue.add(new DataObject(String.valueOf(count++),
-					new DataObject("Count",processor.executeUpdate(
-							sql + createWhereClause(colnames, criteria,"Criteria"), criteria))));
+					new DataObject("Count", String.valueOf(resultcount))));
 
 		}
 
-		return retvalue;
+		return retvalue.size() == 1 ?
+				new DataCollection((DataObject) retvalue.get(0).get("1")) : retvalue;
 
 	}
 }

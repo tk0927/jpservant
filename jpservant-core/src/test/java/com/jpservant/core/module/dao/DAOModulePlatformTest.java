@@ -337,6 +337,8 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 		StringWriter sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/Update", "POST", rows1, null, sw));
+		DataObject result = toDataObject(sw.toString());
+		assertEquals("1", result.get("Count"));
 
 		//条件指定検索
 		rows1 = new DataCollection();
@@ -347,7 +349,7 @@ public class DAOModulePlatformTest extends JDBCResource1TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/Select", "POST", rows1, null, sw));
 
-		DataObject result = toDataObject(sw.toString());
+		result = toDataObject(sw.toString());
 		assertEquals("104", result.get("Id"));
 		assertEquals("XXX", result.get("StringCol"));
 		assertEquals("1998-01-01 00:00:01.0", result.get("TimestampCol"));
