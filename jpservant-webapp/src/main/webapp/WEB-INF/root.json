@@ -33,6 +33,11 @@
 		"SchemaName"       : "test"
 	},
 	{
+		"RootPath"         : "/filesystem" ,
+		"PlatformClass"    : "com.jpservant.core.module.filesystem.FileSystemModulePlatform" ,
+		"ResourceRoot"     : "C:/temp/module/filesystem"
+	},
+	{
 		"RootPath"         : "/JDBCResource1",
 		"PlatformClass"    : "com.jpservant.core.resource.JDBCDriverManagerResource" ,
 		"JDBCDriver"       : "com.mysql.jdbc.Driver" ,
