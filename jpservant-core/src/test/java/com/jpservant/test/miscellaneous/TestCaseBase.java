@@ -26,14 +26,14 @@ import com.jpservant.core.resource.ResourcePlatform;
 
 /**
  *
- * JDBCを利用するテストの共通基底クラス。
+ * テストの共通基底クラス。
  *
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
  *
  */
-public class JDBCResource1TestCaseBase {
+public class TestCaseBase {
 
 	protected static ConfigurationManagerImpl MANAGER;
 

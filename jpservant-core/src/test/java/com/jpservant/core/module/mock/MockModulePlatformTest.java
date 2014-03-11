@@ -28,7 +28,7 @@ import com.jpservant.core.common.DataObject;
 import com.jpservant.core.kernel.impl.KernelContextImpl;
 import com.jpservant.core.module.spi.ModulePlatform;
 import com.jpservant.core.module.sql.QueryModulePlatform;
-import com.jpservant.test.miscellaneous.JDBCResource1TestCaseBase;
+import com.jpservant.test.miscellaneous.TestCaseBase;
 
 /**
 *
@@ -38,7 +38,7 @@ import com.jpservant.test.miscellaneous.JDBCResource1TestCaseBase;
 * @version 0.1
 *
 */
-public class MockModulePlatformTest extends JDBCResource1TestCaseBase {
+public class MockModulePlatformTest extends TestCaseBase {
 
 	/**
 	 *

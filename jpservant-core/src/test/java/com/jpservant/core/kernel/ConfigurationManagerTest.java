@@ -27,7 +27,7 @@ import com.jpservant.core.kernel.impl.ConfigurationManagerImpl;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.resource.JDBCDriverManagerResource;
 import com.jpservant.core.resource.ResourcePlatform;
-import com.jpservant.test.miscellaneous.JDBCResource1TestCaseBase;
+import com.jpservant.test.miscellaneous.TestCaseBase;
 
 /**
 *
@@ -37,7 +37,7 @@ import com.jpservant.test.miscellaneous.JDBCResource1TestCaseBase;
 * @version 0.1
 *
 */
-public class ConfigurationManagerTest extends JDBCResource1TestCaseBase {
+public class ConfigurationManagerTest extends TestCaseBase {
 
 	/**
 	 *
