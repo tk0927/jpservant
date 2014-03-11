@@ -29,6 +29,7 @@ import com.jpservant.core.common.AccessController;
 import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.Constant.FileExtern;
 import com.jpservant.core.common.Constant.RequestMethod;
+import com.jpservant.core.common.DataObject;
 import com.jpservant.core.exception.ApplicationException;
 import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.KernelContext;
@@ -85,7 +86,7 @@ public class FileSystemModulePlatform implements ModulePlatform {
 	private static void readFile(File file, KernelContext context) throws Exception {
 
 		String content = findResource(file.toURI().toURL());
-		context.writeResponse(toDataCollection(content));
+		context. writeResponse(toDataObjectList(content));
 
 	}
 
@@ -115,8 +116,13 @@ public class FileSystemModulePlatform implements ModulePlatform {
 
 			writer = new BufferedWriter(
 					new OutputStreamWriter(fs, Constant.ENCODE_NAME));
-			String content = toJSONString(context.getParameters());
-			writer.write(content);
+
+			for(DataObject element: context.getParameters()){
+
+				String content = toJSONString(element);
+				writer.write(content);
+
+			}
 
 		} finally {
 

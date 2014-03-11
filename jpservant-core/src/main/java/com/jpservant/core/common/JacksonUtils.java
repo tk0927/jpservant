@@ -19,8 +19,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -99,6 +102,30 @@ public class JacksonUtils {
 			throws JsonMappingException, JsonParseException, IOException {
 
 		return INSTANCE.readValue(in, DataObject.class);
+
+	}
+
+	/**
+	 *
+	 * JSON文字列({@link DataObject}要素の連続)から {@link DataCollection}を生成します。
+	 *
+	 * @param content JSON文字列
+	 * @return DataObjectインスタンス
+	 * @throws JsonMappingException
+	 * @throws JsonParseException
+	 * @throws IOException
+	 */
+	public static DataCollection toDataObjectList(String content)
+			throws JsonMappingException, JsonParseException, IOException {
+
+		JsonParser parser = new  JsonFactory().createParser(content);
+		MappingIterator<DataObject>iter = INSTANCE.readValues(parser, DataObject.class);
+		DataCollection retvalue = new DataCollection();
+		while(iter.hasNext()){
+			retvalue.add(iter.next());
+		}
+
+		return retvalue;
 
 	}
 
