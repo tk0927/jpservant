@@ -128,14 +128,7 @@ public class FileSystemModulePlatform implements ModulePlatform {
 		FileLock fl = null;
 		try {
 			fs = new FileOutputStream(file, append);
-
-			try {
-				fl = fs.getChannel().lock(0, Long.MAX_VALUE, false);
-			} catch (Exception e) {
-				throw new ApplicationException(ErrorType.InternalError,
-						String.format("File resource is busy %s", file.getAbsolutePath()));
-			}
-
+			fl = fs.getChannel().lock(0, Long.MAX_VALUE, false);
 			writer = new BufferedWriter(
 					new OutputStreamWriter(fs, Constant.ENCODE_NAME));
 
