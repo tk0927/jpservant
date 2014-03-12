@@ -39,7 +39,7 @@ import com.jpservant.core.module.spi.ModulePlatform;
 
 /**
  *
- * ファイルシステムI/Oモジュールのエントリポイント。
+ * FileSystemモジュールのエントリポイント。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1

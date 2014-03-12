@@ -29,7 +29,7 @@ import com.jpservant.core.module.spi.ModulePlatform;
 
 /**
  *
- * SQLモジュールのエントリポイント。
+ * Mockモジュールのエントリポイント。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1

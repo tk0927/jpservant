@@ -110,7 +110,9 @@ public interface Constant {
 		/** モジュールが利用するJDBCリソースの識別名 */
 		JDBCResourcePath(false),
 		/** （DAOモジュール用）スキーマ名 */
-		SchemaName(false), ;
+		SchemaName(false),
+		/**  (Google Cloud Storageモジュール用)バケット名 */
+		BucketName(false);
 
 		private boolean required;
 

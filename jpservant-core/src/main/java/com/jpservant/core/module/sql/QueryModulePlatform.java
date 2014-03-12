@@ -37,7 +37,7 @@ import com.jpservant.core.module.spi.ModuleUtils;
 
 /**
  *
- * SQLモジュールのエントリポイント。
+ * Queryモジュールのエントリポイント。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1

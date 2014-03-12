@@ -19,6 +19,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -104,6 +107,44 @@ public class Utilities {
 			}
 		}
 	}
+
+	/**
+	 *
+	 * NIO形式入力ストリームを終端までUTF-8エンコードで読み取る。
+	 *
+	 * @param in 入力ストリーム
+	 * @return 読み取り結果
+	 * @throws IOException IO例外発生
+	 */
+	public static String loadChannel(ReadableByteChannel in) throws IOException {
+
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		ByteBuffer buff = ByteBuffer.allocate(4096);
+		int len = 0;
+		while ((len = in.read(buff)) > 0) {
+			bout.write(buff.array(), 0, len);
+		}
+
+		bout.close();
+
+		return bout.toString(Constant.ENCODE_NAME);
+	}
+
+	/**
+	 *
+	 * NIO形式出力ストリームへ書き込む。
+	 *
+	 * @param out 入力ストリーム
+	 * @param content 書き込み対象データ
+	 * @throws IOException IO例外発生
+	 */
+	public static void saveChannel(WritableByteChannel out,String content) throws IOException {
+
+		ByteBuffer buf = ByteBuffer.wrap(content.getBytes(Constant.ENCODE_NAME));
+		out.write(buf);
+
+	}
+
 
 	/**
 	 *
