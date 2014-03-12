@@ -30,6 +30,7 @@ import com.jpservant.core.common.AccessController;
 import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.Constant.FileExtern;
 import com.jpservant.core.common.Constant.RequestMethod;
+import com.jpservant.core.common.DataCollection;
 import com.jpservant.core.exception.ApplicationException;
 import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.KernelContext;
@@ -96,7 +97,7 @@ public class GCSModulePlatform implements ModulePlatform {
 			}
 
 			String content = loadChannel(channel);
-			context.writeResponse(toDataObjectList(content));
+			context.writeResponse(toDataCollection(content));
 
 		} catch (Exception e) {
 			throw new ApplicationException(ErrorType.NotFound);
@@ -159,6 +160,7 @@ public class GCSModulePlatform implements ModulePlatform {
 			}
 
 			String content = loadChannel(inchannel);
+			DataCollection data = toDataCollection(content);
 
 			inchannel.close();
 
@@ -167,7 +169,8 @@ public class GCSModulePlatform implements ModulePlatform {
 						GcsFileOptions.getDefaultInstance());
 			}
 
-			content = content + toJSONString(context.getParameters());
+			data.addAll(context.getParameters());
+			content = toJSONString(data);
 			saveChannel(outchannel, content);
 
 		} catch (Exception e) {
