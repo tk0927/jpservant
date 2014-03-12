@@ -19,6 +19,12 @@
 		"SchemaName"       : "test"
 	},
 	{
+		"RootPath"         : "/filesystem" ,
+		"PlatformClass"    : "com.jpservant.google.module.gcs.GCSModulePlatform" ,
+		"BucketName"       : "jpservant-webapp.appspot.com" ,
+		"ResourceRoot"     : "/filesystem"
+	},
+	{
 		"RootPath"         : "/JDBCResource1",
 		"PlatformClass"    : "com.jpservant.core.resource.JDBCDriverManagerResource" ,
 		"JDBCURL"          : "jdbc:google:rdbms://jpservant-webapp:jpservant/test",

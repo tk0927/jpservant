@@ -63,7 +63,7 @@ public class GCSModulePlatform implements ModulePlatform {
 		if (!AccessController.checkAccessMethod(context, GET, POST, PUT, DELETE)) {
 			throw new ApplicationException(ErrorType.BadRequest);
 		}
-		String bucket = (String) this.config.get(Constant.ConfigurationName.BucketName);
+		String bucket = (String) this.config.get(Constant.ConfigurationName.BucketName.name());
 		String path = createResourcePath(this.config, context, FileExtern.JSON);
 		RequestMethod method = RequestMethod.valueOf(context.getMethod());
 		GcsFilename name = new GcsFilename(bucket, path);
