@@ -27,7 +27,6 @@ import com.google.appengine.tools.cloudstorage.GcsService;
 import com.google.appengine.tools.cloudstorage.GcsServiceFactory;
 import com.google.appengine.tools.cloudstorage.RetryParams;
 import com.jpservant.core.common.AccessController;
-import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.Constant.FileExtern;
 import com.jpservant.core.common.Constant.RequestMethod;
 import com.jpservant.core.common.DataCollection;
@@ -36,6 +35,7 @@ import com.jpservant.core.exception.ApplicationException.ErrorType;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
+import com.jpservant.google.Constant;
 
 /**
  *
@@ -64,7 +64,7 @@ public class GCSModulePlatform implements ModulePlatform {
 		if (!AccessController.checkAccessMethod(context, GET, POST, PUT, DELETE)) {
 			throw new ApplicationException(ErrorType.BadRequest);
 		}
-		String bucket = this.config.getValue(Constant.GoogleConfigurationName.BucketName);
+		String bucket = this.config.getValue(Constant.ConfigurationName.BucketName);
 		String path = createResourcePath(this.config, context, FileExtern.JSON);
 		RequestMethod method = RequestMethod.valueOf(context.getMethod());
 		GcsFilename name = new GcsFilename(bucket, path);

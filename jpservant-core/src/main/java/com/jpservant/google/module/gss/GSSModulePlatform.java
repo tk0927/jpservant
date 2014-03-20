@@ -15,7 +15,7 @@
  */
 package com.jpservant.google.module.gss;
 
-import static com.jpservant.core.common.Constant.GoogleConfigurationName.*;
+import static com.jpservant.google.Constant.ConfigurationName.*;
 
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.jpservant.core.kernel.KernelContext;
