@@ -15,4 +15,6 @@ com.jpservant.core.module.spi
 com.jpservant.core.module.sql
 com.jpservant.core.resolver
 com.jpservant.core.resource
+com.jpservant.google
 com.jpservant.google.module.gcs
+com.jpservant.google.module.gss
