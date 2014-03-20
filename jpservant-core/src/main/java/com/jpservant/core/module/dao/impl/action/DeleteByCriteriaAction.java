@@ -69,12 +69,12 @@ public class DeleteByCriteriaAction extends DataAccessAction {
 					sql + createWhereClause(colnames, criteria), criteria);
 			retvalue.add(
 					new DataObject(String.valueOf(count++),
-					new DataObject("Count",String.valueOf(delcount))));
+							new DataObject("Count", String.valueOf(delcount))));
 
 		}
 
 		return retvalue.size() == 1 ?
-				new DataCollection((DataObject)retvalue.get(0).get("1")) : retvalue;
+				new DataCollection((DataObject) retvalue.get(0).get("1")) : retvalue;
 
 	}
 

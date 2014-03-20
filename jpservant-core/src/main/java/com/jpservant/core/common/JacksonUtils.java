@@ -118,10 +118,10 @@ public class JacksonUtils {
 	public static DataCollection toDataObjectList(String content)
 			throws JsonMappingException, JsonParseException, IOException {
 
-		JsonParser parser = new  JsonFactory().createParser(content);
-		MappingIterator<DataObject>iter = INSTANCE.readValues(parser, DataObject.class);
+		JsonParser parser = new JsonFactory().createParser(content);
+		MappingIterator<DataObject> iter = INSTANCE.readValues(parser, DataObject.class);
 		DataCollection retvalue = new DataCollection();
-		while(iter.hasNext()){
+		while (iter.hasNext()) {
 			retvalue.add(iter.next());
 		}
 

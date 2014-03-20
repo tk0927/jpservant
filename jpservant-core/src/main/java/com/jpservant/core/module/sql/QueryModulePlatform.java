@@ -70,7 +70,7 @@ public class QueryModulePlatform implements ModulePlatform {
 			}
 
 			holder = config.findJDBCConnection(
-					ConfigurationName.JDBCResourcePath.name());
+					ConfigurationName.JDBCResourcePath);
 			String path = createResourcePath(config, context, FileExtern.SQL);
 			String content = findResource(context.getResource(path)).trim();
 

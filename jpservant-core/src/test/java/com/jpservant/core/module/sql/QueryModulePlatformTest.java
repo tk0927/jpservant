@@ -83,8 +83,8 @@ public class QueryModulePlatformTest extends TestCaseBase {
 	private void execute(String rootpath) throws Exception {
 
 		ModulePlatform module = MANAGER.getModulePlatform(rootpath);
-		String strtype = (String) MANAGER.getModuleConfiguration(rootpath).get(
-				Constant.ConfigurationName.ResourceType.name());
+		String strtype = MANAGER.getModuleConfiguration(rootpath).getValue(
+				Constant.ConfigurationName.ResourceType);
 		ResourceType type = ResourceType.valueOf(strtype);
 
 		StringWriter sw = new StringWriter();

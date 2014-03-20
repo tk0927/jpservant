@@ -17,6 +17,7 @@ package com.jpservant.test.miscellaneous;
 
 import com.jpservant.core.common.sql.impl.DriverManagerConnectionHolder;
 import com.jpservant.core.module.spi.ModuleConfiguration;
+import com.jpservant.core.resource.JDBCDriverManagerResource.ConfigurationName;
 import com.jpservant.core.resource.ResourcePlatform;
 
 /**
@@ -33,23 +34,16 @@ import com.jpservant.core.resource.ResourcePlatform;
  */
 public class TestJDBCDriverManagerResource implements ResourcePlatform {
 
-	public static enum ConfigurationName {
-		JDBCDriver,
-		JDBCURL,
-		JDBCUser,
-		JDBCPassword,
-	}
-
 	private DriverManagerConnectionHolder impl;
 
 	@Override
 	public void initialize(ModuleConfiguration config) {
 
 		this.impl = new DriverManagerConnectionHolder(
-				(String) config.get(ConfigurationName.JDBCDriver.name()),
-				(String) config.get(ConfigurationName.JDBCURL.name()),
-				(String) config.get(ConfigurationName.JDBCUser.name()),
-				(String) config.get(ConfigurationName.JDBCPassword.name())
+				config.getValue(ConfigurationName.JDBCDriver),
+				config.getValue(ConfigurationName.JDBCURL),
+				config.getValue(ConfigurationName.JDBCUser),
+				config.getValue(ConfigurationName.JDBCPassword)
 				);
 
 	}

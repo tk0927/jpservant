@@ -13,47 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jpservant.core.resource;
+package com.jpservant.google.module.gss;
 
-import com.jpservant.core.common.sql.impl.DriverManagerConnectionHolder;
+import static com.jpservant.core.common.Constant.GoogleConfigurationName.*;
+
+import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.spi.ModuleConfiguration;
+import com.jpservant.core.module.spi.ModulePlatform;
 
 /**
  *
- * JDBC DriverManagerに基づくデータベースコネクションを所有するリソースクラス。
- *
- * <pre>
- * リソースを要求されるたびに、設定情報を利用してDB接続を行う。
- * </pre>
+ * Google Spreadsheetモジュールのエントリポイント。
  *
  * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
  * @version 0.1
  *
  */
-public class JDBCDriverManagerResource implements ResourcePlatform {
+public class GSSModulePlatform implements ModulePlatform {
 
-	public static enum ConfigurationName {
-		JDBCDriver,
-		JDBCURL,
-		JDBCUser,
-		JDBCPassword,
-	}
+	private SpreadsheetService service;
 
 	private ModuleConfiguration config;
 
 	@Override
 	public void initialize(ModuleConfiguration config) {
+
 		this.config = config;
+		this.service = new SpreadsheetService(
+				this.config.getValue(ApplicationName));
 	}
 
 	@Override
-	public Object getResource() {
-
-		return new DriverManagerConnectionHolder(
-				(String) config.getValue(ConfigurationName.JDBCDriver),
-				(String) config.getValue(ConfigurationName.JDBCURL),
-				(String) config.getValue(ConfigurationName.JDBCUser),
-				(String) config.getValue(ConfigurationName.JDBCPassword));
+	public void execute(KernelContext context) throws Exception {
 
 	}
 

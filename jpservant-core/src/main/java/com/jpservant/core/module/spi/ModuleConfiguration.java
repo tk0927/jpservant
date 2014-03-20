@@ -17,6 +17,7 @@ package com.jpservant.core.module.spi;
 
 import java.util.HashMap;
 
+import com.jpservant.core.common.Constant;
 import com.jpservant.core.common.sql.DatabaseConnectionHolder;
 import com.jpservant.core.kernel.ConfigurationManager;
 import com.jpservant.core.resource.ResourcePlatform;
@@ -61,11 +62,21 @@ public class ModuleConfiguration extends HashMap<String, Object> {
 	 * @param name パラメータ名
 	 * @return データベース接続
 	 */
-	public DatabaseConnectionHolder findJDBCConnection(String name) {
+	public DatabaseConnectionHolder findJDBCConnection(Constant.ConfigurationName name) {
 
-		ResourcePlatform resource = getConfigurationManager().getResourcePlatform((String) get(name));
+		ResourcePlatform resource = getConfigurationManager().getResourcePlatform(getValue(name));
 		return resource == null ? null : (DatabaseConnectionHolder) resource.getResource();
 
 	}
 
+	/**
+	 *
+	 * 設定情報 属性値を取得します。
+	 *
+	 * @param name 属性名
+	 * @return 属性値
+	 */
+	public String getValue(Enum<?> name) {
+		return (String) get(name.name());
+	}
 }

@@ -57,7 +57,7 @@ public class Utilities {
 			ModuleConfiguration config, KernelContext context, FileExtern ext) {
 
 		return String.format("%s%s%s",
-				config.get(ConfigurationName.ResourceRoot.name()),
+				config.getValue(ConfigurationName.ResourceRoot),
 				context.getRequestPath(), ext.toString());
 
 	}
@@ -138,13 +138,12 @@ public class Utilities {
 	 * @param content 書き込み対象データ
 	 * @throws IOException IO例外発生
 	 */
-	public static void saveChannel(WritableByteChannel out,String content) throws IOException {
+	public static void saveChannel(WritableByteChannel out, String content) throws IOException {
 
 		ByteBuffer buf = ByteBuffer.wrap(content.getBytes(Constant.ENCODE_NAME));
 		out.write(buf);
 
 	}
-
 
 	/**
 	 *
@@ -328,11 +327,11 @@ public class Utilities {
 		return sb.toString().replaceAll("[/]+", "/");
 	}
 
-	public static String[] toStringArray(int[] data){
+	public static String[] toStringArray(int[] data) {
 
 		String[] retvalue = new String[data.length];
-		for(int i=0 ; i< data.length ; i++){
-			retvalue[i]=String.valueOf(data[i]);
+		for (int i = 0; i < data.length; i++) {
+			retvalue[i] = String.valueOf(data[i]);
 		}
 		return retvalue;
 	}

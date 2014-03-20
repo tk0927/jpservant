@@ -133,14 +133,14 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 		ModuleConfiguration config = new ModuleConfiguration(this);
 		config.putAll(element);
 
-		String path = (String) element.get(RootPath.name());
+		String path = config.getValue(RootPath);
 
 		if (configmap.containsKey(path)) {
 			throw new ConfigurationException(String.format("Duplicated RootPath[%s]", path));
 		}
 		configmap.put(path, config);
 
-		String classname = (String) element.get(PlatformClass.name());
+		String classname = config.getValue(PlatformClass);
 
 		Class<?> clazz = Class.forName(classname);
 

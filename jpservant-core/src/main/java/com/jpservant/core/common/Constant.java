@@ -111,12 +111,43 @@ public interface Constant {
 		JDBCResourcePath(false),
 		/** （DAOモジュール用）スキーマ名 */
 		SchemaName(false),
-		/**  (Google Cloud Storageモジュール用)バケット名 */
-		BucketName(false);
 
+		;
 		private boolean required;
 
 		private ConfigurationName(boolean required) {
+			this.required = required;
+		}
+
+		public boolean isRequired() {
+			return this.required;
+		}
+	}
+
+	/**
+	 *
+	 * 設定情報名(Google固有)。
+	 *
+	 * @author Toshiaki.Kamoshida <toshiaki.kamoshida@gmail.com>
+	 * @version 0.1
+	 *
+	 */
+	public static enum GoogleConfigurationName {
+
+		/**  (Google Cloud Storageモジュール用)バケット名 */
+		BucketName(false),
+
+		/** (Google Client Coreモジュール用)アプリケーション名 */
+		ApplicationName(false),
+		OAuthClientName(false),
+		OAuthClientSecret(false),
+		OAuthScope(false),
+		OAuthRedirectURI(false),
+
+		;
+		private boolean required;
+
+		private GoogleConfigurationName(boolean required) {
 			this.required = required;
 		}
 

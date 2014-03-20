@@ -74,7 +74,7 @@ public class SchemaEntry {
 			return (this.path.equals(dstobj.path) && this.method.equals(dstobj.method));
 		}
 
-		public String toString(){
+		public String toString() {
 			return path + ":" + method;
 		}
 	}
@@ -134,7 +134,7 @@ public class SchemaEntry {
 			for (SchemaEntryKey key : impl.keySet()) {
 
 				pathtokens = findPathTokens(key, path, method);
-				if(pathtokens != null){
+				if (pathtokens != null) {
 					action = impl.get(key);
 					break;
 				}
@@ -162,7 +162,7 @@ public class SchemaEntry {
 	 * @param method リクエストメソッド
 	 * @return 一致する場合に限り、パスパラメータ部分リスト 一致しない場合null
 	 */
-	private static List<String> findPathTokens(SchemaEntryKey key,String path,String method){
+	private static List<String> findPathTokens(SchemaEntryKey key, String path, String method) {
 
 		if (!key.method.name().equals(method)) {
 			return null;
@@ -175,14 +175,14 @@ public class SchemaEntry {
 			return null;
 		}
 		List<String> retvalue = new ArrayList<String>();
-		for(int i = 1 ; i <= m.groupCount() ; i++){
+		for (int i = 1; i <= m.groupCount(); i++) {
 			retvalue.add(m.group(i));
 		}
 
 		return retvalue;
 	}
 
-	public TableMetaData getTableMetaData(String tablename){
+	public TableMetaData getTableMetaData(String tablename) {
 		return this.metadata.get(tablename);
 	}
 }

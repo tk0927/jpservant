@@ -58,11 +58,11 @@ public abstract class DataAccessAction {
 		this.entry = entry;
 	}
 
-	public SchemaEntry getSchemaEntry(){
+	public SchemaEntry getSchemaEntry() {
 		return this.entry;
 	}
 
-	protected void initialize(){
+	protected void initialize() {
 
 	}
 }

@@ -155,11 +155,12 @@ public class SchemaParser {
 
 		try {
 
-			holder = configuration.findJDBCConnection(ConfigurationName.JDBCResourcePath.name());
+			holder = configuration.findJDBCConnection(
+					ConfigurationName.JDBCResourcePath);
 			holder.connect();
 
 			DatabaseMetaData dmd = holder.getConnection().getMetaData();
-			String schemaname = (String) configuration.get(ConfigurationName.SchemaName.name());
+			String schemaname = configuration.getValue(ConfigurationName.SchemaName);
 
 			for (DataObject table : getSelectableTableNames(dmd, schemaname)) {
 

@@ -136,7 +136,7 @@ public class DAOModulePlatformTest extends TestCaseBase {
 				assertEquals("2017-01-01 00:00:01.0", obj.get("TimestampCol"));
 				assertEquals("1027", obj.get("NumberCol"));
 				assertEquals("1", obj.get("BoolCol"));
-			}else{
+			} else {
 				fail();
 			}
 		}
@@ -187,7 +187,6 @@ public class DAOModulePlatformTest extends TestCaseBase {
 		assertEquals("4", result2.get("Count"));
 
 	}
-
 
 	@Test
 	public void execute4() throws Exception {
@@ -289,7 +288,6 @@ public class DAOModulePlatformTest extends TestCaseBase {
 
 	}
 
-
 	@Test
 	public void execute7() throws Exception {
 
@@ -306,14 +304,14 @@ public class DAOModulePlatformTest extends TestCaseBase {
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/Delete", "POST", rows1, null, sw));
 		DataObject result = toDataObject(sw.toString());
-		assertEquals("1",result.get("Count"));
+		assertEquals("1", result.get("Count"));
 
 		sw = new StringWriter();
 		module.execute(new KernelContextImpl(
 				"/TSampleTestTable/Select", "POST", rows1, null, sw));
 
 		result = toDataObject(sw.toString());
-		assertEquals(0,result.size());
+		assertEquals(0, result.size());
 
 	}
 
@@ -363,6 +361,5 @@ public class DAOModulePlatformTest extends TestCaseBase {
 		assertEquals("1", result.get("Count"));
 
 	}
-
 
 }

@@ -60,7 +60,7 @@ public class DAOModulePlatform implements ModulePlatform {
 		try {
 
 			holder = config.findJDBCConnection(
-					ConfigurationName.JDBCResourcePath.name());
+					ConfigurationName.JDBCResourcePath);
 
 			SchemaEntry entry = SchemaRepository.getEntry(this);
 			DataCollection response = entry.execute(config, context, holder);

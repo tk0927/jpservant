@@ -41,5 +41,10 @@
   		<artifactId>appengine-gcs-client</artifactId>
   		<version>0.3.7</version>
   	</dependency>
+  	<dependency>
+  		<groupId>com.google.gdata</groupId>
+  		<artifactId>core</artifactId>
+  		<version>1.47.1</version>
+  	</dependency>
   </dependencies>
 </project>

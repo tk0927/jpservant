@@ -49,7 +49,7 @@ public class DeleteByPrimaryKeyAction extends DataAccessAction {
 	}
 
 	@Override
-	protected void initialize(){
+	protected void initialize() {
 
 		TableMetaData tmd = getSchemaEntry().getTableMetaData(this.tablename);
 		this.primarykeynames = convertSnakeToCamel(tmd.getPrimaryKeys());
