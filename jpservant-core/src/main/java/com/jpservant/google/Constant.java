@@ -38,12 +38,11 @@ public interface Constant {
 		/**  (Google Cloud Storageモジュール用)バケット名 */
 		BucketName(false),
 
-		/** (Google Client Coreモジュール用)アプリケーション名 */
+		/** (Google Client Coreモジュール用)OAuth1 ConsumerKey */
 		ApplicationName(false),
-		OAuthClientName(false),
-		OAuthClientSecret(false),
+		OAuthConsumerKey(false),
+		OAuthConsumerSecret(false),
 		OAuthScope(false),
-		OAuthRedirectURI(false),
 
 		;
 		private boolean required;

@@ -17,7 +17,13 @@ package com.jpservant.google.module.gss;
 
 import static com.jpservant.google.Constant.ConfigurationName.*;
 
+import com.google.gdata.client.authn.oauth.GoogleOAuthHelper;
+import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
+import com.google.gdata.client.authn.oauth.OAuthException;
+import com.google.gdata.client.authn.oauth.OAuthHmacSha1Signer;
+import com.google.gdata.client.authn.oauth.OAuthSigner;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.jpservant.core.exception.ConfigurationException;
 import com.jpservant.core.kernel.KernelContext;
 import com.jpservant.core.module.spi.ModuleConfiguration;
 import com.jpservant.core.module.spi.ModulePlatform;
@@ -37,11 +43,32 @@ public class GSSModulePlatform implements ModulePlatform {
 	private ModuleConfiguration config;
 
 	@Override
-	public void initialize(ModuleConfiguration config) {
+	public void initialize(ModuleConfiguration config) throws ConfigurationException {
 
-		this.config = config;
-		this.service = new SpreadsheetService(
-				this.config.getValue(ApplicationName));
+		try{
+			this.config = config;
+			this.service = new SpreadsheetService(
+					this.config.getValue(ApplicationName));
+
+			//OAuth setup
+			GoogleOAuthParameters oauthParameters = new GoogleOAuthParameters();
+			oauthParameters.setOAuthConsumerKey(config.getValue(OAuthConsumerKey));
+			oauthParameters.setOAuthConsumerSecret(config.getValue(OAuthConsumerSecret));
+			oauthParameters.setScope(config.getValue(OAuthScope));
+			OAuthSigner signer = new OAuthHmacSha1Signer();
+			GoogleOAuthHelper oauthHelper = new GoogleOAuthHelper(signer);
+			oauthHelper.getUnauthorizedRequestToken(oauthParameters);
+
+			String requestUrl = oauthHelper.createUserAuthorizationUrl(oauthParameters);
+
+			String token = oauthHelper.getAccessToken(oauthParameters);
+
+			service.setOAuthCredentials(oauthParameters, signer);
+
+		}catch(OAuthException e){
+			throw new ConfigurationException(e);
+		}
+
 	}
 
 	@Override
